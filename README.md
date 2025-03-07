@@ -83,7 +83,7 @@ Except for special instructions in this article，`jdk1.8.0_202`+ `tomcat 9.0.85
 
 [tomcat-9.0.85-windows-x64.zip](Files/tomcat-9.0.85-windows-x64.zip)
 
-[jdk-8u202-windớ-x64.exe](Files/jdk-8u202-windows-x64.exe)
+[jdk-8u202-window-x64.exe](https://www.dropbox.com/scl/fi/ynb3rql2qyba4zkygkz70/jdk-8u202-windows-x64.exe?rlkey=z3l1sc024ktfae5gg8nfvfxuz&st=quxh6zte&dl=0)
 
 ## 2.1 Servlet containers with Engine, Host, Context and Wrapper
 
@@ -118,7 +118,7 @@ Then start four steps:
 
    After the `Context` is determined, the `Mapper` then finds the specific `Wrapper` and `Servlet` based on the `Servlet` map path configured in `web.xml`, such as the `/list` of `Wrapper1` here.
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/20240112165824.png)
+![](Images/20240112165824.png)
 
 The `Context` here is translated as a context, which includes the basic environment for the `servlet` to run; the `Wrapper` here is translated as a wrapper, which is responsible for managing a `servlet`, including its loading, initialization, execution and resource recycling.
 
@@ -163,7 +163,7 @@ The `pom.xml` file is as follows:
 ```
 
 Synchronize dependencies:
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174417723.png)
+![](Images/image-20240112174417723.png)
 
 The `TestServlet.java` code is as follows:
 
@@ -186,33 +186,33 @@ public class TestServlet extends HttpServlet {
 
 Then configure the `tomcat` environment required for the project to run:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174451460.png)
+![](Images/image-20240112174451460.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174520045.png)
+![](Images/image-20240112174520045.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174543728.png)
+![](Images/image-20240112174543728.png)
 
 Then configure `artifacts` and click `fix` directly:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174604960.png)
+![](Images/image-20240112174604960.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174718456.png)
+![](Images/image-20240112174718456.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174740574.png)
+![](Images/image-20240112174740574.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112174840311.png)
+![](Images/image-20240112174840311.png)
 
 Then add the `web` module:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112175314298.png)
+![](Images/image-20240112175314298.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112175906956.png)
+![](Images/image-20240112175906956.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112181600664.png)
+![](Images/image-20240112181600664.png)
 
 After running, visit http://localhost:8080/testServlet/test:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240112181649265.png)
+![](Images/image-20240112181649265.png)
 
 ## 2.3 From the code level, servlet initialization and loading process
 
@@ -276,7 +276,7 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws LifecycleException {
         Tomcat tomcat = new Tomcat();
-        tomcat.getConnector(); //tomcat 9.0以上需要加这行代码，参考：https://blog.csdn.net/qq_42944840/article/details/116349603
+        tomcat.getConnector(); //This line of code needs to be added to tomcat 9.0 or above, refer to:https://blog.csdn.net/qq_42944840/article/details/116349603
         Context context = tomcat.addWebapp("", new File(".").getAbsolutePath());
         Tomcat.addServlet(context, "helloServlet", new HelloServlet());
         context.addServletMappingDecoded("/hello", "helloServlet");
@@ -315,20 +315,20 @@ public class HelloServlet extends HttpServlet {
 
 We debug at `org.apache.catalina.core.StandardWrapper#setServletClass`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162053776.png)
+![](Images/image-20240115162053776.png)
 
 We tried to press `Ctrl+left key` to track its upper call location, but it was prompted that we could not find it, so we need to press `Ctrl+Alt+F7` twice:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162215565.png)
+![](Images/image-20240115162215565.png)
 
 Then you can see that the upper call location is located at `org.apache.catalina.startup.ContextConfig#configureContext`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162319884.png)
+![](Images/image-20240115162319884.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115162405771.png)
+![](Images/image-20240115162405771.png)
 
 Next, let's look at the following code in detail:
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115184354717.png)
+![](Images/image-20240115184354717.png)
 
 ```java
 for (ServletDef servlet : webxml.getServlets().values()) {
@@ -403,11 +403,11 @@ In other words, the initialization of `Servlet` mainly goes through the followin
 
 We set a breakpoint here in `org.apache.catalina.core.StandardWrapper#loadServlet` for debugging, focusing on `org.apache.catalina.core.StandardContext#startInternal`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115193750678.png)
+![](Images/image-20240115193750678.png)
 
 As you can see, the loading order is `Listener`-->`Filter`-->`Servlet`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240115194704999.png)
+![](Images/image-20240115194704999.png)
 
 You can see that the code in the red box above calls `org.apache.catalina.core.StandardContext#loadOnStartup`, and `Ctrl+left key` follows up with the method. The code is as follows:
 ```java
@@ -448,7 +448,7 @@ To be clear at the beginning, the `Filter` container is used to filter and proce
 
 > https://mp.weixin.qq.com/s/eI-50-_W89eN8tsKi-5j4g
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/filter-demo.png)
+![](Images/filter-demo.png)
 
 As can be seen from the above figure, this `filter` is a level. The client's request will only reach the `Servlet` after passing the `filter`. Then if we dynamically create a `filter` and put it in the front, our `filter` will be executed first. When we add malicious code to the `filter`, we can implement command execution and form a memory horse.
 
@@ -485,13 +485,13 @@ public class TestFilter implements Filter {
 
 After running, the console outputs `[*] Filter initialization creation`. When we access the `/test` route, the console continues to output `[*] Filter to perform filtering operation. When we end `tomcat`, the `destroy` method will be triggered, thus outputting `[*] Filter destroyed`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116155323191.png)
+![](Images/image-20240116155323191.png)
 
 ## 2.6 Analyze the overall process of Filter operation from the code level
 
 We debug the `doFilter` function in the above `demo` breakpoint here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116180329213.png)
+![](Images/image-20240116180329213.png)
 
 follow up`org.apache.catalina.core.StandardWrapperValve#invoke`：
 
@@ -505,7 +505,7 @@ Continue to follow up on the variable `filterChain` and find the code at the def
 ApplicationFilterChain filterChain = ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117003245011.png)
+![](Images/image-20240117003245011.png)
 
 View this method（`org.apache.catalina.core.ApplicationFilterFactory#createFilterChain`）：
 
@@ -582,23 +582,23 @@ public static ApplicationFilterChain createFilterChain(ServletRequest request, W
 
 We debug the breakpoint at the line defining `filterMaps` below. You can see that this code first determines whether `servlet` is empty. If `servlet` is null, it means that there is no valid `servlet` and the filter chain cannot be created. Then, it is classified and processed according to the type of the incoming `ServletRequest`. If it is `Request` and security is enabled, then create a new `ApplicationFilterChain`. If it is not enabled, then try to get the existing filter chain from the request. , if it does not exist, create a new one; then set the Servlet and asynchronous support attributes of the filter chain, which is nothing to say; the key point is to get the parent context (`StandardContext`) from the `Wrapper`, and then get the filter map array defined in the context (`FilterMap`); finally iterate over the filter map array, match the filter according to the requested `DispatcherType` and the request path, and add the matching filter to the filter chain, and finally return the created or updated filter chain.
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117004652307.png)
+![](Images/image-20240117004652307.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117004728760.png)
+![](Images/image-20240117004728760.png)
 
 From the two pictures above, we can also clearly see the structures of `filterConfig`, `filterMap`, and `FilterDef`.
 
 Follow up on the `filterChain.doFilter` method just now, located in `org.apache.catalina.core.ApplicationFilterChain#doFilter`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117005026102.png)
+![](Images/image-20240117005026102.png)
 
 You can see that the `org.apache.catalina.core.ApplicationFilterChain#internalDoFilter` method is called. In this method, you will get `filterConfig` and `filter` in sequence:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117005923310.png)
+![](Images/image-20240117005923310.png)
 
 OK, the process ends here, but our purpose is to enter the memory horse, that is, to dynamically create a `Filter`. Looking back on the previous debugging process, we found that there are two key points in the `createFilterChain` function:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117010603894.png)
+![](Images/image-20240117010603894.png)
 
 That is, here I pointed out the `org.apache.catalina.core.StandardContext#findFilterMaps` and `org.apache.catalina.core.StandardContext#findFilterConfig` with arrows.
 
@@ -620,33 +620,33 @@ In other words, we only need to find the existing context and insert our customi
 
 That is, our current problem translates to how to add `filterMap` and `filterConfig`. We search for the keyword `addFilterMap` and we can see that there are two related methods in `StandardContext`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117131207868.png)
+![](Images/image-20240117131207868.png)
 
 The comments also clearly state that `addFilterMap` is to add a new new map we customized at the end of a set of maps; while `addFilterMapBefore` will automatically throw the `filterMap` we created to the first place without manually sorting it, which is exactly what we need!
 
 You can see that the first step in the `addFilterMapBefore` function above is to execute the function `org.apache.catalina.core.StandardContext#validateFilterMap`. Click to see:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117131938707.png)
+![](Images/image-20240117131938707.png)
 
 I found that we need to ensure that when we look for `filterDef` according to `filterName`, we have to find it, that is, we have to customize `filterDef` and add it to `filterDefs`. However, this is also very simple and there is a corresponding method, that is `org.apache.catalina.core.StandardContext#addFilterDef`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117132121464.png)
+![](Images/image-20240117132121464.png)
 
 Get it done, continue to see how to add `filterConfig`. After searching, there is no such method as `addFilterConfig` above:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117132257971.png)
+![](Images/image-20240117132257971.png)
 
 But there are two methods: `filterStart` and `filterStop`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117135001440.png)
+![](Images/image-20240117135001440.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117135022708.png)
+![](Images/image-20240117135022708.png)
 
 That is to say, we can only obtain relevant attributes through reflection and add them.
 
 ## 2.7 Listener brief introduction
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/tomcat.png)
+![](Images/tomcat.png)
 
 From the above figure, we can see that `Listener` was first loaded, so based on the ideas we learned earlier, if I dynamically register a malicious `Listener`, I can form another memory horse.
 In `tomcat`, there are several common `Listener`:
@@ -683,25 +683,25 @@ public class TestListener implements ServletRequestListener {
 
 Running results:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117193153492.png)
+![](Images/image-20240117193153492.png)
 
 ## 2.9 Analyze the overall process of Listener operation from the code level
 
 We breakpoint debugging at two places as shown in the figure:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117193334272.png)
+![](Images/image-20240117193334272.png)
 
 Turn down to see the call to the `org.apache.catalina.core.StandardContext#listenerStart` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117193516785.png)
+![](Images/image-20240117193516785.png)
 
 The code is easy to understand, and there are two main things to do. One is to find the names of these `Listerners` through `findApplicationListeners`; the other is to instantiate these `listeners`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117213700704.png)
+![](Images/image-20240117213700704.png)
 
 Then there is the classification arrangement. The `ServletRequestListener` we need is placed in the `eventListeners`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117223551872.png)
+![](Images/image-20240117223551872.png)
 
 After the classification is completed, do something like this:
 
@@ -722,9 +722,9 @@ It is also very simple and clear, which is to convert `applicationEventListeners
 
 In summary, this is in one sentence, there are two sources of `Listener`. One is the `Listener` obtained from instantiation based on the `web.xml` file or `@WebListener` annotation; the other is the `Listener` in `applicationEventListenersList`. We definitely can't control the previous ones because this is for developers, not for hackers, hahaha. Then look for it. Is there any function similar to the `addFilterConfig` we used before? Of course there is, look up `ctrl+left button`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117225625995.png)
+![](Images/image-20240117225625995.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117225704881.png)
+![](Images/image-20240117225704881.png)
 
 The method name is `addApplicationEventListener`. In `StandardContext.java`, the code is as follows, which perfectly meets our needs. It's so terrible:
 
@@ -738,17 +738,17 @@ public void addApplicationEventListener(Object listener) {
 
 Create a new project and set the `Server URL` to `https://start.aliyun.com/`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118010240710.png)
+![](Images/image-20240118010240710.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118010435462.png)
+![](Images/image-20240118010435462.png)
 
 Wait for the dependency resolution to complete:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118010538774.png)
+![](Images/image-20240118010538774.png)
 
 Here is an example for us, we can run directly:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118011103790.png)
+![](Images/image-20240118011103790.png)
 
 ### 2.10.1 Write a simple Spring Controller
 
@@ -771,7 +771,7 @@ public class TestController {
 
 Very simple:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118011631123.png)
+![](Images/image-20240118011631123.png)
 
 ### 2.10.2 Write a simple Spring Interceptor
 
@@ -833,7 +833,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 `Controller` is the `TestController.java` written before. After running, access `http://127.0.0.1:8080/?cmd=whoami`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119205649551.png)
+![](Images/image-20240119205649551.png)
 
 ### 2.10.3 Write a simple Spring WebFlux Demo (based on Netty)
 
@@ -841,11 +841,11 @@ Let’s first talk about how to write a `Demo` of the `Spring WebFlux` framework
 
 Here we create a new `SpringBoot` project and name it `WebFluxMemoryShellDemo`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121181613825.png)
+![](Images/image-20240121181613825.png)
 
 Select `Spring Reactive Web` here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121182533113.png)
+![](Images/image-20240121182533113.png)
 
 Then create two new files. For convenience, I put these two files in the `hello` folder.
 
@@ -890,17 +890,17 @@ public class GreetingRouter {
 
 We can create a new `main/resources` folder, then create a new `application.properties`, and control the port of the `netty` service through `server.port`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121182911474.png)
+![](Images/image-20240121182911474.png)
 
 Then we run:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121183100943.png)
+![](Images/image-20240121183100943.png)
 
 Here I found a project from github, which can also help us understand how this framework is used, using `Netty`+`SpringWebFlux`:
 
 > https://github.com/Java-Techie-jt/springboot-webflux-demo
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240121135125819.png)
+![](Images/image-20240121135125819.png)
 
 Access any route. For example `http://127.0.0.1:9191/customers/stream`:
 
@@ -912,7 +912,7 @@ If you want to have an in-depth understanding of the `Spring MVC` framework-type
 
 First, I will quote a picture from "Spring in Action" (I remake it here) to understand the core components and general processing flow of `Spring MVC` (but I didn't seem to have found this picture in the fifth edition of the book. If you find it, you can send a private message to me in the background of the official account):
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/springmvc2.png)
+![](Images/springmvc2.png)
 
 You can see that there are a bunch of nouns here, let’s take a look one by one:
 
@@ -949,11 +949,11 @@ These nine components need to have an impression:
 
 First, find `org.springframework.web.servlet.DispatcherServlet`, and you can see that there are many component definitions and initialization functions and some other functions:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118153801770.png)
+![](Images/image-20240118153801770.png)
 
 But without the `init()` function, when we look at the parent class `org.springframework.web.servlet.HttpServletBean` of its parent class `FrameworkServlet`, we found that there is an `init` function:rvletBean` of its parent class `FrameworkServlet`, we found that there is an `init` function:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118153925178.png)
+![](Images/image-20240118153925178.png)
 
 The code is as follows:
 
@@ -988,11 +988,11 @@ First, we get the initialization parameters from the Servlet configuration and c
 
 After we clicked in, we found that the function did not write anything, which means that it should be a subclass inheritance `override` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118154412364.png)
+![](Images/image-20240118154412364.png)
 
 Sure enough, we successfully found the method in `org.springframework.web.servlet.FrameworkServlet`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118154436747.png)
+![](Images/image-20240118154436747.png)
 
 The code is as follows:
 
@@ -1030,15 +1030,15 @@ protected final void initServletBean() throws ServletException {
 
 I won’t talk about the `log` and timing part of this code, let’s talk about it with the key points.It first calls the `initWebApplicationContext` method and initializes the `IOC` container. During the initialization process, this `onRefresh` method will be called. Generally speaking, this method is a callback method called after the container refresh is completed. It performs some tasks that need to be completed immediately after the application is started:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118155901114.png)
+![](Images/image-20240118155901114.png)
 
 Follow this method and you can see that the default is empty:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118160618786.png)
+![](Images/image-20240118160618786.png)
 
 It means that there should be `override` in its subclass. Sure enough, we have located the `org.springframework.web.servlet.DispatcherServlet#` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118160730953.png)
+![](Images/image-20240118160730953.png)
 
 This immediately became clear. These are not the nine components we mentioned before. At this point, the initialization of the nine components of Spring MVC is completed.
 
@@ -1048,7 +1048,7 @@ You may have a question like this: we use `@RequestMapping("/")` to annotate on 
 
 From the initialization of the nine components above, we can see that there is a method called `initHandlerMappings`. Let's click in and take a look at it in detail:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118170255776.png)
+![](Images/image-20240118170255776.png)
 
 This code and the included annotations are also easy to understand and are divided into two parts. The first part is to find all classes that implement the `HandlerMappings` interface in `ApplicationContext` (including `ancestor contexts`). If at least one `HandlerMapping bean` that meets the conditions is found, then convert its value into a list, and sort them according to the Java default sorting mechanism. Finally, assign the sorted list to `this.handlerMappings`; if not found, `this.handlerMappings` will remain as `null`; if no handler mapping is needed, try to get the `bean` named `handlerMapping` from `ApplicationContext`, and if it is successfully obtained, assign it to a list of single elements to `this.handlerMappings`, if the acquisition fails, it doesn't matter, because the comments are very clear and a default `HandlerMapping` will be added, which is the code for the second part we are going to talk about.
 
@@ -1056,17 +1056,17 @@ The second part says that if the previous set of operations is still `null`, the
 
 If you look at it this way, the method `org.springframework.web.servlet.DispatcherServlet#getDefaultStrategies` is quite critical. Let's click in and take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118172033745.png)
+![](Images/image-20240118172033745.png)
 
 This code is quite interesting. First, it loads the resource file and stores its contents in `defaultStrategies` in the form of attribute key-value pairs; then gets a name from `strategyInterface`, and then uses this name to find the corresponding value in `defaultStrategies`. If it is found, it separates the value into a class name array by comma, then iterates over the class name array, and performs the following two operations for each class name: ① Try to load the class through the `ClassUtils.forName` method ② Create an instance of the class using the `createDefaultStrategy` method; finally add the created policy object to the list `strategies` and return.
 
 Then I'm very curious, what's in `DEFAULT_STRATEGIES_PATH` in this code? `Ctrl+left key` tracking:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118174426118.png)
+![](Images/image-20240118174426118.png)
 
 It turned out to be a file named `DispatcherServlet.properties`. We can quickly flip it into the dependency list on the left, because it should be with `DispatcherServlet.java`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118174523396.png)
+![](Images/image-20240118174523396.png)
 
 From the file content, we can quickly lock in key information:
 
@@ -1078,47 +1078,47 @@ org.springframework.web.servlet.HandlerMapping=org.springframework.web.servlet.h
 
 In other words, there will be three values, namely `BeanNameUrlHandlerMapping`, `RequestMappingHandlerMapping` and `RouterFunctionMapping`. We usually use the second one. Let's click on `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping` to take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118174955839.png)
+![](Images/image-20240118174955839.png)
 
 Its parent class `RequestMappingInfoHandlerMapping`'s parent class `AbstractHandlerMethodMapping` implements the `InitializingBean` interface, which is used to execute some specific custom initialization logic after the `bean` initialization is completed.
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118175247104.png)
+![](Images/image-20240118175247104.png)
 
 Clicking into this interface, there is only one `afterPropertiesSet` method. For the purpose of this method, please refer to `https://www.python100.com/html/U711CO7MV79C.html`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118175806150.png)
+![](Images/image-20240118175806150.png)
 
 Then let's take a look at the `AbstractHandlerMethodMapping` which implements the `afterPropertiesSet` of `InitializingBean`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118180208640.png)
+![](Images/image-20240118180208640.png)
 
 The rewritten is also very simple. Call the `initHandlerMethods` method and continue to track the method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118180258066.png)
+![](Images/image-20240118180258066.png)
 
 The comments are very clear: scan the bean in the ApplicationContext, and then detect and register the handler methods.
 
 We set a breakpoint here in `org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#initHandlerMethods` for debugging. After this step in the figure, `step into`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118191019570.png)
+![](Images/image-20240118191019570.png)
 
 Let's look at the specific logic of the method `org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#processCandidateBean`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118191122592.png)
+![](Images/image-20240118191122592.png)
 
 We are naturally very curious here. This `isHandler` is a judgment. Let's click in and take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118191924946.png)
+![](Images/image-20240118191924946.png)
 
 As you can see, no implementation is given here, indicating that `override` should be given in the subclass, so you directly find `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#isHandler`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118192146352.png)
+![](Images/image-20240118192146352.png)
 
 Obviously, the `isHandler` is used to detect whether the given `beanType` class has a `Controller` annotation or a `RequestMapping` annotation.
 
 After solving this, continue to look back. The method `detectHandlerMethods` is called. Let's click in and take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118192734772.png)
+![](Images/image-20240118192734772.png)
 
 Let's look at it separately. First, this line of code is written in a comprehensive way, which means that you first determine whether the `handler` is a string type. If so, you can get its type through `ApplicationContext`; otherwise, you can directly get the type of `handler`. :
 
@@ -1147,15 +1147,15 @@ First, we get the user class of the processor. The user class is a class that is
 
 We clicked on this method and found that it is an abstract method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118193938936.png)
+![](Images/image-20240118193938936.png)
 
 Then let’s see if there is a corresponding implementation in its subclass, and directly locate it at `org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#getMappingForMethod`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118194251185.png)
+![](Images/image-20240118194251185.png)
 
 We debug the breakpoint at the location shown in the figure below:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118195411713.png)
+![](Images/image-20240118195411713.png)
 
 Let's look at it separately, first line:
 
@@ -1165,15 +1165,15 @@ RequestMappingInfo info = createRequestMappingInfo(method);
 
 Analyze the annotations in the method of the `Controller` class to generate a corresponding `RequestMappingInfo` object. We can `step into``org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#createRequestMappingInfo(java.lang.reflect.AnnotatedElement)` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118195804561.png)
+![](Images/image-20240118195804561.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118195850878.png)
+![](Images/image-20240118195850878.png)
 
 You can see that the url pattern in this `info` saves the url pattern` of accessing the method is `"/"`, which is what we want to see in `TestController.java` when `@RequestMapping("/")`, call the `test` method.
 
 Continue to go down step by step and you can see that you have reached the end of `org.springframework.web.servlet.handler.AbstractHandlerMethodMapping#detectHandlerMethods`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118200254342.png)
+![](Images/image-20240118200254342.png)
 
 Look directly at the contents of the `lambda` expression:
 
@@ -1184,7 +1184,7 @@ registerHandlerMethod(handler, invocableMethod, mapping);
 
 It means that first selectInvocableMethod method to select a callable method based on the method and `userType`, in order to deal with possible proxy and `AOP` situations, ensure that the original method that can be called directly is obtained; then register the `bean`, `Method` and `RequestMappingInfo` into the `MappingRegistry`.
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118201648822.png)
+![](Images/image-20240118201648822.png)
 
 At this point, the problem of how the relationship between `url` and `Controller` is established is solved.
 
@@ -1213,45 +1213,45 @@ There are mainly six aspects:
 
 We give a breakpoint in the `TestInterceptor.java` function of `2.10.2` section, and then visit `http://127.0.0.1:8080/?cmd=whoami` to enter debugging:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119210645412.png)
+![](Images/image-20240119210645412.png)
 
 After stepping into debugging step by step, I found that the method to enter `org.springframework.web.servlet.DispatcherServlet#doDispatch`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119211041073.png)
+![](Images/image-20240119211041073.png)
 
 We breakpoint at the first line of the `doDispatch` method and revisit the page debugging:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119211454480.png)
+![](Images/image-20240119211454480.png)
 
 I saw that the function `getHandler` was called, and its comments were written in a simple and easy-to-understand way: determine the `handler` that handles the current request, let's take a look at it `step into`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119213144754.png)
+![](Images/image-20240119213144754.png)
 
 By traversing the `handler` object in the current `handlerMapping` array, we can determine which `handler` handles the current `request` object:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119213521627.png)
+![](Images/image-20240119213521627.png)
 
 Continue to enter the `mapping.getHandler` method used in this function, that is, `org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandler`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119214714153.png)
+![](Images/image-20240119214714153.png)
 
 The code is simple and easy to understand. First, it is obtained through `getHandlerInternal`. If it cannot be obtained, then call `getDefaultHandler` to get the default. If it still cannot be obtained, it will directly return `null`; then check whether the `handler` is a string. If it is, it means that it may be a `Bean` name. In this way, the `ApplicationContext` object of the corresponding name is obtained, so that the `handler` object will eventually be a legal processor object; then check whether there is a cached request path, and if there is no cache, call the `initLookupPath(request)` method to initialize the search for the request path; finally create a processor execution chain through the `getHandlerExecutionChain` method.
 
 From this point of view, this `getHandlerExecutionChain` method is very important. Let's take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119220340092.png)
+![](Images/image-20240119220340092.png)
 
 Traversing the `adaptedInterceptors` to determine whether the interceptor is of the `MappedInterceptor` type. If so, it depends on whether the `MappedInterceptor` matches the current request. If so, add its actual interceptor to the execution chain. If it is not of this type, add the interceptor to the execution chain directly.
 
 Let's go back to the previous `getHandler` method and take a look at its second half:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119223022260.png)
+![](Images/image-20240119223022260.png)
 
 It mainly deals with cross-domain resource sharing (`CORS`). You only need to know that when `CORS` is involved, `executionChain`, and `CORS` configurations are encapsulated and returned through `getCorsHandlerExecutionChain`.
 
 Step by step, go back to the `getHandler` at the beginning. Here we call the `org.springframework.web.servlet.HandlerExecutionChain#applyPreHandle` method to traverse all interceptors for preprocessing. There is basically no need to understand the following code:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240119223829102.png)
+![](Images/image-20240119223829102.png)
 
 ## 2.12 Introduction to Spring WebFlux and code debugging analysis
 
@@ -1316,137 +1316,137 @@ I originally wanted to use text to talk about the difference between `Spring MVC
 
 We directly set a breakpoint in the `run` method, and then directly `step into`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122151538700.png)
+![](Images/image-20240122151538700.png)
 
 After step over, we can see that the method `org.springframework.boot.SpringApplication#createApplicationContext` is called (the previous methods are not important, just skip them):
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122151616672.png)
+![](Images/image-20240122151616672.png)
 
 This method just listens to the name `createApplicationContext`, which is very important because it literally means creating `ApplicationContext`, which is exactly what we are interested in. Let's go in and take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122152201947.png)
+![](Images/image-20240122152201947.png)
 
 It can be seen that different `contexts are selected according to different `webApplicationType`, for example, our `webApplicationType` is `REACTIVE`, which is responsive.
 
 Our `step into` here `create` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122152757458.png)
+![](Images/image-20240122152757458.png)
 
 It was found that there are two static methods, a `create` method and a default implementation `DEFAULT`. This default implementation creates the corresponding context by loading all candidate implementations of `ApplicationContextFactory`; if no suitable implementation is found, a `AnnotationConfigApplicationContext` instance is returned by default.
 
 Let's continue to walk over and see that the `context` corresponding to our `REACTIVE` is `AnnotationConfigReactiveWebServerApplicationContext`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122153321207.png)
+![](Images/image-20240122153321207.png)
 
 Continue to go down, we will go back to the beginning, and you can see that the `prepareContext`, `refreshContext` and `afterRefresh` methods will be called next. This process is a series of initialization, listening registration and other operations:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122153436756.png)
+![](Images/image-20240122153436756.png)
 
 Our `step into`refreshContext` method here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154347190.png)
+![](Images/image-20240122154347190.png)
 
 Then `step into` here `refresh` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154415854.png)
+![](Images/image-20240122154415854.png)
 
 After entering, then the `step into`refresh` method here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154457308.png)
+![](Images/image-20240122154457308.png)
 
 You can see that a `super.refresh` is called here, which is the `refresh` method of the parent class:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154526246.png)
+![](Images/image-20240122154526246.png)
 
 We continued to view `step into` and found that the onRefresh method is called here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154705098.png)
+![](Images/image-20240122154705098.png)
 
 We `step into` here `onRefresh` and found that it calls the key `org.springframework.boot.web.reactive.context.ReactiveWebServerApplicationContext#createWebServer`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122154751318.png)
+![](Images/image-20240122154751318.png)
 
 Continue to step over, you can see that since we are using `Netty` instead of `Tomcat`, we end up calling the `getWebServer` method in the `NettyReactiveWebServerFactory` class:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122155504128.png)
+![](Images/image-20240122155504128.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122155752526.png)
+![](Images/image-20240122155752526.png)
 
 The `WebServerManager` class in the figure above is also an important encapsulation class, with two member variables, one is the abstract `WebServer` of the underlying server, and the other is the abstract `DelayedInitializationHttpHandler` of the upper-level method handler:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122172421426.png)
+![](Images/image-20240122172421426.png)
 
 So how exactly is this `webserver` started? Let's continue to go to the `finishRefresh` method. If we directly have no brainstorming `step over`, the program will eventually return to the `run` method. It means that the place where the `webserver` is definitely in the `finishRefresh` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174153904.png)
+![](Images/image-20240122174153904.png)
 
 Let's go in and take a look:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174401684.png)
+![](Images/image-20240122174401684.png)
 
 Then `step into` and check out the `getLifecycleProcessor().onRefresh()` method called here, and found that the `startBeans` method was called and the self-start was set:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174441696.png)
+![](Images/image-20240122174441696.png)
 
 We directly `step into` the startBeans` method, step over step by step, and you will find that the start method is called. It seems that we are gradually approaching the truth:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174628586.png)
+![](Images/image-20240122174628586.png)
 
 We continued to the `step into the `start` method and found that the `org.springframework.context.support.DefaultLifecycleProcessor#doStart` method was called:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174728904.png)
+![](Images/image-20240122174728904.png)
 
 I went in and found that since `dependenciesForBean` is [], the `doStart` method was not called, and I just called `bean.start()`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122174837382.png)
+![](Images/image-20240122174837382.png)
 
 Continue to the `step into` start` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122180726791.png)
+![](Images/image-20240122180726791.png)
 
 How come there is nothing? What a strange thing, what went wrong? I was stunned at this step and decided to cancel the breakpoint I had hit before, and set the breakpoint at the position shown in the following two figures to re-debug, because these two methods are the key methods:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122180840172.png)
+![](Images/image-20240122180840172.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122180857277.png)
+![](Images/image-20240122180857277.png)
 
 After debugging several times, I found that I was negligent. There are actually three in this.lifecycleBeans here. One will be deleted every time the `doStart` method is called:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181045819.png)
+![](Images/image-20240122181045819.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181305946.png)
+![](Images/image-20240122181305946.png)
 
 As you can see, we just called the first `bean`, so of course there is no method related to starting `webserver`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181456742.png)
+![](Images/image-20240122181456742.png)
 
 We step over. When `memeber.name` is `webServerStartStop`, we will step into the `bean.start()` in the `doStart` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181729409.png)
+![](Images/image-20240122181729409.png)
 
 You can see `this.weServerManager.start()`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181751790.png)
+![](Images/image-20240122181751790.png)
 
 Let's continue with the `step into` this `start` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122181838844.png)
+![](Images/image-20240122181838844.png)
 
 Take a closer look at the code in the red box above. First, initialize `HttpHandler`. This method actually determines when to initialize according to the difference in the value of `lazyInit`. If `lazyInit` is `true`, then wait until the first request arrives before it is actually initialized; if `false`, then call `initializeHandler` in the `start` method of `WebServerManager` to initialize directly:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122182528529.png)
+![](Images/image-20240122182528529.png)
 
 We continue to step into the `start` method here and find that its location is `org.springframework.boot.web.embedded.netty.NettyWebServer#start`
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122182700152.png)
+![](Images/image-20240122182700152.png)
 
 It is only then that I really understand that the key method for starting a real `webServer` is `org.springframework.boot.web.embedded.netty.NettyWebServer#startHttpServer`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122182843455.png)
+![](Images/image-20240122182843455.png)
 
 You can also see from the following `this.webServer` that the binding is `0.0.0.0:9191`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122183119082.png)
+![](Images/image-20240122183119082.png)
 
 ### 2.12.4 Analysis of Spring WebFlux request processing process
 
@@ -1454,33 +1454,33 @@ How does `Spring WebFlux` process when a request comes?
 
 Here we set a breakpoint at `org.example.webfluxmemoryshelldemo.hello.GreetingHandler#hello`, and then debug it, and visit `http://127.0.0.1:9191/hello` to trigger `debug`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122205005835.png)
+![](Images/image-20240122205005835.png)
 
 Step by step `step over` and then go to `org.springframework.web.reactive.DispatcherHandler#invokeHandler`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122210839343.png)
+![](Images/image-20240122210839343.png)
 
 After step into `step into`, you can see that it is `org.springframework.web.reactive.DispatcherHandler#handle`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122210930120.png)
+![](Images/image-20240122210930120.png)
 
 Explain the `return` part of the above code, first check whether the `handlerMappings` is `null`. If so, call the `createNotFoundError` method to return a `Mono` indicating that the handler was not found; then check whether it is a preflight request through the `CorsUtils.isPreFlightRequest` method. If it is, call the `handlePreFlight` method to handle the preflight request. If it is not a preflight request and the `handlerMappings` is not `null`, obtain the requested `handler` through a series of operations, then call the `invokeHandler` method to execute the handler, and then call the `handleResult` method to process the execution result, and finally return a `Mono` indicating that the processing is completed.
 
 Here, we look down at the bottom left corner, and we can see that before this, a `org.springframework.web.reactive.handler.AbstractHandlerMapping#getHandler` was called:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122213235191.png)
+![](Images/image-20240122213235191.png)
 
 We remove the previous breakpoint and then set the breakpoint here in the function:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122214012047.png)
+![](Images/image-20240122214012047.png)
 
 It was found that `org.springframework.web.reactive.handler.AbstractHandlerMapping#getHandlerInternal` was called. We went back and looked and found that the call location was `org.springframework.web.reactive.function.server.support.RouterFunctionMapping#getHandlerInternal`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122215515467.png)
+![](Images/image-20240122215515467.png)
 
 Click to go:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122222157225.png)
+![](Images/image-20240122222157225.png)
 
 The final creation of the `DefaultServerRequest` object is. It should be noted that when creating the object, the `HttpMessageReader` list saved in `RouterFunctionMapping` is passed as a parameter, so that the `DefaultServerRequest` object has the ability to parse parameters.
 
@@ -1488,59 +1488,59 @@ Go back to the `getHandlerInternal` function, look at the anonymous function in 
 
 I found that it was only defined in the interface:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122222804578.png)
+![](Images/image-20240122222804578.png)
 
 So I went to the previous `Threads & Variables`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122222845434.png)
+![](Images/image-20240122222845434.png)
 
 First, call the `this.predicate.test` method to determine whether the incoming `ServerRequest` meets the routing requirements. If the processing method is matched, the saved `HandlerFunction` implementation will be returned, otherwise the empty `Mono` will be returned.
 
 Click on this `test` method and found that it is still an interface. Combined with the previous naming rules of `RouterFunction.java` and `RouterFunctions.java`, it is reasonable to guess that the implementation of the `test` method should be in `RequestPredicates.java`. Sure enough, we cancel all the breakpoints we had before, and debugged them after re-setting the breakpoint in the `test` function:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122223953217.png)
+![](Images/image-20240122223953217.png)
 
 You can see that you have already obtained the `pattern` here, so you are still missing to analyze the `GET` method in the `request`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240122234829435.png)
+![](Images/image-20240122234829435.png)
 
 We continued `step over` and found that we jumped here directly. I was quite puzzled at the time. How did we know the `this.left` and `this.right` here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123000521320.png)
+![](Images/image-20240123000521320.png)
 
 These two variables are known to indicate that they have been assigned values ​​before executing `test`. I continue to `step over`. From the figure below, you can see that there is an additional `&&` between the two. It is not difficult to guess that the `org.springframework.web.reactive.function.server.RequestPredicates.AndRequestPredicate` method is called, because there is also an `OrRequestPredicate`. If this `or` is the `||`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123000839479.png)
+![](Images/image-20240123000839479.png)
 
 So we set a breakpoint on the `AndRequestPredicate` method. At this time, we have triggered debugging before we accessed `http://127.0.0.1:9191/hello`. This is because the code we wrote in `GreetingRouter.java` includes the `GET` method, `/hello` route and `and` and `this.right`. Therefore, we will call `AndRequestPredicate` and copy `GET` and `/hello` to `this.left` and `this.right` respectively:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123001430128.png)
+![](Images/image-20240123001430128.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123001241437.png)
+![](Images/image-20240123001241437.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123001306237.png)
+![](Images/image-20240123001306237.png)
 
 At this point, we basically understand the problem of routing matching. The next thing we need to consider is how to handle the request. This is relatively simple. Why do we say so? Because it has been basically involved in our analysis in Section 2.12.3. We still set up breakpoint debugging in `org.springframework.web.reactive.DispatcherHandler#invokeHandler`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002322377.png)
+![](Images/image-20240123002322377.png)
 
 You can see that there are four `handlerAdapters` in the `this.handlerAdapters`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002406757.png)
+![](Images/image-20240123002406757.png)
 
 Not all `handlerAdapter` triggers the `handle` method, and can only be called when the `handlerAdapter` that supports our given `handler`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002524030.png)
+![](Images/image-20240123002524030.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002714255.png)
+![](Images/image-20240123002714255.png)
 
 Then we `step into` here the `handlerAdapter.handle` method, and found that it is in `org.springframework.web.reactive.function.server.support.HandlerFunctionAdapter#handle`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002806521.png)
+![](Images/image-20240123002806521.png)
 
 And here `handlerFunction.handle` is the `route` method we wrote:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240123002927429.png)
+![](Images/image-20240123002927429.png)
 
 At this point, the part about processing the request is completed.
 
@@ -1582,19 +1582,19 @@ public class GreetingFilter implements WebFilter {
 
 The effects are as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240124143107182.png)
+![](Images/image-20240124143107182.png)
 
 We directly set a breakpoint in the `filter` function and debug it:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240125211900082.png)
+![](Images/image-20240125211900082.png)
 
 I noticed that the `filter` function is called in `return`, so I took a look at it `step into`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240125220915532.png)
+![](Images/image-20240125220915532.png)
 
 You can see that the `invokeFilter` function is called. Let's take a closer look at this `DefaultWebFilterChain` class:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126131433346.png)
+![](Images/image-20240126131433346.png)
 
 You can see that there are three functions called `DefaultWebFilterChain`, the first one is the public constructor, the second one is the private constructor (used to create the intermediate node of `chain`), and the third one is the outdated constructor. And in the comments of this class, there is a sentence:
 
@@ -1604,37 +1604,37 @@ You can see that there are three functions called `DefaultWebFilterChain`, the f
 
 That is, by calling the public constructor of the `DefaultWebFilterChain` class, we initialize a complete filter chain, where each instance represents a `link` in the chain, rather than a `chain`, which means we cannot implement the new `Filter` by modifying the `chain.allFilters` in the figure below:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126132330870.png)
+![](Images/image-20240126132330870.png)
 
 However, there is an initChain method in this class to initialize the filter chain, and this method calls this private constructor:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133115205.png)
+![](Images/image-20240126133115205.png)
 
 Then let's take a look at where this public constructor is called:
 
 Move the cursor to this method, press `Ctrl+Alt+F7` twice:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133242721.png)
+![](Images/image-20240126133242721.png)
 
 The call is located at `org.springframework.web.server.handler.FilteringWebHandler#FilteringWebHandler`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133330601.png)
+![](Images/image-20240126133330601.png)
 
 Then the idea comes. We just need to construct a `DefaultWebFilterChain` object, and then write it into the `chain` property of the `FilteringWebHandler` class object through reflection.
 
 Now there are only two parameters left to pass in `handler` and `filters`. This `handler` parameter is easy to do, just in `chain`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126133836697.png)
+![](Images/image-20240126133836697.png)
 
 Then if we use these `filters`, we can first get its original `filters`, and then put the malicious `filters` we wrote ourselves in and put them first, and that's fine.
 
 Now, find the location of `DefaultWebFilterChain` from memory and then reflect it step by step. Here, use the tool `https://github.com/c0ny1/java-object-searcher` directly, clone the project, and put it in `idea``mvn clean install`:
 
-![image-20240126134339217](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126134339217.png)
+![image-20240126134339217](Images/image-20240126134339217.png)
 
 Then put the generated `java-object-searcher-0.1.0.jar` into the `Libraries` in the Project `Structure` of our `WebFluxMemoryShellDemo` project:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126145032760.png)
+![](Images/image-20240126145032760.png)
 
 Then we modify our `GreetingFilter.java` code to the following:
 
@@ -1682,7 +1682,7 @@ public class GreetingFilter implements WebFilter {
 
 The keyword we set here is `DefaultWebFilterChain`, and then run it directly:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126145528943.png)
+![](Images/image-20240126145528943.png)
 
 That is, the location is:
 
@@ -1721,7 +1721,7 @@ In Catalina, the 4 types of containers have their own Pipeline components. Each 
 
 `Pipeline` defines the corresponding interface `Pipeline`, and the standard implements `StandardPipeline`. `Valve` defines the corresponding interface `Valve`, abstract implementation class `ValveBase`, `4` containers corresponding basic valves are `StandardEngineValve`, `StandardHostValve`, `StandardContextValve`, and `StandardWrapperValve`. In actual operation, the operating mechanisms of `Pipeline` and `Valve` are as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129171852854.png)
+![](Images/image-20240129171852854.png)
 
 This picture is a picture of Singapore's `Dennis Jacob's speech "Extending Valves in Tomcat" in ApacheCON Asia 2022. The `pdf` link is as follows:
 
@@ -1735,7 +1735,7 @@ The screen recording of this speech can be found on `Youtube`:
 
 Since I have to configure web.xml when using Valve in the Tomcat environment, I find it troublesome, so I directly use SpringBoot to build it. Remember to check the `Spring Web` here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129184504826.png)
+![](Images/image-20240129184504826.png)
 
 Then create the `test` directory and create two files under the `test` directory, `TestValve.java`:
 
@@ -1786,13 +1786,13 @@ public class TestConfig {
 }
 ```
 
-The operation effect is as follows:![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240129184753374.png)
+The operation effect is as follows:![](Images/image-20240129184753374.png)
 
 ### 2.13.3 Analysis of Tomcat Valve's idea of ​​entering memory horse
 
 Under normal circumstances, we usually use `ValveBase`. Click on this `ValveBase` and you can see that the `Valve` interface is implemented:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130140509002.png)
+![](Images/image-20240130140509002.png)
 
 Click `valve` to see the interface code as follows, here I added a comment:
 
@@ -1821,7 +1821,7 @@ public interface Valve {
 
 Next, we will debug the running process of this `valve`. We will debug the breakpoint here in the `invoke` function:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130153634378.png)
+![](Images/image-20240130153634378.png)
 
 Let's look at the lower left corner and see the `invoke` method I called before:
 
@@ -1831,7 +1831,7 @@ In `StandardHostValve.java`, the code is:
 context.getPipeline().getFirst().invoke(request, response);
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130153939854.png)
+![](Images/image-20240130153939854.png)
 
 In `StandardEngineValve.java`, the code is:
 
@@ -1839,35 +1839,35 @@ In `StandardEngineValve.java`, the code is:
 host.getPipeline().getFirst().invoke(request, response);
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130154036757.png)
+![](Images/image-20240130154036757.png)
 
 The subsequent parts such as `Http11Processor.java` and multi-threading do not need our attention. Since our purpose is to penetrate the memory horse, according to the ideas of the `Tomcat Servlet/Filter/Listener` memory horse we have, we need to add our own malicious `valve` in some way.
 
 We remove the breakpoint we made before, turn off the power in `StandardHostValve.java` and re-debug:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130154855309.png)
+![](Images/image-20240130154855309.png)
 
 Then `step into`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130154950328.png)
+![](Images/image-20240130154950328.png)
 
 Left click on `getPipeline` here to enter the location of the called function implementation:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155044025.png)
+![](Images/image-20240130155044025.png)
 
 Then enter the `Pipeline` interface and you can see that there is an `addValve` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155119909.png)
+![](Images/image-20240130155119909.png)
 
 Isn't this exactly what we need? Let's see where it is implemented. We directly find the class inheriting the interface in the `addValve` function `Ctrl+H`. You can see that it is in `org.apache.catalina.core.StandardPipeline`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155445230.png)
+![](Images/image-20240130155445230.png)
 
 But the problem is here. We cannot directly obtain the `StandardPipeline`, and what we can directly obtain is `StandardContext`, so let's see if there is a method to obtain `StandardPipeline` in `StandardContext.java`.
 
 You can see our old acquaintances at a glance - `getPipeline` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130155825670.png)
+![](Images/image-20240130155825670.png)
 
 Then our ideas can be fully supplemented. First reflect and get the `StandardContext`, then write a malicious `Valve`, and finally add it through `StandardContext.getPipeline().addValve()`. Of course, we can also reflect and obtain `StandardPipeline` and then `addValve`, which is also OK.
 
@@ -1952,7 +1952,7 @@ public class TestConfig implements WebServerFactoryCustomizer<TomcatServletWebSe
 
 After running, execute the command `curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080`, the effect is as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131011203184.png)
+![](Images/image-20240131011203184.png)
 
 #### 2.14.1.2 Built with Tomcat
 
@@ -2031,7 +2031,7 @@ public class TestUpgrade extends HttpServlet {
 
 The effects are as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151112722.png)
+![](Images/image-20240131151112722.png)
 
 ### 2.14.2 Tomcat Upgrade memory horse introduction and related code debugging analysis
 
@@ -2041,7 +2041,7 @@ It is somewhat similar to the Spring Interceptor type memory horse mentioned ear
 
 Here, I quote a `Tomcat` architecture diagram in the Ma Ge Byte article (`https://blog.nowcoder.net/n/0c4b545949344aa0b313f22df9ac2c09`):
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/20200725210507.png)
+![](Images/20200725210507.png)
 
 It can be clearly seen that there are two modules `Executor` and `Processor` before this. The content of this section mainly discusses the latter, and we will discuss the former in the next section.
 
@@ -2053,54 +2053,54 @@ In fact, during the previous process of learning "Tomcat Valve", I followed all 
 
 We still set a breakpoint on the line `StandardHostValve.java`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233028436.png)
+![](Images/image-20240130233028436.png)
 
 From the point where I pointed out by the red arrow above, you can see that the `process` function is called. The specific call location is `org.apache.coyote.AbstractProcessorLight#process`. Let's take a look with you:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233124074.png)
+![](Images/image-20240130233124074.png)
 
 You can see that if the current state of `SocketWrapperBase` is `OPEN_READ`, the corresponding `processor` will be called to process (the position of the `process` call in the second picture can be clicked in to see the next `process` of the `process` in the lower left corner of the first picture):
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233206768.png)
+![](Images/image-20240130233206768.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130233758378.png)
+![](Images/image-20240130233758378.png)
 
 Let's continue with the `step into` method here `service`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234010670.png)
+![](Images/image-20240130234010670.png)
 
 Continue to `step over`, you can see here that checks whether the `Connection` header is `upgrade`. This can be seen through the `step into``isConnectionToken` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234324083.png)
+![](Images/image-20240130234324083.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234424354.png)
+![](Images/image-20240130234424354.png)
 
 Then do two things: one is to call the `getUpgradeProtocol` method to get the `UpgradeProtocol` from `httpUpgradeProtocols` according to `upgradeName`; the other is to call the `accept` method of the `UpgradeProtocol` object:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234624306.png)
+![](Images/image-20240130234624306.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130234945666.png)
+![](Images/image-20240130234945666.png)
 
 At this point, we seem to be able to establish a conjecture. Similar to the memory horse introduced earlier, we just need to construct a malicious `UpgradeProtocol` and insert it into `httpUpgradeProtocols`.
 
 Since `httpUpgradeProtocols` is a `hashmap`, then if you add it, you must use the `put` method. Just search for `httpUpgradeProtocols.put`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131143446951.png)
+![](Images/image-20240131143446951.png)
 
 We set a breakpoint on this line and then debugged and found that before we executed the `curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080` command, the breakpoint arrived, that is, the `httpUpgradeProtocols.put` happened when `tomcat` was started.
 
 In this way, the idea is more specific: find `httpUpgradeProtocols` in reflection, insert the malicious upgradeProtocol` into it to form an `upgrade` memory horse, and the idea is exactly the same as before.
 
 Then now only the last problem needs to be solved - how to find the location of `httpUpgradeProtocols`. We open the `demo` of the `Tomcat Upgrade` built with `tomcat`, set the breakpoint at the following location, and then execute the command `curl -H "Connection: Upgrade" -H "Upgrade: hello" http://localhost:8080/evil` to enter the breakpoint debugging::
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151457146.png)
+![](Images/image-20240131151457146.png)
 
 `step over` can see the `request1` property below in one step:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151614135.png)
+![](Images/image-20240131151614135.png)
 
 Then I found `httpUpgradeProtocols` in the `protocolHandler` of the `connector` in `request1`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131151700530.png)
+![](Images/image-20240131151700530.png)
 
 Next is to reflect step by step。
 
@@ -2161,7 +2161,7 @@ public class TestServlet extends HttpServlet {
 
 Then visit the `test` route corresponding to the `context` of the browser:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202165507597.png)
+![](Images/image-20240202165507597.png)
 
 ### 2.15.2 Tomcat Executor memory horse introduction and code debugging analysis
 
@@ -2195,7 +2195,7 @@ As shown in the following table:
 
 The specific implementation classes of the `EndPoint` interface are `AbstractEndpoint`, and the specific implementation classes of `AprEndpoint`, `Nio2Endpoint`, and `NioEndpoint`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131231807324.png)
+![](Images/image-20240131231807324.png)
 
 |    Endpoint    |                Brief explanation                 |              Tomcat source code location              |
 | :------------: | :-------------------------------------: | :---------------------------------------: |
@@ -2213,7 +2213,7 @@ The `tomcat` mentioned above refers to the following `pom` dependencies:
 </dependency>
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131232445734.png)
+![](Images/image-20240131232445734.png)
 
 The default startup of `Tomcat` is started with `NioEndpoint`. It is the default module in `Tomcat` that is responsible for network communication functions using `NIO`. It is responsible for listening and processing request connections, and passing the parsed byte stream to `Processor` for subsequent processing.
 
@@ -2221,23 +2221,23 @@ The default startup of `Tomcat` is started with `NioEndpoint`. It is the default
 
 Click `Executor.java` to see a `execute` method:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145324525.png)
+![](Images/image-20240202145324525.png)
 
 `Ctrl+Alt+F7` trace, you can see that the `Executor` interface has related implementations in the abstract class `AbstractEndpoint`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145530939.png)
+![](Images/image-20240202145530939.png)
 
 Search for `executor` in `AbstractEndpoint.java`, and then you can see two functions: `setExecutor` and `getExecutor`:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145641729.png)
+![](Images/image-20240202145641729.png)
 
 Check the call location of the `getExecutor` function and find that there is a key call in the file:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145839900.png)
+![](Images/image-20240202145839900.png)
 
 Follow the past:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202145913789.png)
+![](Images/image-20240202145913789.png)
 
 From the following article we can know the role of `processSocket` in the operation of `Tomcat`:
 
@@ -2249,11 +2249,11 @@ But now there is a very headache problem, that is, the standard ServletRequest n
 
 So what should I do? Based on the knowledge we have learned before, it is easy to think of this article written by Master `c0ny1` when we first came into contact with `java-object-researcher`:
 
-> ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202165813229.png)
+> ![](Images/image-20240202165813229.png)
 >
 > http://gv7.me/articles/2020/semi-automatic-mining-request-implements-multiple-middleware-echo/
 >
-> ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202165719046.png)
+> ![](Images/image-20240202165719046.png)
 
 Then try it. After importing the `jar` package to the project, we modify the `TestServlet.java` code as follows:
 
@@ -2295,7 +2295,7 @@ public class TestServlet extends HttpServlet {
 
 Then access the route and search for `request=` in the console output:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202170116366.png)
+![](Images/image-20240202170116366.png)
 
 I directly searched for this link:
 
@@ -2315,17 +2315,17 @@ TargetObject = {org.apache.tomcat.util.threads.TaskThread}
 
 Let’s verify that by setting a breakpoint here in `org/apache/tomcat/util/net/NioEndpoint.java`, you can find the location of `request` here:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202170622846.png)
+![](Images/image-20240202170622846.png)
 
 Click on the `byteBuffer` here and you can see that it is a byte array. Right-click to find `View as... String` to become a string:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202170930400.png)
+![](Images/image-20240202170930400.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202171007974.png)
+![](Images/image-20240202171007974.png)
 
 Click the `View Text` I pointed out above to clearly see the specific content:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202171042514.png)
+![](Images/image-20240202171042514.png)
 
 This means that we can pass the command as part of the `header` and then pass the result as part of the `header`.
 
@@ -2442,13 +2442,13 @@ From the above conclusions, we can write the following memory horse `demo`:
 %>
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116000634170.png)
+![](Images/image-20240116000634170.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116001219456.png)
+![](Images/image-20240116001219456.png)
 
 Access, execute any command:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116001239119.png)
+![](Images/image-20240116001239119.png)
 
 ### 3.1.2 servlet memory horse demo code analysis
 
@@ -2506,13 +2506,13 @@ As you can see, in addition to the `service` code, we also wrote the `init`, `ge
 
 Then let's try to see what happens after commenting out:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116141041681.png)
+![](Images/image-20240116141041681.png)
 
 Report an error:`Class 'Anonymous class derived from Servlet' must implement abstract method 'init(ServletConfig)' in 'Servlet'`。
 
 We directly follow up on the `Servlet` class and you can see that it is an interface:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116141210781.png)
+![](Images/image-20240116141210781.png)
 
 It turns out that in `Java`, methods in interfaces are abstract by default, unless the default method is used in `Java 8` and later versions. And, if a class implements an interface, it must provide a concrete implementation of all abstract methods in that interface, which is why we have to write the above four methods.
 
@@ -2538,7 +2538,7 @@ ServletRegistration.Dynamic dynamic = new ApplicationServletRegistration(wrapper
 dynamic.addMapping(servletURL);
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240116143224121.png)
+![](Images/image-20240116143224121.png)
 
 ### 3.1.3 Understanding of StandardContext, ApplicationContext, ServletContext
 
@@ -2696,9 +2696,9 @@ From the above conclusions, we can write the following memory horse `demo`:
 
 The effects are as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117144501712.png)
+![](Images/image-20240117144501712.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117145703582.png)
+![](Images/image-20240117145703582.png)
 
 Similarly, here I also adapted to Chinese encoding and output of some prompt statements.
 
@@ -2839,9 +2839,9 @@ From the above conclusions, we can write the following memory horse `demo`:
 
 The effects are as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117232349151.png)
+![](Images/image-20240117232349151.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240117232401259.png)
+![](Images/image-20240117232401259.png)
 
 ### 3.3.2 Listener memory horse demo code analysis
 
@@ -2949,9 +2949,9 @@ public class TestEvilController {
 
 Running effect:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118213242404.png)
+![](Images/image-20240118213242404.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240118213252847.png)
+![](Images/image-20240118213252847.png)
 
 ### 4.1.2 Spring Controller memory horse demo code analysis
 
@@ -3106,7 +3106,7 @@ public class MemoryShellFilter implements WebFilter{
 }
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240126191718261.png)
+![](Images/image-20240126191718261.png)
 
 ### 4.3.2 Spring WebFlux memory horse demo code analysis
 
@@ -3169,7 +3169,7 @@ I have created a new project here and created a configured `web` directory and `
 
 > If idea starts Tomcat and reports an error, you can see if you have enabled NetEase Cloud Hahaha:
 >
-> ![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130181221187.png)
+> ![](Images/image-20240130181221187.png)
 
 Create a new `666.jsp` in the `web` directory:
 
@@ -3222,9 +3222,9 @@ Create a new `666.jsp` in the `web` directory:
 
 The above uses the method of obtaining the StandardPipeline from the `StandardContext` reflection, and the effect is as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164016715.png)
+![](Images/image-20240130164016715.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164029228.png)
+![](Images/image-20240130164029228.png)
 
 The following is implemented by calling `standardContext.getPipeline().addValve`:
 
@@ -3277,9 +3277,9 @@ The following is implemented by calling `standardContext.getPipeline().addValve`
 
 The effects are as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164109133.png)
+![](Images/image-20240130164109133.png)
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240130164219944.png)
+![](Images/image-20240130164219944.png)
 
 ## 5.2 Tomcat Upgrade Memory Horse
 
@@ -3382,7 +3382,7 @@ public class TestUpgrade extends HttpServlet {
 
 After running, execute the command `curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost:8080/evil`, and the result is as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131162725549.png)
+![](Images/image-20240131162725549.png)
 
 The `jsp` version is:
 
@@ -3463,7 +3463,7 @@ curl http://localhost:8080/666.jsp
 curl -H "Connection: Upgrade" -H "Upgrade: hello" -H "cmd: dir" http://localhost:8080/666.jsp
 ```
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240131164918339.png)
+![](Images/image-20240131164918339.png)
 
 ## 5.3 Tomcat Executor Memory Horse
 
@@ -3623,7 +3623,7 @@ For the above analysis of memory horses, please refer to the following article:
 
 Effect:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202183738506.png)
+![](Images/image-20240202183738506.png)
 
 It should be noted that the code in the original text does not take into account the situation where the command output results contain Chinese characters, so the `url` encoding is required, which I have improved in the above code.
 
@@ -3808,15 +3808,15 @@ Of course, if the target condition is running, you can also use `yakit` to take 
 
 Turn on the monitor first:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202184234403.png)
+![](Images/image-20240202184234403.png)
 
 Then send the packet twice, the first time is to access `888.jsp`, and the second time is to execute the command:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202193456383.png)
+![](Images/image-20240202193456383.png)
 
 You can see that the data has been transferred:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202193525085.png)
+![](Images/image-20240202193525085.png)
 
 Of course, the one that comes with `yakit` is flawed, it cannot be accepted continuously, because it cannot return a custom status code, so we can write one by `python`:
 
@@ -3840,11 +3840,11 @@ if __name__ == '__main__':
 
 Then modify the url in the `jsp` code:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202194338906.png)
+![](Images/image-20240202194338906.png)
 
 The final effect is as follows:
 
-![](https://raw.githubusercontent.com/W01fh4cker/blog_image/main/image/image-20240202194418057.png)
+![](Images/image-20240202194418057.png)
 
 # 6. Thanks
 
