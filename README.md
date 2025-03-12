@@ -94,6 +94,7 @@ I searched for this part for a long time, and finally encountered a pretty conci
 Here, the original text is quoted, and it is briefly summarized:
 
 `Tomcat` designed four types of containers, namely `Engine`, `Host`, `Context` and `Wrapper`, the relationship is as follows:
+
 ![](Images/20240112165508.png)
 
 This can be seen from the configuration file `server.xml` of `Tomcat`.
@@ -223,6 +224,102 @@ Main reference articles:
 We do not use the `tomcat` we downloaded to run our project here, we use the embedded `tomcat`, which is called `tomcat-embed-core`. Regarding dynamic debugging, I want to save trouble and use `tomcat-embed-core` directly. Of course, you can also debug and directly debug the `tomcat` source code. For the environment construction method, please refer to the article of Master Skay:
 
 > https://mp.weixin.qq.com/s/DMVcqtiNG9gMdrBUyCRCgw
+
+>[!NOTE]
+> ### 1. Download the Tomcat source code
+>
+> [apache-tomcat-8.5.57-src.zip](Files/apache-tomcat-8.5.57-src.zip)
+>
+> ### 2. Add a pom file
+>
+> `pom.xml`：
+>
+> ```xml
+> <?xml version="1.0" encoding="UTF-8"?>
+> <project xmlns="http://maven.apache.org/POM/4.0.0"
+>  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+>  
+>  <modelVersion>4.0.0</modelVersion>
+>  <groupId>org.apache.tomcat</groupId>
+>  <artifactId>Tomcat8.0</artifactId>
+>  <name>Tomcat8.0</name>
+>  <version>8.0</version>
+>  
+>  <build>
+>  <finalName>Tomcat8.0</finalName>
+>  <sourceDirectory>java</sourceDirectory>
+>  <testSourceDirectory>test</testSourceDirectory>
+>  <resources>
+>  <resource>
+>  <directory>java</directory>
+>  </resource>
+>  </resources>
+>  <testResources>
+>  <testResource>
+>  <directory>test</directory>
+>  </testResource>
+>  </testResources>
+>  <plugins>
+>  <plugin>
+>  <groupId>org.apache.maven.plugins</groupId>
+>  <artifactId>maven-compiler-plugin</artifactId>
+>  <version>2.3</version>
+>  <configuration>
+>   <encoding>UTF-8</encoding>
+>   <source>1.8</source>
+>   <target>1.8</target>
+>  </configuration>
+>  </plugin>
+>  </plugins>
+>  </build>
+>  
+>  <dependencies>
+>  <dependency>
+>  <groupId>junit</groupId>
+>  <artifactId>junit</artifactId>
+>  <version>4.12</version>
+>  <scope>test</scope>
+>  </dependency>
+>  <dependency>
+>  <groupId>org.easymock</groupId>
+>  <artifactId>easymock</artifactId>
+>  <version>3.4</version>
+>  </dependency>
+>  <dependency>
+>  <groupId>ant</groupId>
+>  <artifactId>ant</artifactId>
+>  <version>1.7.0</version>
+>  </dependency>
+>  <dependency>
+>  <groupId>wsdl4j</groupId>
+>  <artifactId>wsdl4j</artifactId>
+>  <version>1.6.2</version>
+>  </dependency>
+>  <dependency>
+>  <groupId>javax.xml</groupId>
+>  <artifactId>jaxrpc</artifactId>
+>  <version>1.1</version>
+>  </dependency>
+>  <dependency>
+>  <groupId>org.eclipse.jdt.core.compiler</groupId>
+>  <artifactId>ecj</artifactId>
+>  <version>4.5.1</version>
+>  </dependency>
+>  </dependencies>
+> </project>
+> ```
+> ### 3. Create a new catalina-home folder to move the conf directory in
+> ### 4. Remark the TestCookieFilter code
+> ### 5. Configure the IDE as shown
+>
+> ![](/Images/640.webp)
+> 
+> ### 6. Initiation of projects
+> Access to the home page will be 500 may be the directory that causes us to put ourselves up in a war
+>
+> ![](/Images/6401.webp)
+>
 
 We reopen a project, and the file code is as follows:
 
