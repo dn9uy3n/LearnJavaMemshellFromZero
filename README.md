@@ -279,6 +279,8 @@ We reopen a project, and the file code is as follows:
 </project>
 ```
 
+Reload All Maven Projects
+
 `Main.java`：
 
 ```java
@@ -485,16 +487,16 @@ import java.io.IOException;
 public class TestFilter implements Filter {
 
     public void init(FilterConfig filterConfig) {
-        System.out.println("[*] Filter初始化创建");
+        System.out.println("[*] Filter initialization creation");
     }
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("[*] Filter执行过滤操作");
+        System.out.println("[*] Filter to perform filtering operation");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
     public void destroy() {
-        System.out.println("[*] Filter已销毁");
+        System.out.println("[*] Filter destroyed");
     }
 }
 ```
@@ -949,15 +951,24 @@ There is another concept that needs to be understood, which is the `IOC` contain
 
 These nine components need to have an impression:
 
-`DispatcherServlet` (distribute `Servlet`): Responsible for distributing requests to other components, and is the core of the entire `Spring MVC` process;
-`HandlerMapping` (processor mapping): the processor used to determine the request (`Controller`);
-`HandlerAdapter` (processor adapter): Map requests to appropriate processor methods, responsible for executing processor methods;
-`HandlerInterceptor` (processor interceptor): allows interception and intervention on the processor's execution process;
-`Controller` (controller): Process user requests and return appropriate models and views;
-`ModelAndView` (model and view): encapsulates the execution results of the processor method, including model data and view information;
-`ViewResolver` (view resolver): used to resolve logical view names into specific view objects;
-`LocaleResolver` (region parser): handles regional information for internationalization;
-`ThemeResolver` (theme parser): used to parse the theme of the `Web` application and realize the switching of interface themes.
+- `DispatcherServlet` (distribute `Servlet`): Responsible for distributing requests to other components, and is the core of the entire `Spring MVC` process;
+
+- `HandlerMapping` (processor mapping): the processor used to determine the request (`Controller`);
+
+- `HandlerAdapter` (processor adapter): Map requests to appropriate processor methods, responsible for executing processor methods;
+
+- `HandlerInterceptor` (processor interceptor): allows interception and intervention on the processor's execution process;
+
+- `Controller` (controller): Process user requests and return appropriate models and views;
+
+- `ModelAndView` (model and view): encapsulates the execution results of the processor method, including model data and view information;
+
+- `ViewResolver` (view resolver): used to resolve logical view names into specific view objects;
+
+- `LocaleResolver` (region parser): handles regional information for internationalization;
+
+- `ThemeResolver` (theme parser): used to parse the theme of the `Web` application and realize the switching of interface themes.
+
 
 ### 2.11.2 Simple source code analysis
 
